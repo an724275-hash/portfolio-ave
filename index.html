@@ -2865,6 +2865,7 @@
         // Scroll wheel event listener
         let lastScrollTime = 0;
         window.addEventListener('wheel', (e) => {
+            if (window.innerWidth <= 768) return;
             const now = performance.now();
             if (now - lastScrollTime < 1000) return;
             
@@ -2881,10 +2882,12 @@
         // Touch Swipe Event Listeners for Mobile devices
         let startY = 0;
         window.addEventListener('touchstart', (e) => {
+            if (window.innerWidth <= 768) return;
             startY = e.touches[0].clientY;
         }, { passive: true });
 
         window.addEventListener('touchend', (e) => {
+            if (window.innerWidth <= 768) return;
             const endY = e.changedTouches[0].clientY;
             const diff = startY - endY;
             
@@ -2899,6 +2902,7 @@
 
         // Keyboard navigation
         window.addEventListener('keydown', (e) => {
+            if (window.innerWidth <= 768) return;
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
             
             if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
