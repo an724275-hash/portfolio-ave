@@ -1,0 +1,7 @@
+{
+    "github_repo": "git@github.com:username/portfolio.git",
+    "vps_ip": "194.58.120.40",
+    "vps_user": "root",
+    "vps_path": "/var/www/ave_dev_portfolio",
+    "staging_port": 8000
+}

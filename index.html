@@ -1,0 +1,4126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ave dev — Web-Engineering & Python Automations</title>
+    <meta name="description" content="ave dev — студия разработки быстрых сайтов, скриптов автоматизации и ботов в Telegram." />
+    <meta name="theme-color" content="#07070a" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- GSAP for smooth animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <style>
+        /* Skip link visually hidden */
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 0;
+            background: var(--accent);
+            color: #000;
+            padding: 0.5rem 1rem;
+            z-index: 999;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* ----------------------------------------------------
+           GLOBAL RESET & CRYPTO-DARK THEME TOKENS
+           ---------------------------------------------------- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        :root {
+            --background: #060608;
+            --foreground: #f4f4f7;
+            --ink: #08080c;
+            --muted: #a3a6b8;
+            --subtle: #2d2e36;
+            --line: #181920;
+            --surface: #0e0f13;
+            --surface-2: #16171f;
+            --accent: #00ff66;
+            --accent-glow: rgba(0, 255, 102, 0.12);
+            --accent-from: #00ff66;
+            --accent-to: #00d2ff;
+            
+            --radius-pill: 9999px;
+            --radius-card: 1.25rem;
+            --radius-card-sm: 0.85rem;
+            --radius-control: 0.5rem;
+            --container-shell: 88rem;
+            
+            --transition-smooth: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-snappy: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--background);
+            color: var(--foreground);
+            font-family: 'Onest', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ----------------------------------------------------
+           THE REM-BASED RESPONSIVE TYPE SCALE
+           ---------------------------------------------------- */
+        html { font-size: 16px; }
+        @media (min-width: 1920px) { html { font-size: 18px; } }
+        @media (max-width: 1440px) { html { font-size: 16px; } }
+        @media (max-width: 1024px) { html { font-size: 15px; } }
+        @media (max-width: 768px) { html { font-size: 14px; } }
+        @media (max-width: 480px) { html { font-size: 13px; } }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+            color: inherit;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+        .shell {
+            max-width: var(--container-shell);
+            margin-inline: auto;
+            width: 100%;
+            padding-inline: 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+        @media (min-width: 640px) {
+            .shell {
+                padding-inline: 2.5rem;
+            }
+        }
+
+        /* ----------------------------------------------------
+           TECH AMBIENT BACKDROP (VIDEO + CANVAS MATRIX)
+           ---------------------------------------------------- */
+        .ambient-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+            background-color: var(--background);
+        }
+
+        .backdrop-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: translate(-50%, -50%);
+            opacity: 0.08;
+            mix-blend-mode: screen;
+        }
+
+        .matrix-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.07;
+            transition: filter 0.5s ease;
+        }
+
+        .backdrop-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+            background-size: 4rem 4rem;
+            z-index: 2;
+        }
+
+        .backdrop-vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, transparent 20%, #060608 90%);
+            z-index: 3;
+        }
+
+        /* ----------------------------------------------------
+           PAGE INTRO LOADER
+           ---------------------------------------------------- */
+        .page-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 120;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2.5rem;
+            background: #000000;
+            color: #ffffff;
+            transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            font-family: var(--font-mono);
+        }
+
+        .loader-terminal {
+            width: min(32rem, 85vw);
+            background: #040406;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-card-sm);
+            padding: 1.25rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            text-align: left;
+        }
+
+        .loader-log-line {
+            color: var(--muted);
+            line-height: 1.4;
+            opacity: 0;
+            transform: translateY(4px);
+            animation: loaderLogFade 0.3s forwards;
+        }
+
+        @keyframes loaderLogFade {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loader-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .loader-logo span {
+            color: var(--accent);
+        }
+
+        .loader-track {
+            height: 2px;
+            background: rgba(255,255,255,0.08);
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.08s ease-out;
+            box-shadow: 0 0 8px var(--accent);
+        }
+
+        .loader-status-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            margin-top: 0.25rem;
+        }
+
+        /* ----------------------------------------------------
+           HEADER & NAVIGATION
+           ---------------------------------------------------- */
+        header {
+            position: fixed;
+            inset-inline: 0;
+            top: 0;
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: var(--transition-smooth);
+            background: rgba(6, 6, 8, 0.45);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(28, 29, 36, 0.5);
+        }
+
+        body.ready header {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-block: 1rem;
+        }
+
+        .brand-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            font-family: var(--font-mono);
+            transition: var(--transition-snappy);
+        }
+
+        .brand-btn span {
+            color: var(--accent);
+        }
+
+        .brand-cursor {
+            display: inline-block;
+            width: 0.5rem;
+            height: 1rem;
+            background: var(--accent);
+            animation: blink 1s step-end infinite;
+            box-shadow: 0 0 5px var(--accent);
+        }
+
+        @keyframes blink {
+            from, to { background: transparent; }
+            50% { background: var(--accent); }
+        }
+
+        .desktop-nav {
+            display: none;
+        }
+        @media (min-width: 1024px) {
+            .desktop-nav {
+                display: block;
+            }
+        }
+
+        .desktop-nav ul {
+            display: flex;
+            gap: 2.25rem;
+            font-size: 0.85rem;
+            font-family: var(--font-mono);
+        }
+
+        .desktop-nav button {
+            color: var(--muted);
+            transition: var(--transition-snappy);
+        }
+        .desktop-nav button:hover {
+            color: var(--accent);
+        }
+
+        .desktop-nav .active {
+            color: #ffffff;
+            position: relative;
+        }
+        .desktop-nav .active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 100%;
+            height: 1px;
+            background: var(--accent);
+            box-shadow: 0 0 4px var(--accent);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .server-status-chip {
+            display: none;
+            border: 1px solid var(--line);
+            background: rgba(18, 18, 22, 0.6);
+            border-radius: var(--radius-control);
+            padding: 0.4rem 0.75rem;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            font-family: var(--font-mono);
+            align-items: center;
+        }
+        @media (min-width: 768px) {
+            .server-status-chip {
+                display: flex;
+            }
+        }
+
+        .status-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 6px var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.5; }
+        }
+
+        .menu-btn {
+            border: 1px solid var(--line);
+            background: rgba(18, 18, 22, 0.6);
+            border-radius: var(--radius-control);
+            padding: 0.4rem 0.875rem;
+            font-size: 0.7rem;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-snappy);
+        }
+        .menu-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            box-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        /* ----------------------------------------------------
+           PRESENTATION DECK ENGINE
+           ---------------------------------------------------- */
+        .deck-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .deck-slide {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.97) translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 5;
+        }
+
+        .deck-slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1) translateY(0);
+            z-index: 10;
+        }
+
+        /* Side Navigation Dots */
+        .deck-nav {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 99;
+        }
+
+        .nav-dot {
+            width: 0.6rem;
+            height: 0.6rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            transition: var(--transition-snappy);
+            position: relative;
+            border: 1px solid transparent;
+        }
+
+        .nav-dot:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.2);
+        }
+
+        .nav-dot.active {
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+            transform: scale(1.3);
+        }
+
+        .nav-dot::before {
+            content: attr(data-title);
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%) translateX(10px);
+            opacity: 0;
+            color: #ffffff;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            white-space: nowrap;
+            pointer-events: none;
+            transition: var(--transition-snappy);
+            background: rgba(7,7,10,0.85);
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius-control);
+            border: 1px solid var(--line);
+        }
+
+        .nav-dot:hover::before {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+        }
+
+        /* ----------------------------------------------------
+           SLIDES CONTENT LAYOUTS (SCALED FOR 100VH)
+           ---------------------------------------------------- */
+        .slide-shell {
+            max-height: 82vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        /* 1) HERO COCKPIT SLIDE */
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        @media (min-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1.15fr 0.85fr;
+            }
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            max-width: 20ch;
+        }
+        @media (min-width: 640px) {
+            h1 { font-size: 2.85rem; }
+        }
+        @media (min-width: 1024px) {
+            h1 { font-size: 3.5rem; }
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, #ffffff 40%, var(--muted) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h1 .glow-word {
+            background: linear-gradient(135deg, var(--accent-from), var(--accent-to));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .hero-description {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.5;
+            max-width: 48ch;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .cyber-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.8rem 1.6rem;
+            border-radius: var(--radius-control);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: var(--transition-snappy);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-btn-primary {
+            background: var(--accent);
+            color: #000000;
+            border: 1px solid var(--accent);
+            box-shadow: 0 4px 14px var(--accent-glow);
+        }
+        .cyber-btn-primary:hover {
+            background: transparent;
+            color: var(--accent);
+            box-shadow: 0 0 15px var(--accent);
+        }
+
+        .cyber-btn-secondary {
+            background: rgba(18, 18, 22, 0.7);
+            color: var(--foreground);
+            border: 1px solid var(--line);
+        }
+        .cyber-btn-secondary:hover {
+            border-color: var(--muted);
+            background: rgba(28, 29, 36, 0.7);
+        }
+
+        /* Hero Right: Coder Terminal Emulator */
+        .terminal-emulator {
+            background: #090a0f;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-card-sm);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 20rem;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease;
+        }
+
+        .term-header {
+            height: 2.25rem;
+            background: #111218;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            padding-inline: 1rem;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--muted);
+        }
+
+        .term-dots {
+            display: flex;
+            gap: 0.375rem;
+        }
+
+        .term-dot {
+            width: 0.625rem;
+            height: 0.625rem;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .term-body {
+            flex: 1;
+            padding: 1.25rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: #d1d4e0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            line-height: 1.4;
+            scrollbar-width: thin;
+        }
+
+        .term-body::-webkit-scrollbar {
+            width: 4px;
+        }
+        .term-body::-webkit-scrollbar-thumb {
+            background: var(--line);
+            border-radius: 2px;
+        }
+
+        .term-input-line {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .term-prompt {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .term-input {
+            background: none;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: inherit;
+            flex: 1;
+        }
+
+        .term-output-cmd {
+            color: #ffffff;
+        }
+
+        .term-output-success {
+            color: var(--accent);
+        }
+
+        .term-output-error {
+            color: #ff5f56;
+        }
+
+        .term-quick-clicks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .term-click-tag {
+            font-size: 0.65rem;
+            border: 1px solid var(--line);
+            background: #111218;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-control);
+            color: var(--muted);
+            transition: var(--transition-snappy);
+        }
+        .term-click-tag:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* 2) ABOUT (BENTO WORKSPACE) */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+        @media (min-width: 1024px) {
+            .about-grid {
+                grid-template-columns: 1.25fr 0.75fr;
+            }
+        }
+
+        .bento-card {
+            background: rgba(14, 15, 19, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-card);
+            padding: 1.75rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition-smooth);
+            transform-style: preserve-3d;
+        }
+        .bento-card:hover {
+            border-color: rgba(0, 255, 102, 0.25);
+            box-shadow: 0 10px 30px rgba(0,255,102,0.02);
+            transform: translateY(-4px);
+        }
+
+        .bento-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .bento-card-title {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .bento-card-title-main {
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+        }
+
+        .bento-card-desc {
+            font-size: 0.875rem;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        /* VS Code mock editor box */
+        .vscode-editor {
+            background: #090a0f;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-card-sm);
+            overflow: hidden;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            margin-top: 1.25rem;
+        }
+
+        .vscode-tabs {
+            background: #111218;
+            height: 2rem;
+            display: flex;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .vscode-tab {
+            padding-inline: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-right: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 0.7rem;
+        }
+
+        .vscode-tab.active {
+            background: #090a0f;
+            color: #ffffff;
+            border-top: 2px solid var(--accent);
+        }
+
+        .vscode-code {
+            padding: 1rem;
+            color: #a9b2c3;
+            line-height: 1.45;
+            overflow-x: auto;
+        }
+
+        .keyword { color: #c792ea; }
+        .function { color: #82aaff; }
+        .string { color: #c3e88d; }
+        .comment { color: #546e7a; font-style: italic; }
+        .number { color: #f78c6c; }
+
+        /* Stats Grid inside Bento */
+        .bento-stats-card {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .about-stat-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 0.75rem;
+        }
+        .about-stat-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .about-stat-lbl {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .about-stat-val {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .about-stat-val.highlight {
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        /* 3) PORTFOLIO BENTO & TELEGRAM SIMULATOR */
+        .portfolio-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .portfolio-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .portfolio-bento {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+        @media (min-width: 1024px) {
+            .portfolio-bento {
+                grid-template-columns: 1.2fr 0.8fr;
+            }
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        @media (min-width: 640px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .project-card {
+            background: rgba(14, 15, 19, 0.6);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-card);
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 12.5rem;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .project-card:hover {
+            border-color: rgba(0, 210, 255, 0.25);
+            transform: translateY(-4px);
+        }
+
+        .project-card::after {
+            content: "Кликните для деталей →";
+            position: absolute;
+            bottom: 0.75rem;
+            right: 1.25rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--accent-to);
+            opacity: 0;
+            transition: var(--transition-snappy);
+        }
+        .project-card:hover::after {
+            opacity: 1;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--muted);
+        }
+
+        .project-git-icon {
+            font-size: 1rem;
+            color: var(--muted);
+        }
+        .project-card:hover .project-git-icon {
+            color: var(--accent-to);
+        }
+
+        .project-body {
+            margin-block: 0.75rem;
+        }
+
+        .project-body h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.35rem;
+        }
+
+        .project-body p {
+            font-size: 0.8rem;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.375rem;
+        }
+
+        .project-tag {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            border: 1px solid var(--line);
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-control);
+            color: var(--foreground);
+            background: rgba(18,18,22,0.8);
+        }
+
+        /* Detailed Overlay Panel Drawer */
+        .project-drawer {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            max-width: 34rem;
+            background: #090a0f;
+            border-left: 1px solid var(--line);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(110%);
+            transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 2.5rem;
+            box-shadow: -20px 0 80px rgba(0,0,0,0.9);
+        }
+        .project-drawer.open {
+            transform: translateX(0);
+        }
+
+        .drawer-close-btn {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            width: 2rem;
+            height: 2rem;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--line);
+            color: var(--muted);
+            transition: var(--transition-snappy);
+        }
+        .drawer-close-btn:hover {
+            color: #ffffff;
+            background: var(--subtle);
+        }
+
+        /* Telegram Simulator — Full Chat Window (not cramped phone) */
+        .tg-simulator-card {
+            background: rgba(14, 15, 19, 0.7);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-card);
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 22rem;
+            max-height: 27rem;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease;
+        }
+
+        /* Chat window layout — fills the card */
+        .chat-window {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 22rem;
+            overflow: hidden;
+        }
+
+        .chat-window-header {
+            height: 3rem;
+            background: #17212b;
+            display: flex;
+            align-items: center;
+            padding-inline: 1rem;
+            gap: 0.75rem;
+            border-bottom: 1px solid #0d1922;
+            flex-shrink: 0;
+        }
+
+        .chat-win-avatar {
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-to));
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            color: #000;
+            font-size: 0.65rem;
+            flex-shrink: 0;
+        }
+
+        .chat-win-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .chat-win-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .chat-win-status {
+            font-size: 0.65rem;
+            color: #51c854;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .chat-win-status::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            background: #51c854;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .chat-win-badge {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius-pill);
+            background: rgba(0,255,102,0.1);
+            border: 1px solid rgba(0,255,102,0.2);
+            color: var(--accent);
+        }
+
+        .tg-chat-area {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 0.75rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.1) transparent;
+            background: #0f1923;
+            background-image: radial-gradient(rgba(0,255,102,0.02) 1px, transparent 1px);
+            background-size: 16px 16px;
+        }
+
+        .tg-msg {
+            max-width: 82%;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.75rem;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .tg-msg-bot {
+            background: #182533;
+            color: #e8edf2;
+            align-self: flex-start;
+            border-bottom-left-radius: 0.2rem;
+        }
+
+        .tg-msg-user {
+            background: linear-gradient(135deg, #1a4a7a, #2b5278);
+            color: #ffffff;
+            align-self: flex-end;
+            border-bottom-right-radius: 0.2rem;
+        }
+
+        .tg-msg-keyboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            margin-top: 0.4rem;
+        }
+
+        .tg-inline-btn {
+            background: rgba(82, 136, 193, 0.15);
+            border: 1px solid rgba(82, 136, 193, 0.3);
+            color: #64b5f6;
+            padding: 0.3rem 0.6rem;
+            border-radius: var(--radius-control);
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: var(--transition-snappy);
+        }
+        .tg-inline-btn:hover {
+            background: rgba(82, 136, 193, 0.3);
+            border-color: rgba(82, 136, 193, 0.6);
+        }
+
+        .tg-keyboard-block {
+            background: #17212b;
+            padding: 0.5rem 0.75rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.4rem;
+            border-top: 1px solid #0d1922;
+            flex-shrink: 0;
+        }
+
+        .tg-kb-btn {
+            background: #1e2d3d;
+            border: 1px solid #2a3f55;
+            color: #e8edf2;
+            padding: 0.5rem;
+            border-radius: var(--radius-control);
+            font-size: 0.72rem;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-snappy);
+        }
+        .tg-kb-btn:hover {
+            background: #253545;
+            border-color: rgba(0,255,102,0.3);
+            color: #ffffff;
+        }
+
+        /* 4) SERVICES PLAYGROUND (SPLIT WORKBENCH) */
+        .services-workbench {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            min-height: 28rem;
+            height: auto;
+        }
+        @media (min-width: 1024px) {
+            .services-workbench {
+                grid-template-columns: 0.95fr 1.05fr;
+            }
+        }
+
+        .services-menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            justify-content: flex-start;
+        }
+
+        .service-menu-item {
+            background: rgba(14, 15, 19, 0.6);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-card-sm);
+            padding: 1rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            text-align: left;
+        }
+        .service-menu-item:hover, .service-menu-item.active {
+            border-color: var(--accent);
+            background: rgba(18, 19, 25, 0.6);
+        }
+
+        .service-menu-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .service-menu-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .service-menu-icon {
+            font-size: 1.1rem;
+            color: var(--muted);
+            transition: var(--transition-snappy);
+        }
+        .service-menu-item.active .service-menu-icon {
+            color: var(--accent);
+        }
+
+        .service-menu-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .service-menu-arrow {
+            font-size: 0.8rem;
+            color: var(--muted);
+            transition: transform 0.3s ease;
+        }
+        .service-menu-item.active .service-menu-arrow {
+            transform: translateX(4px);
+            color: var(--accent);
+        }
+
+        /* Configuration panel styles */
+        .service-config-panel {
+            display: none;
+            margin-top: 0.75rem;
+            border-top: 1px dashed var(--line);
+            padding-top: 0.75rem;
+            flex-direction: column;
+            gap: 0.6rem;
+            width: 100%;
+        }
+        .service-menu-item.active .service-config-panel {
+            display: flex;
+        }
+
+        .config-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .config-row label {
+            font-size: 0.65rem;
+            font-family: var(--font-mono);
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .config-input {
+            width: 100%;
+            background: #0d0f15;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-control);
+            padding: 0.35rem 0.5rem;
+            font-size: 0.75rem;
+            color: #ffffff;
+            font-family: inherit;
+            outline: none;
+            transition: var(--transition-snappy);
+        }
+
+        .config-input:focus {
+            border-color: var(--accent);
+        }
+
+        .config-slider {
+            width: 100%;
+            height: 4px;
+            background: var(--line);
+            border-radius: 2px;
+            outline: none;
+            -webkit-appearance: none;
+            accent-color: var(--accent);
+        }
+
+        .config-row-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            user-select: none;
+            font-size: 0.7rem;
+            color: #d1d4e0;
+        }
+
+        .config-row-checkbox input[type="checkbox"] {
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        /* Workbench Terminal Output Panel */
+        .workbench-console {
+            background: #090a0f;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
+
+        .workbench-console-header {
+            height: 2.25rem;
+            background: #111218;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-inline: 1.25rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--muted);
+        }
+
+        .workbench-console-body {
+            flex: 1;
+            padding: 1.25rem;
+            font-family: var(--font-mono);
+            font-size: 0.725rem;
+            color: #d1d4e0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            line-height: 1.45;
+        }
+
+        /* 5) MONITORING STATS DASHBOARD */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        @media (min-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1.2fr 0.8fr;
+            }
+        }
+
+        .dashboard-widget-left {
+            background: rgba(14, 15, 19, 0.7);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-card);
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            height: 24rem;
+        }
+
+        .dashboard-header-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dashboard-toggle-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .dashboard-tab-btn {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            border: 1px solid var(--line);
+            padding: 0.35rem 0.75rem;
+            border-radius: var(--radius-control);
+            color: var(--muted);
+            transition: var(--transition-snappy);
+        }
+        .dashboard-tab-btn.active, .dashboard-tab-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(0, 255, 102, 0.04);
+        }
+
+        .dashboard-chart-box {
+            flex: 1;
+            position: relative;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-card-sm);
+            background: #090a0f;
+            overflow: hidden;
+        }
+
+        .dashboard-chart-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .dashboard-stats-sidebar {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .dashboard-sidebar-card {
+            background: rgba(14, 15, 19, 0.6);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-card-sm);
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 11.5rem;
+        }
+
+        /* Node Graph Connection Canvas block */
+        .node-network-box {
+            position: relative;
+            width: 100%;
+            height: 12rem;
+            border: 1px dashed rgba(0, 255, 102, 0.2);
+            border-radius: var(--radius-card-sm);
+            background: #090a0f;
+            overflow: hidden;
+            margin-top: 1rem;
+            cursor: grab;
+            transition: border-color 0.3s ease;
+        }
+        .node-network-box:active {
+            cursor: grabbing;
+        }
+        .node-network-box:hover {
+            border-color: rgba(0, 255, 102, 0.4);
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.05) inset;
+        }
+
+        /* Drawer backdrop overlay */
+        .drawer-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            background: rgba(0, 0, 0, 0);
+            pointer-events: none;
+            transition: background 0.5s ease, backdrop-filter 0.5s ease;
+        }
+        .drawer-backdrop.visible {
+            background: rgba(0, 0, 0, 0.6);
+            pointer-events: auto;
+            backdrop-filter: blur(4px);
+        }
+
+        .node-network-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 6) CONTACT SLIDE */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        @media (min-width: 1024px) {
+            .contact-grid {
+                grid-template-columns: 1.1fr 0.9fr;
+            }
+        }
+
+        .contact-left h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.25rem;
+        }
+        @media (min-width: 640px) {
+            .contact-left h2 {
+                font-size: 2.75rem;
+            }
+        }
+
+        .contact-left p {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.5;
+            margin-bottom: 2rem;
+            max-width: 44ch;
+        }
+
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .contact-method-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(18,18,22,0.6);
+            border: 1px solid var(--line);
+            padding: 1rem;
+            border-radius: var(--radius-card-sm);
+            transition: var(--transition-snappy);
+        }
+        .contact-method-item:hover {
+            border-color: var(--accent);
+            background: rgba(28,29,36,0.6);
+        }
+
+        .contact-icon {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            background: rgba(0, 255, 102, 0.08);
+            border: 1px solid rgba(0, 255, 102, 0.2);
+            color: var(--accent);
+            display: grid;
+            place-items: center;
+            font-size: 1rem;
+        }
+
+        .contact-lbl {
+            font-size: 0.7rem;
+            font-family: var(--font-mono);
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .contact-val {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #ffffff;
+        }
+
+        .legal-row {
+            margin-top: 2rem;
+            font-size: 0.7rem;
+            color: var(--muted);
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--line);
+            padding-top: 1.25rem;
+        }
+
+        /* ----------------------------------------------------
+           NAVMENU OVERLAY
+           ---------------------------------------------------- */
+        .nav-menu {
+            position: fixed;
+            inset: 0;
+            z-index: 115;
+            display: none;
+            flex-direction: column;
+            background: #050508;
+            color: #ffffff;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-menu-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-block: 1rem;
+        }
+
+        .close-btn {
+            border: 1px solid var(--line);
+            border-radius: var(--radius-control);
+            padding: 0.4rem 0.875rem;
+            font-size: 0.7rem;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--muted);
+            transition: var(--transition-snappy);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .close-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .nav-menu-middle {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .nav-menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-menu-item-btn {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            padding-block: 0.5rem;
+            text-align: left;
+            font-size: 2.25rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            opacity: 0;
+            transform: translateY(1rem);
+            transition: all 0.5s ease-out;
+            width: 100%;
+            font-family: var(--font-mono);
+        }
+        @media (min-width: 640px) {
+            .nav-menu-item-btn {
+                font-size: 3.75rem;
+            }
+        }
+
+        .nav-menu.open .nav-menu-item-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav-menu-num {
+            font-size: 1rem;
+            font-weight: 400;
+            color: rgba(255,255,255,0.15);
+        }
+
+        .nav-menu-lbl {
+            color: var(--muted);
+            transition: var(--transition-snappy);
+        }
+
+        .nav-menu-item-btn:hover .nav-menu-num {
+            color: var(--accent);
+        }
+
+        .nav-menu-item-btn:hover .nav-menu-lbl {
+            color: #ffffff;
+            padding-left: 0.5rem;
+        }
+
+        .nav-menu-bottom {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            border-top: 1px solid var(--line);
+            padding: 1.5rem 0;
+            font-size: 0.75rem;
+            color: var(--muted);
+            font-family: var(--font-mono);
+        }
+        @media (min-width: 640px) {
+            .nav-menu-bottom {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+        /* ----------------------------------------------------
+           REQUESTMODAL OVERLAY
+           ---------------------------------------------------- */
+        .request-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 130;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 1rem;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(16px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        @media (min-width: 640px) {
+            .request-modal-backdrop {
+                align-items: center;
+            }
+        }
+
+        .request-modal-panel {
+            position: relative;
+            width: 100%;
+            max-width: 32rem;
+            overflow: hidden;
+            border-radius: var(--radius-card);
+            background: #0c0c12;
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            border: 1px solid var(--line);
+            transform: translateY(28px);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .request-modal-backdrop.open .request-modal-panel {
+            transform: translateY(0);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            right: 1.25rem;
+            top: 1.25rem;
+            width: 2rem;
+            height: 2rem;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--line);
+            color: var(--muted);
+            transition: var(--transition-snappy);
+        }
+        .modal-close-btn:hover {
+            color: #ffffff;
+            background: var(--subtle);
+        }
+
+        .modal-form-header {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.375rem;
+        }
+
+        .modal-form-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .request-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-group-lbl {
+            font-size: 0.7rem;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--muted);
+        }
+
+        .form-control {
+            width: 100%;
+            border: 1px solid var(--line);
+            background: #07070a;
+            border-radius: var(--radius-control);
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            outline: none;
+            transition: var(--transition-snappy);
+            color: #ffffff;
+            font-family: inherit;
+        }
+        .form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        .textarea-control {
+            resize: none;
+        }
+
+        .modal-footer {
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .modal-note {
+            font-size: 0.7rem;
+            color: var(--muted);
+        }
+
+        .success-state {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding-block: 2rem;
+            gap: 1rem;
+        }
+
+        .success-badge {
+            width: 3.5rem;
+            height: 3.5rem;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: rgba(0, 255, 102, 0.08);
+            border: 1px solid rgba(0, 255, 102, 0.2);
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+
+        .success-state h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .success-desc {
+            max-width: 32ch;
+            font-size: 0.85rem;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        /* Stat numbers & labels (stats dashboard sidebar) */
+        .stat-num {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            font-family: var(--font-mono);
+            line-height: 1;
+            background: linear-gradient(135deg, #ffffff 30%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+        }
+        @media (min-width: 640px) {
+            .stat-num { font-size: 3rem; }
+        }
+
+        .stat-lbl {
+            font-size: 0.72rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            line-height: 1.4;
+            display: block;
+        }
+
+        /* Footer legal row link style */
+        .footer-legal-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-legal-links a:hover {
+            color: #ffffff;
+        }
+
+        /* CRT Screen Scanline & Flicker Retro Overlay */
+        .crt-screen-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+            background-size: 100% 3px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        body.crt-active .crt-screen-overlay {
+            opacity: 1;
+        }
+        body.crt-active::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, rgba(18, 16, 16, 0) 0%, rgba(0, 0, 0, 0.4) 100%);
+            z-index: 99998;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        @keyframes crt-flicker {
+            0% { opacity: 0.18; }
+            50% { opacity: 0.20; }
+            100% { opacity: 0.18; }
+        }
+        body.crt-active::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 255, 102, 0.015);
+            opacity: 0;
+            z-index: 9997;
+            pointer-events: none;
+            animation: crt-flicker 0.15s infinite;
+        }
+
+        /* Mobile Responsive Overrides (max-width: 768px) */
+        @media (max-width: 768px) {
+            html, body {
+                overflow-x: hidden;
+                overflow-y: auto !important;
+                height: auto;
+            }
+            .deck-container {
+                display: block;
+                height: auto;
+                overflow: visible;
+                width: 100vw;
+            }
+            .deck-slide {
+                position: relative !important;
+                inset: auto !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                transform: none !important;
+                height: auto !important;
+                min-height: auto !important;
+                overflow: visible !important;
+                display: block !important;
+                padding-block: 4rem 2.5rem;
+                border-bottom: 1px solid var(--line);
+            }
+            .shell.slide-shell {
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+                height: auto !important;
+                min-height: auto !important;
+                display: block !important;
+            }
+            .deck-nav {
+                display: none !important;
+            }
+            .hero-row {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 2rem !important;
+                padding-top: 2rem !important;
+            }
+            .hero-left {
+                text-align: center !important;
+                max-width: 100% !important;
+            }
+            .hero-left h1 {
+                font-size: 2.20rem !important;
+            }
+            .hero-actions {
+                justify-content: center !important;
+            }
+            .hero-terminal {
+                max-width: 100% !important;
+            }
+            .about-grid {
+                grid-template-columns: 1fr !important;
+                gap: 1.5rem !important;
+            }
+            .portfolio-bento {
+                grid-template-columns: 1fr !important;
+                gap: 1.5rem !important;
+            }
+            .projects-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .services-workbench {
+                grid-template-columns: 1fr !important;
+                gap: 1.5rem !important;
+                min-height: auto !important;
+            }
+            .dashboard-grid {
+                grid-template-columns: 1fr !important;
+                gap: 1.5rem !important;
+            }
+            .dashboard-widget-left {
+                min-height: 18rem !important;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr !important;
+                gap: 2.5rem !important;
+            }
+            .contact-left {
+                text-align: center !important;
+            }
+            .contact-methods {
+                justify-content: center !important;
+            }
+            header {
+                padding-block: 0.5rem !important;
+            }
+        }
+
+        /* Ambient Floating Glow Orbs styling */
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.12;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            will-change: transform;
+            z-index: 2;
+        }
+        .orb-1 {
+            width: 32rem;
+            height: 32rem;
+            background: radial-gradient(circle, var(--accent) 0%, rgba(0,255,102,0) 70%);
+            top: -5%;
+            left: -5%;
+            animation: float-orb-1 25s infinite alternate ease-in-out;
+        }
+        .orb-2 {
+            width: 36rem;
+            height: 36rem;
+            background: radial-gradient(circle, var(--accent-to) 0%, rgba(0,210,255,0) 70%);
+            bottom: -10%;
+            right: -5%;
+            animation: float-orb-2 30s infinite alternate ease-in-out;
+        }
+
+        @keyframes float-orb-1 {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.10;
+            }
+            50% {
+                transform: translate(6rem, 4rem) scale(1.15);
+                opacity: 0.15;
+            }
+            100% {
+                transform: translate(-2rem, 8rem) scale(0.9);
+                opacity: 0.08;
+            }
+        }
+        @keyframes float-orb-2 {
+            0% {
+                transform: translate(0, 0) scale(1.05);
+                opacity: 0.08;
+            }
+            50% {
+                transform: translate(-8rem, -5rem) scale(0.9);
+                opacity: 0.14;
+            }
+            100% {
+                transform: translate(3rem, 2rem) scale(1.15);
+                opacity: 0.08;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Skip to main content link -->
+    <a href="#main" class="skip-link">Перейти к контенту</a>
+
+    <!-- TECH AMBIENT BACKDROP -->
+    <div class="ambient-backdrop">
+        <video class="backdrop-video" autoplay loop muted playsinline>
+            <source src="https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f3c054ba208d850d99ebd9e250c609c131&profile_id=139&oauth2_token_id=57447761" type="video/mp4" />
+        </video>
+        <canvas class="matrix-canvas" id="matrix-canvas"></canvas>
+        <!-- Floating Ambient Glow Orbs -->
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+        <div class="backdrop-grid"></div>
+        <div class="backdrop-vignette"></div>
+    </div>
+
+    <!-- PAGE Loader panel -->
+    <div class="page-loader" id="page-loader">
+        <div class="loader-terminal" id="loader-terminal">
+            <div class="loader-logo">
+                <span>[</span>ave_dev<span>]</span>
+                <span class="brand-cursor"></span>
+            </div>
+        </div>
+        <div style="width: min(22rem, 72vw)">
+            <div class="loader-track">
+                <div class="loader-fill" id="loader-fill"></div>
+            </div>
+            <div class="loader-status-row">
+                <span>COMPILING SYSTEMS</span>
+                <span class="loader-counter" id="loader-counter">000</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FIXED OVERLAY HEADER -->
+    <header>
+        <div class="shell header-row">
+            <button class="brand-btn" onclick="goToSlide(0)">
+                <span>[</span>ave_dev<span>]</span><span class="brand-cursor"></span>
+            </button>
+            <nav class="desktop-nav">
+                <ul>
+                    <li><button onclick="goToSlide(0)" class="active" id="nav-btn-0">[01] Главная</button></li>
+                    <li><button onclick="goToSlide(1)" id="nav-btn-1">[02] Обо мне</button></li>
+                    <li><button onclick="goToSlide(2)" id="nav-btn-2">[03] Кейсы</button></li>
+                    <li><button onclick="goToSlide(3)" id="nav-btn-3">[04] Услуги</button></li>
+                    <li><button onclick="goToSlide(4)" id="nav-btn-4">[05] Статистика</button></li>
+                    <li><button onclick="goToSlide(5)" id="nav-btn-5">[06] Контакты</button></li>
+                </ul>
+            </nav>
+            <div class="header-right">
+                <button onclick="toggleCrtScreen()" id="crt-toggle-btn" style="font-family: var(--font-mono); font-size: 0.65rem; border: 1px solid var(--line); padding: 0.25rem 0.65rem; border-radius: var(--radius-control); color: var(--muted); background: rgba(0,0,0,0.35); transition: var(--transition-snappy); cursor: pointer; margin-right: 0.5rem; display: flex; align-items: center; gap: 4px;">
+                    <span class="status-dot" style="background: var(--muted); width: 6px; height: 6px; margin: 0;" id="crt-status-dot"></span>
+                    <span>CRT: OFF</span>
+                </button>
+                <div class="server-status-chip">
+                    <span class="status-dot"></span>
+                    <span>SERVER: ACTIVE</span>
+                </div>
+                <button class="menu-btn" onclick="toggleMenu(true)">
+                    <svg viewBox="0 0 24 24" width="1em" height="1em" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none">
+                        <path d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                    <span>Меню</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Side Navigation Dots -->
+    <div class="deck-nav">
+        <button class="nav-dot active" onclick="goToSlide(0)" data-title="Главная" id="dot-0"></button>
+        <button class="nav-dot" onclick="goToSlide(1)" data-title="Обо мне" id="dot-1"></button>
+        <button class="nav-dot" onclick="goToSlide(2)" data-title="Кейсы" id="dot-2"></button>
+        <button class="nav-dot" onclick="goToSlide(3)" data-title="Услуги" id="dot-3"></button>
+        <button class="nav-dot" onclick="goToSlide(4)" data-title="Статистика" id="dot-4"></button>
+        <button class="nav-dot" onclick="goToSlide(5)" data-title="Контакты" id="dot-5"></button>
+    </div>
+
+    <!-- PRESENTATION DECK CONTAINER -->
+    <main id="main" class="deck-container">
+        
+        <!-- SLIDE 1: HERO -->
+        <section id="slide-home" class="deck-slide active">
+            <div class="shell slide-shell">
+                <div class="hero-grid">
+                    <div class="hero-left">
+                        <div class="hero-eyebrow">
+                            <span class="status-dot"></span>
+                            <span>Python & Web Automation</span>
+                        </div>
+                        <h1>
+                            Автоматизация <span>процессов,</span><br/>
+                            <span>разработка быстрых</span><br/>
+                            <span class="glow-word">Telegram-систем.</span>
+                        </h1>
+                        <p class="hero-description">
+                            Создаю высокопроизводительные сайты, парсеры и ботов с чистой архитектурой кода на Python и JS. Оптимизирую и ускоряю проекты до предела.
+                        </p>
+                        <div class="hero-buttons">
+                            <a href="https://t.me/artemIT_web" target="_blank" class="cyber-btn cyber-btn-primary">
+                                <span>Написать в Telegram</span>
+                                <i class="fa-brands fa-telegram"></i>
+                            </a>
+                            <button class="cyber-btn cyber-btn-secondary" onclick="goToSlide(2)">
+                                <span>Смотреть работы</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-right">
+                        <!-- CLI Interactive Terminal Mockup -->
+                        <div class="terminal-emulator" id="hero-terminal">
+                            <div class="term-header">
+                                <div class="term-dots">
+                                    <span class="term-dot dot-red"></span>
+                                    <span class="term-dot dot-yellow"></span>
+                                    <span class="term-dot dot-green"></span>
+                                </div>
+                                <span class="term-title">bash - ave_dev@root</span>
+                                <div style="width: 2.25rem;"></div>
+                            </div>
+                            <div class="term-body" id="term-body">
+                                <div>ave_dev OS v1.0.3 (x86_64-pc-linux-gnu)</div>
+                                <div>Загрузка выполнена. Введите команду или выберите тег:</div>
+                                <div class="term-quick-clicks">
+                                    <button class="term-click-tag" onclick="runTermCommand('about')">about</button>
+                                    <button class="term-click-tag" onclick="runTermCommand('skills')">skills</button>
+                                    <button class="term-click-tag" onclick="runTermCommand('projects')">projects</button>
+                                    <button class="term-click-tag" style="border-color: var(--accent-to); color: #ffffff;" onclick="runTermCommand('matrix')">matrix</button>
+                                    <button class="term-click-tag" onclick="runTermCommand('clear')">clear</button>
+                                </div>
+                                
+                                <div class="term-input-line" id="current-input-line">
+                                    <span class="term-prompt">root@ave_dev:~#</span>
+                                    <input class="term-input" type="text" id="term-input" autocomplete="off" placeholder="help" onkeydown="handleTermInput(event)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 2: ABOUT -->
+        <section id="slide-about" class="deck-slide">
+            <div class="shell slide-shell">
+                <div class="about-grid">
+                    <div class="bento-card" id="about-card-left">
+                        <div>
+                            <div class="bento-card-header">
+                                <div class="bento-card-title">
+                                    <i class="fa-solid fa-code"></i>
+                                    <span>profile.py</span>
+                                </div>
+                                <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted);">v3.8.12</span>
+                            </div>
+                            <h3 class="bento-card-title-main">Разрабатываю с акцентом на скорость и масштабируемость</h3>
+                            <p class="bento-card-desc">
+                                Пишу лаконичный, легко поддерживаемый код. Избегаю лишних зависимостей. Настраиваю асинхронные обработчики, способные выдерживать высокие нагрузки без сбоев.
+                            </p>
+                        </div>
+                        
+                        <!-- VS Code mockup tab -->
+                        <div class="vscode-editor">
+                            <div class="vscode-tabs">
+                                <div class="vscode-tab active">
+                                    <i class="fa-brands fa-python" style="color: #3572A5;"></i>
+                                    <span>profile.py</span>
+                                </div>
+                            </div>
+                            <div class="vscode-code">
+                                <div><span class="keyword">class</span> <span class="function">Developer</span>:</div>
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;def __init__(self):</div>
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.name = <span class="string">"ave dev"</span></div>
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.focus = [<span class="string">"Web"</span>, <span class="string">"Telegram Bots"</span>, <span class="string">"Automations"</span>]</div>
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.speed_optimized = <span class="keyword">True</span></div>
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.uptime_target = <span class="number">0.999</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bento-card bento-stats-card" id="about-card-right">
+                        <div class="bento-card-header">
+                            <div class="bento-card-title">
+                                <i class="fa-solid fa-network-wired"></i>
+                                <span>PHYSICS NODE NETWORK</span>
+                            </div>
+                            <span class="status-dot"></span>
+                        </div>
+                        
+                        <!-- Interactive Physics Connection Canvas -->
+                        <div class="node-network-box" id="node-network-box">
+                            <canvas class="node-network-canvas" id="node-network-canvas"></canvas>
+                        </div>
+                        
+                        <div style="margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.75rem;">
+                            <div class="about-stat-row">
+                                <span class="about-stat-lbl">Интеграция БД</span>
+                                <span class="about-stat-val">PostgreSQL, SQLite</span>
+                            </div>
+                            <div class="about-stat-row">
+                                <span class="about-stat-lbl">Интерактив</span>
+                                <span class="about-stat-val highlight" style="font-size: 0.65rem;">Потяните за узлы в окне выше!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: PORTFOLIO -->
+        <section id="slide-works" class="deck-slide">
+            <div class="shell slide-shell">
+                <div class="portfolio-header">
+                    <span class="hero-eyebrow">
+                        <span class="status-dot"></span>
+                        <span>Мои кейсы</span>
+                    </span>
+                    <h2>Качественные решения, проверенные на практике</h2>
+                </div>
+                
+                <div class="portfolio-bento">
+                    <!-- Left: Cases Grid -->
+                    <div class="projects-grid">
+                        <div class="project-card" onclick="openProjectDrawer('snekit')">
+                            <div class="project-meta">
+                                <span>ВЕБ-ВИТРИНА</span>
+                                <i class="fa-solid fa-code-fork project-git-icon"></i>
+                            </div>
+                            <div class="project-body">
+                                <h3>snekit-neru.ru</h3>
+                                <p>Асинхронная интернет-витрина китайских товаров с автоматической базой данных на Python и панелью администратора.</p>
+                            </div>
+                            <div class="project-tags">
+                                <span class="project-tag">HTML5 / JS</span>
+                                <span class="project-tag">Python DB</span>
+                            </div>
+                        </div>
+
+                        <div class="project-card" onclick="openProjectDrawer('phantom')">
+                            <div class="project-meta">
+                                <span>TELEGRAM BOT</span>
+                                <i class="fa-solid fa-code-fork project-git-icon"></i>
+                            </div>
+                            <div class="project-body">
+                                <h3>PhantomAI Shop</h3>
+                                <p>Бот для продажи цифровых товаров в Telegram с модулями автоматической оплаты, кастомными клавиатурами.</p>
+                            </div>
+                            <div class="project-tags">
+                                <span class="project-tag">Aiogram 3</span>
+                                <span class="project-tag">PostgreSQL</span>
+                            </div>
+                        </div>
+
+                        <div class="project-card" onclick="openProjectDrawer('droop')">
+                            <div class="project-meta">
+                                <span>MONITORING BOT</span>
+                                <i class="fa-solid fa-code-fork project-git-icon"></i>
+                            </div>
+                            <div class="project-body">
+                                <h3>TerminalDroop</h3>
+                                <p>Telegram бот для системного администрирования. Позволяет мониторить загрузку CPU/RAM серверов.</p>
+                            </div>
+                            <div class="project-tags">
+                                <span class="project-tag">Python 3</span>
+                                <span class="project-tag">SQLite</span>
+                            </div>
+                        </div>
+
+                        <div class="project-card" onclick="openProjectDrawer('outreach')">
+                            <div class="project-meta">
+                                <span>AUTOMATION</span>
+                                <i class="fa-solid fa-code-fork project-git-icon"></i>
+                            </div>
+                            <div class="project-body">
+                                <h3>Auto-Search outreach</h3>
+                                <p>Скрипты перехвата сообщений в чатах фриланса и крипто-рынков. Отклик клиенту за 40-50 миллисекунд.</p>
+                            </div>
+                            <div class="project-tags">
+                                <span class="project-tag">Telethon</span>
+                                <span class="project-tag">Asyncio</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: TG Bot Simulator — Full Window Chat -->
+                    <div class="tg-simulator-card" id="tg-simulator-widget">
+                        <div class="chat-window">
+                            <!-- Header -->
+                            <div class="chat-window-header">
+                                <div class="chat-win-avatar">AD</div>
+                                <div class="chat-win-info">
+                                    <span class="chat-win-name">@ave_dev_helper_bot</span>
+                                    <span class="chat-win-status">online</span>
+                                </div>
+                                <span class="chat-win-badge">LIVE DEMO</span>
+                            </div>
+
+                            <!-- Chat messages area -->
+                            <div class="tg-chat-area" id="tg-chat-area">
+                                <div class="tg-msg tg-msg-bot">
+                                    Привет! Я демо-бот от ave dev 👋<br/>Нажми кнопку, чтобы посмотреть мои возможности:
+                                </div>
+                            </div>
+
+                            <!-- Keyboard -->
+                            <div class="tg-keyboard-block">
+                                <button class="tg-kb-btn" onclick="sendTgMessage('🛍️ Каталог')">🛍️ Каталог</button>
+                                <button class="tg-kb-btn" onclick="sendTgMessage('🤖 Мои работы')">🤖 Мои работы</button>
+                                <button class="tg-kb-btn" onclick="sendTgMessage('💬 Заказать')">💬 Заказать</button>
+                                <button class="tg-kb-btn" onclick="sendTgMessage('⬅️ Сброс')">↺ Сброс</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 4: SERVICES PLAYGROUND WORKBENCH -->
+        <section id="slide-services" class="deck-slide">
+            <div class="shell slide-shell">
+                <div class="portfolio-header" style="margin-bottom: 1.5rem;">
+                    <span class="hero-eyebrow">
+                        <span class="status-dot"></span>
+                        <span>Услуги и скрипты</span>
+                    </span>
+                    <h2>Интерактивная среда выполнения кода</h2>
+                </div>
+                
+                <div class="services-workbench">
+                    <!-- Left: Menu selections with interactive config panels -->
+                    <div class="services-menu-list">
+                        <div class="service-menu-item active" onclick="selectService(0)" id="srv-btn-0">
+                            <div class="service-menu-item-header">
+                                <div class="service-menu-left">
+                                    <i class="fa-solid fa-globe service-menu-icon"></i>
+                                    <span class="service-menu-title">Веб-Интерфейсы</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right service-menu-arrow"></i>
+                            </div>
+                            <!-- Config form inside menu item -->
+                            <div class="service-config-panel" onclick="event.stopPropagation()">
+                                <div class="config-row">
+                                    <label for="cfg-web-domain">Домен развертывания:</label>
+                                    <input type="text" id="cfg-web-domain" value="ave_dev.ru" oninput="updateWorkbenchCode()" class="config-input">
+                                </div>
+                                <div class="config-row">
+                                    <label>Показатель PageSpeed: <span id="cfg-web-speed-val">99</span>/100</label>
+                                    <input type="range" id="cfg-web-speed" min="80" max="100" value="99" oninput="updateSpeedVal(this.value); updateWorkbenchCode()" class="config-slider">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="service-menu-item" onclick="selectService(1)" id="srv-btn-1">
+                            <div class="service-menu-item-header">
+                                <div class="service-menu-left">
+                                    <i class="fa-solid fa-robot service-menu-icon"></i>
+                                    <span class="service-menu-title">Telegram Боты</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right service-menu-arrow"></i>
+                            </div>
+                            <!-- Config form inside menu item -->
+                            <div class="service-config-panel" onclick="event.stopPropagation()">
+                                <div class="config-row">
+                                    <label for="cfg-bot-db">База данных:</label>
+                                    <select id="cfg-bot-db" onchange="updateWorkbenchCode()" class="config-input">
+                                        <option value="PostgreSQL">PostgreSQL</option>
+                                        <option value="SQLite3">SQLite3</option>
+                                    </select>
+                                </div>
+                                <div class="config-row-checkbox">
+                                    <input type="checkbox" id="cfg-bot-pay" checked onchange="updateWorkbenchCode()">
+                                    <label for="cfg-bot-pay">Оплаты Payok API</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="service-menu-item" onclick="selectService(2)" id="srv-btn-2">
+                            <div class="service-menu-item-header">
+                                <div class="service-menu-left">
+                                    <i class="fa-solid fa-gears service-menu-icon"></i>
+                                    <span class="service-menu-title">Скрипты и Парсеры</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right service-menu-arrow"></i>
+                            </div>
+                            <!-- Config form inside menu item -->
+                            <div class="service-config-panel" onclick="event.stopPropagation()">
+                                <div class="config-row">
+                                    <label for="cfg-script-key">Ключевое слово:</label>
+                                    <input type="text" id="cfg-script-key" value="ищу разработчика" oninput="updateWorkbenchCode()" class="config-input">
+                                </div>
+                                <div class="config-row">
+                                    <label>Задержка: <span id="cfg-script-lat-val">42</span> ms</label>
+                                    <input type="range" id="cfg-script-lat" min="15" max="150" value="42" oninput="updateLatVal(this.value); updateWorkbenchCode()" class="config-slider">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="service-menu-item" onclick="selectService(3)" id="srv-btn-3">
+                            <div class="service-menu-item-header">
+                                <div class="service-menu-left">
+                                    <i class="fa-solid fa-terminal service-menu-icon"></i>
+                                    <span class="service-menu-title">Linux & Настройка</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right service-menu-arrow"></i>
+                            </div>
+                            <!-- Config form inside menu item -->
+                            <div class="service-config-panel" onclick="event.stopPropagation()">
+                                <div class="config-row">
+                                    <label for="cfg-sys-profile">Сборка Nginx:</label>
+                                    <select id="cfg-sys-profile" onchange="updateWorkbenchCode()" class="config-input">
+                                        <option value="Nginx Alpine">Nginx Alpine (Быстрый)</option>
+                                        <option value="Nginx Debian">Nginx Debian (Стабильный)</option>
+                                    </select>
+                                </div>
+                                <div class="config-row">
+                                    <label>Контейнеров Docker: <span id="cfg-sys-cnt-val">3</span></label>
+                                    <input type="range" id="cfg-sys-cnt" min="1" max="8" value="3" oninput="updateCntVal(this.value); updateWorkbenchCode()" class="config-slider">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Playground Workbench Terminal Display -->
+                    <div class="workbench-console">
+                        <div class="workbench-console-header">
+                            <span>PLAYGROUND WORKBENCH</span>
+                            <button class="cyber-btn-primary" style="font-size: 0.65rem; padding: 0.25rem 0.75rem; border-radius: var(--radius-control);" onclick="runServicePlaygroundScript()">
+                                <i class="fa-solid fa-play" style="margin-right: 4px;"></i> Run Script
+                            </button>
+                        </div>
+                        <div class="workbench-console-body" id="workbench-console-body">
+                            <!-- Code and outputs injected dynamically here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 5: STATS & LIVE MONITOR DASHBOARD -->
+        <section id="slide-stats" class="deck-slide">
+            <div class="shell slide-shell">
+                <div class="portfolio-header" style="margin-bottom: 1.5rem;">
+                    <span class="hero-eyebrow">
+                        <span class="status-dot"></span>
+                        <span>Панель мониторинга</span>
+                    </span>
+                    <h2>Интерактивная статистика работы серверов</h2>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Left: Interactive Spline Line Chart -->
+                    <div class="dashboard-widget-left">
+                        <div class="dashboard-header-block">
+                            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent);">live_server_stats.log</span>
+                            <div class="dashboard-toggle-row">
+                                <button class="dashboard-tab-btn active" onclick="setDashboardMetric('cpu')" id="dash-btn-cpu">CPU Load</button>
+                                <button class="dashboard-tab-btn" onclick="setDashboardMetric('ram')" id="dash-btn-ram">RAM Limit</button>
+                                <button class="dashboard-tab-btn" onclick="setDashboardMetric('ping')" id="dash-btn-ping">Latency</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Spline wave container -->
+                        <div class="dashboard-chart-box" id="dashboard-chart-box">
+                            <canvas class="dashboard-chart-canvas" id="dashboard-chart-canvas"></canvas>
+                        </div>
+                    </div>
+
+                <!-- Right: Честные числа о реальных проектах -->
+                <div class="dashboard-stats-sidebar" id="stats-trigger">
+                    <div class="dashboard-sidebar-card">
+                        <span class="stat-lbl">Выполненных проектов</span>
+                        <span class="stat-num" data-target="8" data-suffix="+">0+</span>
+                    </div>
+                    <div class="dashboard-sidebar-card">
+                        <span class="stat-lbl">Задеплоенных ботов</span>
+                        <span class="stat-num" data-target="5" data-suffix=" шт">0 шт</span>
+                    </div>
+                    <div class="dashboard-sidebar-card">
+                        <span class="stat-lbl">Скорость авто-отклика</span>
+                        <span class="stat-num" data-target="50" data-suffix="ms">0ms</span>
+                    </div>
+                    <div class="dashboard-sidebar-card">
+                        <span class="stat-lbl">Аптайм серверов</span>
+                        <span class="stat-num" data-target="99" data-suffix=".9%">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
+
+        <!-- SLIDE 6: CONTACTS -->
+        <section id="slide-contact" class="deck-slide">
+            <div class="shell slide-shell">
+                <div class="contact-grid">
+                    <div class="contact-left">
+                        <h2>Есть задача для автоматизации или верстки? Давайте обсудим.</h2>
+                        <p>Нажмите кнопку ниже, чтобы перейти напрямую к обсуждению вашего технического задания в Telegram.</p>
+                        
+                        <div class="contact-methods">
+                            <a href="https://t.me/artemIT_web" target="_blank" class="contact-method-item">
+                                <div class="contact-icon">
+                                    <i class="fa-brands fa-telegram"></i>
+                                </div>
+                                <div>
+                                    <div class="contact-lbl">Telegram</div>
+                                    <div class="contact-val">@artemIT_web</div>
+                                </div>
+                            </a>
+                            <a href="https://vk.com/artem_project1" target="_blank" class="contact-method-item">
+                                <div class="contact-icon">
+                                    <i class="fa-brands fa-vk"></i>
+                                </div>
+                                <div>
+                                    <div class="contact-lbl">ВКонтакте</div>
+                                    <div class="contact-val">vk.com/artem_project1</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="request-modal-panel" style="position: static; margin-inline: auto; box-shadow: none;">
+                        <div class="modal-form-header">
+                            <div class="hero-eyebrow">
+                                <span class="status-dot"></span>
+                                <span>Отправить запрос</span>
+                            </div>
+                            <h2 style="font-family: var(--font-mono); font-size: 1.1rem;">git commit -m "new_project"</h2>
+                        </div>
+                        <form class="request-form" id="request-form" onsubmit="submitForm(event)">
+                            <div class="form-group">
+                                <label class="form-group-lbl" for="form-name">Ваше имя</label>
+                                <input class="form-control" type="text" id="form-name" required placeholder="Артем" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-group-lbl" for="form-email">Ваш Email или TG никнейм</label>
+                                <input class="form-control" type="text" id="form-email" required placeholder="you@company.com или @username" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-group-lbl" for="form-desc">Описание задачи</label>
+                                <textarea class="form-control textarea-control" id="form-desc" rows="3" required placeholder="Какого бота или сайт необходимо разработать?"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <span class="modal-note">Отвечаем в течение пары часов в TG.</span>
+                                <button class="cyber-btn cyber-btn-primary" type="submit" id="submit-btn">
+                                    <span id="submit-btn-text">Push Commit</span>
+                                </button>
+                            </div>
+                        </form>
+                        <!-- Success State inside layout -->
+                        <div class="success-state" id="modal-success-content">
+                            <div class="success-badge">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <h2>Commit Pushed Successfully!</h2>
+                            <p class="success-desc" style="font-size: 0.8rem; margin-top: 0.5rem;">Переадресация в Telegram...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="legal-row">
+                    <span>&copy; 2026 Студия ave dev. Все права защищены.</span>
+                    <div class="footer-legal-links">
+                        <a href="#privacy">Конфиденциальность</a>
+                        <a href="#terms">Условия использования</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- DRAWER BACKDROP OVERLAY -->
+    <div class="drawer-backdrop" id="drawer-backdrop" onclick="closeProjectDrawer()"></div>
+
+    <!-- CRT SCANLINE SCREEN OVERLAY -->
+    <div class="crt-screen-overlay"></div>
+
+    <!-- PROJECT DETAILS DRAWERS PANEL -->
+    <div class="project-drawer" id="project-drawer">
+        <button class="drawer-close-btn" onclick="closeProjectDrawer()">
+            <svg viewBox="0 0 24 24" width="1.25em" height="1.25em" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none">
+                <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+        </button>
+        <div id="drawer-content-box" style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start; gap: 1.5rem; overflow-y: auto; padding-top: 3.5rem;">
+            <!-- Content will be injected dynamically -->
+        </div>
+    </div>
+
+    <!-- MOBILE OVERLAY MENU -->
+    <div class="nav-menu" id="nav-menu">
+        <div class="shell nav-menu-top">
+            <div class="brand-btn">
+                <span>[</span>ave_dev<span>]</span><span class="brand-cursor"></span>
+            </div>
+            <button class="close-btn" onclick="toggleMenu(false)">
+                <svg viewBox="0 0 24 24" width="1em" height="1em" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+                <span>Закрыть</span>
+            </button>
+        </div>
+        
+        <div class="shell nav-menu-middle">
+            <ul class="nav-menu-list">
+                <li>
+                    <button class="nav-menu-item-btn" onclick="menuRoute(0)" style="transition-delay: 80ms;">
+                        <span class="nav-menu-num">01</span>
+                        <span class="nav-menu-lbl">Главная</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-menu-item-btn" onclick="menuRoute(1)" style="transition-delay: 125ms;">
+                        <span class="nav-menu-num">02</span>
+                        <span class="nav-menu-lbl">Обо мне</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-menu-item-btn" onclick="menuRoute(2)" style="transition-delay: 170ms;">
+                        <span class="nav-menu-num">03</span>
+                        <span class="nav-menu-lbl">Кейсы</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-menu-item-btn" onclick="menuRoute(3)" style="transition-delay: 215ms;">
+                        <span class="nav-menu-num">04</span>
+                        <span class="nav-menu-lbl">Услуги</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-menu-item-btn" onclick="menuRoute(4)" style="transition-delay: 260ms;">
+                        <span class="nav-menu-num">05</span>
+                        <span class="nav-menu-lbl">Статистика</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-menu-item-btn" onclick="menuRoute(5)" style="transition-delay: 300ms;">
+                        <span class="nav-menu-num">06</span>
+                        <span class="nav-menu-lbl">Контакты</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="shell nav-menu-bottom">
+            <span>ave dev OS — MONITORING: OK</span>
+            <button onclick="menuRoute(5)" style="color: var(--accent);">Начать проект →</button>
+        </div>
+    </div>
+
+    <!-- GSAP CDN Import -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    
+    <script>
+        // ----------------------------------------------------
+        // PRESENTATION DECK CONTROLLER (Slide Snapping Layout)
+        // ----------------------------------------------------
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.deck-slide');
+        const totalSlides = slides.length;
+        let isAnimating = false;
+
+        const matrixColors = [
+            '#00ff66', // Slide 0: Cyber Green (Hero)
+            '#00d2ff', // Slide 1: Electric Blue (About)
+            '#ff5500', // Slide 2: Tech Orange (Portfolio)
+            '#ff00ff', // Slide 3: Neo Pink (Services)
+            '#ffff00', // Slide 4: Caution Yellow (Stats)
+            '#00ffcc'  // Slide 5: Neon Teal (Contacts)
+        ];
+        
+        window.activeMatrixColor = matrixColors[0];
+
+        window.goToSlide = (index) => {
+            if (index < 0 || index >= totalSlides) return;
+
+            // Mobile responsive scroll layout fallback
+            if (window.innerWidth <= 768) {
+                const targetSlide = slides[index];
+                if (targetSlide) {
+                    targetSlide.scrollIntoView({ behavior: 'smooth' });
+                    if (typeof toggleMenu === 'function') toggleMenu(false);
+                }
+                return;
+            }
+
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            // Close any open portfolio drawers (safe guard - defined later)
+            if (typeof closeProjectDrawer === 'function') closeProjectDrawer();
+            
+            // Update active nav dot
+            document.querySelectorAll('.nav-dot').forEach((dot, idx) => {
+                if (idx === index) dot.classList.add('active');
+                else dot.classList.remove('active');
+            });
+
+            // Update header navigation active states
+            document.querySelectorAll('.desktop-nav button').forEach((btn, idx) => {
+                if (idx === index) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            
+            // Animate slides out / in
+            slides.forEach((slide, idx) => {
+                if (idx === index) {
+                    slide.classList.add('active');
+                    
+                    const elementsToAnimate = slide.querySelectorAll('h1, h2, p, .cyber-btn, .bento-card, .project-card, .tg-simulator-card, .services-workbench, .dashboard-grid, .contact-method-item, .request-modal-panel');
+                    gsap.fromTo(elementsToAnimate, 
+                        { y: 25, opacity: 0 },
+                        { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: "power2.out", overwrite: "auto" }
+                    );
+
+                    if (idx === 4) {
+                        setTimeout(triggerStatsCountup, 100);
+                    }
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+            
+            currentSlide = index;
+            window.activeMatrixColor = matrixColors[index];
+            
+            setTimeout(() => {
+                isAnimating = false;
+            }, 900);
+        };
+
+        // Scroll wheel event listener
+        let lastScrollTime = 0;
+        window.addEventListener('wheel', (e) => {
+            const now = performance.now();
+            if (now - lastScrollTime < 1000) return;
+            
+            if (Math.abs(e.deltaY) > 35) {
+                lastScrollTime = now;
+                if (e.deltaY > 0) {
+                    goToSlide(currentSlide + 1);
+                } else {
+                    goToSlide(currentSlide - 1);
+                }
+            }
+        }, { passive: true });
+
+        // Touch Swipe Event Listeners for Mobile devices
+        let startY = 0;
+        window.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+        }, { passive: true });
+
+        window.addEventListener('touchend', (e) => {
+            const endY = e.changedTouches[0].clientY;
+            const diff = startY - endY;
+            
+            if (Math.abs(diff) > 60) {
+                if (diff > 0) {
+                    goToSlide(currentSlide + 1);
+                } else {
+                    goToSlide(currentSlide - 1);
+                }
+            }
+        }, { passive: true });
+
+        // Keyboard navigation
+        window.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
+            if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+                e.preventDefault();
+                goToSlide(currentSlide + 1);
+            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                e.preventDefault();
+                goToSlide(currentSlide - 1);
+            }
+        });
+
+        // ----------------------------------------------------
+        // ADAPTIVE GRID SCALE ABOVE 1920PX
+        // ----------------------------------------------------
+        function applyAdaptiveGrid() {
+            const FONT_BASE = 16;
+            const baseWidth = 1920;
+            const coef = 0.6666;
+            const w = window.innerWidth;
+            if (w > baseWidth) {
+                const widthReduction = ((baseWidth - w) / baseWidth) * 100;
+                const size = FONT_BASE - (FONT_BASE * (widthReduction * coef)) / 100;
+                document.documentElement.style.fontSize = size + 'px';
+            } else {
+                document.documentElement.style.removeProperty('font-size');
+            }
+        }
+        applyAdaptiveGrid();
+        window.addEventListener('resize', applyAdaptiveGrid);
+
+        // ----------------------------------------------------
+        // 3D PERSPECTIVE TILT HOVER EFFECTS
+        // ----------------------------------------------------
+        function applyTiltHover(elementId) {
+            const card = document.getElementById(elementId);
+            if (!card) return;
+            
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((centerY - y) / centerY) * 10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+            });
+        }
+        
+        applyTiltHover('hero-terminal');
+        applyTiltHover('tg-simulator-widget');
+        applyTiltHover('about-card-left');
+        applyTiltHover('about-card-right');
+
+        // ----------------------------------------------------
+        // LOADER PROGRESS COUNT-UP
+        // ----------------------------------------------------
+        const loaderLogs = [
+            "Initializing ave_dev_OS v1.0.3 Kernel...",
+            "Loading core Python extensions: asyncio, telethon, aiogram",
+            "Establishing connection to local database node...",
+            "DB connection: [OK] sqlite:///database/snekit_neru.db",
+            "Starting Web Server and Nginx Gateway listener on port 8000...",
+            "Validating assets integrity & WebGL renderer parameters...",
+            "All components: [ONLINE]. Compiling index.html complete."
+        ];
+
+        const loaderTerminal = document.getElementById('loader-terminal');
+        const loaderFill = document.getElementById('loader-fill');
+        const loaderCounter = document.getElementById('loader-counter');
+        const pageLoader = document.getElementById('page-loader');
+
+        let logIndex = 0;
+        function runLoaderLogs() {
+            if (logIndex < loaderLogs.length) {
+                const line = document.createElement('div');
+                line.className = 'loader-log-line';
+                line.innerHTML = `<span style="color: var(--accent);">></span> ${loaderLogs[logIndex]}`;
+                loaderTerminal.appendChild(line);
+                logIndex++;
+                setTimeout(runLoaderLogs, 120);
+            }
+        }
+        runLoaderLogs();
+
+        const FILL_MS = 1400;
+        const startTimestamp = performance.now();
+        
+        function updateLoader(timestamp) {
+            const elapsed = timestamp - startTimestamp;
+            const progress = Math.min(elapsed / FILL_MS, 1);
+            const count = Math.round(progress * 100);
+            
+            loaderCounter.innerText = String(count).padStart(3, '0');
+            loaderFill.style.width = count + '%';
+
+            if (progress < 1) {
+                requestAnimationFrame(updateLoader);
+            } else {
+                setTimeout(() => {
+                    pageLoader.style.transform = 'translateY(-100%)';
+                    document.body.classList.add('ready');
+                    
+                    setTimeout(() => {
+                        pageLoader.remove();
+                        goToSlide(0);
+                        initNodeNetworkPhysics();
+                    }, 800);
+                }, 200);
+            }
+        }
+        requestAnimationFrame(updateLoader);
+
+        // ----------------------------------------------------
+        // BACKGROUND MATRIX CANVAS LOOP
+        // ----------------------------------------------------
+        const matrixCanvas = document.getElementById('matrix-canvas');
+        if (matrixCanvas) {
+            const ctx = matrixCanvas.getContext('2d');
+            let cols = 0;
+            let ypos = [];
+
+            const resizeMatrix = () => {
+                matrixCanvas.width = window.innerWidth;
+                matrixCanvas.height = window.innerHeight;
+                cols = Math.floor(matrixCanvas.width / 20) + 1;
+                ypos = Array(cols).fill(0);
+            };
+
+            const drawMatrix = () => {
+                ctx.fillStyle = 'rgba(6, 6, 8, 0.08)';
+                ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+                ctx.fillStyle = window.activeMatrixColor || '#00ff66';
+                ctx.font = '11px var(--font-mono)';
+
+                for (let i = 0; i < cols; i++) {
+                    const txt = Math.random() > 0.5 ? '1' : '0';
+                    const x = i * 20;
+                    const y = ypos[i];
+                    ctx.fillText(txt, x, y);
+
+                    if (y > 100 + Math.random() * 10000) {
+                        ypos[i] = 0;
+                    } else {
+                        ypos[i] += 20;
+                    }
+                }
+            };
+
+            window.addEventListener('resize', resizeMatrix);
+            resizeMatrix();
+            setInterval(drawMatrix, 50);
+        }
+
+        // ----------------------------------------------------
+        // INTERACTIVE BACKGROUND — MOUSE PARALLAX GLOW SPOT
+        // ----------------------------------------------------
+        (function initInteractiveBg() {
+            const backdrop = document.querySelector('.ambient-backdrop');
+            if (!backdrop) return;
+
+            // Create a glow div that follows the mouse
+            const glowSpot = document.createElement('div');
+            glowSpot.id = 'bg-glow-spot';
+            glowSpot.style.cssText = `
+                position: fixed;
+                width: 600px;
+                height: 600px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(0,255,102,0.07) 0%, transparent 70%);
+                pointer-events: none;
+                z-index: 2;
+                transform: translate(-50%, -50%);
+                transition: left 0.15s ease, top 0.15s ease;
+                will-change: left, top;
+                mix-blend-mode: screen;
+            `;
+            document.body.appendChild(glowSpot);
+
+            // Track mouse position and update the glow spot
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let currentX = mouseX;
+            let currentY = mouseY;
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            // Smooth lerp for glow spot
+            function animateGlow() {
+                currentX += (mouseX - currentX) * 0.06;
+                currentY += (mouseY - currentY) * 0.06;
+                glowSpot.style.left = currentX + 'px';
+                glowSpot.style.top = currentY + 'px';
+
+                // Change glow color based on active slide
+                const col = window.activeMatrixColor || '#00ff66';
+                glowSpot.style.background = `radial-gradient(circle, ${hexToRgbaGlow(col, 0.08)} 0%, transparent 70%)`;
+                requestAnimationFrame(animateGlow);
+            }
+            animateGlow();
+
+            function hexToRgbaGlow(hex, alpha) {
+                try {
+                    const r = parseInt(hex.slice(1, 3), 16);
+                    const g = parseInt(hex.slice(3, 5), 16);
+                    const b = parseInt(hex.slice(5, 7), 16);
+                    return `rgba(${r},${g},${b},${alpha})`;
+                } catch { return `rgba(0,255,102,${alpha})`; }
+            }
+
+            // Also apply a very subtle parallax to the matrix canvas
+            const matrixCvs = document.getElementById('matrix-canvas');
+            if (matrixCvs) {
+                document.addEventListener('mousemove', (e) => {
+                    const cx = window.innerWidth / 2;
+                    const cy = window.innerHeight / 2;
+                    const dx = (e.clientX - cx) / cx; // -1 to 1
+                    const dy = (e.clientY - cy) / cy;
+                    matrixCvs.style.transform = `translate(${dx * 12}px, ${dy * 8}px)`;
+                });
+            }
+        })();
+
+        // Stats Count-up Logic (vanilla rAF, no GSAP dependency)
+        function triggerStatsCountup() {
+            const nums = document.querySelectorAll('.stat-num');
+            nums.forEach(num => {
+                const target = parseFloat(num.getAttribute('data-target'));
+                const suffix = num.getAttribute('data-suffix') || '';
+                const duration = 1200; // ms
+                const startTime = performance.now();
+                const startVal = 0;
+                
+                function easeOut(t) { return 1 - Math.pow(1 - t, 3); } // cubic ease-out
+
+                function step(now) {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const value = startVal + (target - startVal) * easeOut(progress);
+                    
+                    if (suffix === '.9%') {
+                        num.innerText = value.toFixed(1) + '%';
+                    } else {
+                        num.innerText = Math.round(value) + suffix;
+                    }
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    }
+                }
+                requestAnimationFrame(step);
+            });
+        }
+
+        // ----------------------------------------------------
+        // PHYSICS NODE GRAPH CANVAS (Slide 1 - Spin & Drag nodes)
+        // ----------------------------------------------------
+        let nodes = [];
+        let links = [];
+        let draggedNode = null;
+        let isDraggingNetwork = false;
+        let lastMouseX = 0, lastMouseY = 0;
+        let spinAngleX = 0.002, spinAngleY = 0.002;
+
+        function initNodeNetworkPhysics() {
+            const canvas = document.getElementById('node-network-canvas');
+            const box = document.getElementById('node-network-box');
+            if (!canvas || !box) return;
+            const ctx = canvas.getContext('2d');
+
+            const resizeCanvas = () => {
+                canvas.width = box.clientWidth;
+                canvas.height = box.clientHeight;
+            };
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            // Set up physical node coordinates
+            const nodeLabels = ["Python", "Postgres", "SQL", "Nginx", "Docker", "Linux", "API"];
+            nodes = nodeLabels.map((lbl, idx) => {
+                const angle = (idx / nodeLabels.length) * Math.PI * 2;
+                const r = Math.min(canvas.width, canvas.height) * 0.3;
+                return {
+                    id: idx,
+                    x: canvas.width / 2 + Math.cos(angle) * r,
+                    y: canvas.height / 2 + Math.sin(angle) * r,
+                    vx: 0,
+                    vy: 0,
+                    radius: 26,
+                    label: lbl,
+                    color: idx === 0 ? '#00ff66' : '#00d2ff'
+                };
+            });
+
+            // Set up links / elastic springs
+            for (let i = 0; i < nodes.length; i++) {
+                links.push({ source: i, target: (i + 1) % nodes.length });
+                if (i > 0) links.push({ source: 0, target: i }); // Connect python core to all
+            }
+
+            // Mouse event handlers
+            box.addEventListener('mousedown', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const my = e.clientY - rect.top;
+
+                // Check if user clicked a node
+                draggedNode = null;
+                for (let node of nodes) {
+                    const dist = Math.hypot(node.x - mx, node.y - my);
+                    if (dist < node.radius) {
+                        draggedNode = node;
+                        break;
+                    }
+                }
+
+                if (!draggedNode) {
+                    isDraggingNetwork = true;
+                    lastMouseX = mx;
+                    lastMouseY = my;
+                }
+            });
+
+            box.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const my = e.clientY - rect.top;
+
+                if (draggedNode) {
+                    draggedNode.x = mx;
+                    draggedNode.y = my;
+                    draggedNode.vx = 0;
+                    draggedNode.vy = 0;
+                } else if (isDraggingNetwork) {
+                    // Rotate whole network based on horizontal drag
+                    const dx = mx - lastMouseX;
+                    const dy = my - lastMouseY;
+                    const cx = canvas.width / 2;
+                    const cy = canvas.height / 2;
+                    const theta = dx * 0.008;
+
+                    nodes.forEach(node => {
+                        const rx = node.x - cx;
+                        const ry = node.y - cy;
+                        // Pure 2D rotation — no axis mixing that causes drift
+                        const cosT = Math.cos(theta);
+                        const sinT = Math.sin(theta);
+                        node.x = cx + rx * cosT - ry * sinT;
+                        node.y = cy + rx * sinT + ry * cosT;
+                        // Vertical drag: shift center of mass slightly
+                        node.y += dy * 0.3;
+                    });
+
+                    lastMouseX = mx;
+                    lastMouseY = my;
+                }
+            });
+
+            const stopDrag = () => {
+                draggedNode = null;
+                isDraggingNetwork = false;
+            };
+            window.addEventListener('mouseup', stopDrag);
+
+            // Simulation loop
+            function updatePhysics() {
+                const cx = canvas.width / 2;
+                const cy = canvas.height / 2;
+                const k = 0.03; // spring force coefficient
+                const d = 0.85; // damping
+                const restLength = 80;
+
+                // 1. Calculate spring forces on links
+                links.forEach(link => {
+                    const s = nodes[link.source];
+                    const t = nodes[link.target];
+                    const dx = t.x - s.x;
+                    const dy = t.y - s.y;
+                    const dist = Math.hypot(dx, dy) || 1;
+                    const force = (dist - restLength) * k;
+                    const fx = (dx / dist) * force;
+                    const fy = (dy / dist) * force;
+
+                    if (s !== draggedNode) {
+                        s.vx += fx;
+                        s.vy += fy;
+                    }
+                    if (t !== draggedNode) {
+                        t.vx -= fx;
+                        t.vy -= fy;
+                    }
+                });
+
+                // 2. Apply forces, boundary checks, and friction
+                nodes.forEach(node => {
+                    if (node !== draggedNode) {
+                        // Gravity force towards center to keep graph bound
+                        const gdx = cx - node.x;
+                        const gdy = cy - node.y;
+                        node.vx += gdx * 0.002;
+                        node.vy += gdy * 0.002;
+
+                        node.vx *= d;
+                        node.vy *= d;
+                        node.x += node.vx;
+                        node.y += node.vy;
+
+                        // Bounds checking
+                        if (node.x < node.radius) node.x = node.radius;
+                        if (node.x > canvas.width - node.radius) node.x = canvas.width - node.radius;
+                        if (node.y < node.radius) node.y = node.radius;
+                        if (node.y > canvas.height - node.radius) node.y = canvas.height - node.radius;
+                    }
+                });
+
+                // 3. Render Node map
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw Link lines with gradient-like color
+                links.forEach(link => {
+                    const s = nodes[link.source];
+                    const t = nodes[link.target];
+                    const grad = ctx.createLinearGradient(s.x, s.y, t.x, t.y);
+                    grad.addColorStop(0, 'rgba(0,255,102,0.3)');
+                    grad.addColorStop(1, 'rgba(0,210,255,0.15)');
+                    ctx.strokeStyle = grad;
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.moveTo(s.x, s.y);
+                    ctx.lineTo(t.x, t.y);
+                    ctx.stroke();
+                });
+
+                // Draw Node circles
+                nodes.forEach((node, idx) => {
+                    // Glow shadow
+                    ctx.shadowBlur = idx === 0 ? 16 : 10;
+                    ctx.shadowColor = node.color;
+
+                    // Fill
+                    const grd = ctx.createRadialGradient(node.x, node.y, 2, node.x, node.y, node.radius);
+                    grd.addColorStop(0, 'rgba(255,255,255,0.06)');
+                    grd.addColorStop(1, '#0a0b10');
+                    ctx.fillStyle = grd;
+                    ctx.strokeStyle = node.color;
+                    ctx.lineWidth = idx === 0 ? 2.5 : 1.5;
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+
+                    // Text labels
+                    ctx.shadowBlur = 0;
+                    ctx.fillStyle = idx === 0 ? '#00ff66' : '#c8d8f0';
+                    ctx.font = `${idx === 0 ? '600' : '500'} 8px JetBrains Mono, monospace`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(node.label, node.x, node.y);
+                });
+
+                requestAnimationFrame(updatePhysics);
+            }
+
+            updatePhysics();
+        }
+
+        // ----------------------------------------------------
+        // INTERACTIVE PROJECTS DETAILED DRAWER (Slide 2 - Cases detail panels)
+        // ----------------------------------------------------
+        const projectData = {
+            snekit: {
+                title: "snekit-neru.ru",
+                meta: "ВЕБ-ВИТРИНА С ПАНЕЛЬЮ УПРАВЛЕНИЯ",
+                desc: "Полностью асинхронный интернет-магазин азиатских сладостей с интерактивным интерфейсом, базой данных на SQLite и панелью управления контентом.",
+                stack: ["HTML5", "CSS3", "JavaScript", "Python 3", "SQLite3", "Nginx", "Docker"],
+                schema: "Client Web Browser <---> Nginx Reverse Proxy <---> Gunicorn WSGI <---> Python Engine (SQLite3 DB)"
+            },
+            phantom: {
+                title: "PhantomAI Shop",
+                meta: "TELEGRAM БОТ ПРОДАЖ ЦИФРОВЫХ ТОВАРОВ",
+                desc: "Телеграм-бот для дистрибуции подписок и ключей. Поддержка мультивалютных платежей, промокодов, асинхронных уведомлений админов.",
+                stack: ["Aiogram 3", "PostgreSQL", "SQLAlchemy", "Payok API", "Docker Compose"],
+                schema: "Telegram App <---> Webhook API Handler <---> aiogram core <---> Postgres Storage Pool"
+            },
+            droop: {
+                title: "TerminalDroop Monitoring",
+                meta: "СЕРВЕРНЫЙ МОНИТОРИНГ В TELEGRAM",
+                desc: "Бот для контроля стабильности Linux серверов в реальном времени. Шлет предупреждения при превышении RAM/CPU порогов.",
+                stack: ["Python 3", "Psutil Linux Engine", "Telebot Core", "Systemd service"],
+                schema: "Linux OS Kernel Data <---> Daemon monitoring process <---> Telegram Bot API <---> Client Alert Panel"
+            },
+            outreach: {
+                title: "Auto-Search Outreach",
+                meta: "СВЕРХБЫСТРЫЙ ПАРСЕР И АВТО-ОТВЕТЧИК",
+                desc: "Скрипты моментального перехвата и ответов на заказы фриланс бирж. Задержка реакции с момента публикации менее 50мс.",
+                stack: ["Python 3", "Telethon", "Pyrogram Async", "Regex extraction"],
+                schema: "API Telegram Client Log Stream <---> Message parser filters <---> Automated Dispatcher System"
+            }
+        };
+
+        window.openProjectDrawer = (key) => {
+            const data = projectData[key];
+            if (!data) return;
+
+            const contentBox = document.getElementById('drawer-content-box');
+            contentBox.innerHTML = `
+                <div>
+                    <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); text-transform: uppercase;">${data.meta}</span>
+                    <h2 style="font-size: 2rem; font-weight: 700; margin-top: 0.5rem; letter-spacing: -0.02em;">${data.title}</h2>
+                    <p style="font-size: 0.9rem; color: var(--muted); line-height: 1.5; margin-top: 1rem;">${data.desc}</p>
+                </div>
+                
+                <div>
+                    <h4 style="font-family: var(--font-mono); font-size: 0.8rem; color: #ffffff; text-transform: uppercase; margin-bottom: 0.75rem;">Стек Технологий</h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        ${data.stack.map(tag => `<span style="font-family: var(--font-mono); font-size: 0.7rem; border: 1px solid var(--line); padding: 0.35rem 0.75rem; border-radius: var(--radius-control); background: #111218; color: #ffffff;">${tag}</span>`).join('')}
+                    </div>
+                </div>
+
+                <div>
+                    <h4 style="font-family: var(--font-mono); font-size: 0.8rem; color: #ffffff; text-transform: uppercase; margin-bottom: 0.75rem;">Архитектура Системы</h4>
+                    <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); background: #050508; border: 1px solid var(--line); border-radius: var(--radius-card-sm); padding: 1rem; line-height: 1.45; overflow-x: auto; white-space: pre-wrap;">${data.schema}</div>
+                </div>
+
+                <a href="https://t.me/artemIT_web" target="_blank" class="cyber-btn cyber-btn-primary" style="align-self: stretch; justify-content: center;">
+                    <span>Заказать копию в TG</span>
+                    <i class="fa-brands fa-telegram"></i>
+                </a>
+            `;
+
+            document.getElementById('project-drawer').classList.add('open');
+            document.getElementById('drawer-backdrop').classList.add('visible');
+        };
+
+        window.closeProjectDrawer = () => {
+            document.getElementById('project-drawer').classList.remove('open');
+            document.getElementById('drawer-backdrop').classList.remove('visible');
+        };
+
+        // ----------------------------------------------------
+        // INTERACTIVE SERVICES CODE WORKBENCH (Slide 3 - Workbench)
+        // ----------------------------------------------------
+        const servicePlaygrounds = [
+            {
+                title: "Веб-Интерфейсы",
+                code: `class WebInterface:\n    def __init__(self, domain):\n        self.domain = domain\n        self.pages = ["index.html", "dashboard.html"]\n        self.speed_rank = "99/100"\n\n    def deploy(self):\n        return f"Deploying fast frontend to {self.domain}... Complete."`,
+                logs: [
+                    "> Initializing Webpack production assets build...",
+                    "> Minified critical index.css (saved 42% size)",
+                    "> Built static client files in 180ms",
+                    "> System check: [Nginx reload success]",
+                    "--> Service fully active at: https://ave_dev.ru/"
+                ]
+            },
+            {
+                title: "Telegram Боты",
+                code: `from aiogram import Bot, Dispatcher\n\nbot = Bot(token="API_TOKEN")\ndp = Dispatcher()\n\n@dp.message()\nasync def handler(message):\n    await message.answer("Асинхронный парсинг данных запущен...")`,
+                logs: [
+                    "> Connecting client webhook interface...",
+                    "> Initializing routing maps...",
+                    "> DB Connectionpool check: Postgres active",
+                    "> Bot instance: @ave_dev_helper_bot is online",
+                    "--> Logging: Event dispatcher loops started!"
+                ]
+            },
+            {
+                title: "Скрипты и Парсеры",
+                code: `import asyncio\nfrom telethon import TelegramClient\n\nasync def watch_chat():\n    async with TelegramClient('session', API_ID, API_HASH) as client:\n        async for msg in client.iter_messages(chat_id):\n            if "ищу разработчика" in msg.text.lower():\n                print("Found match! Dispatched outreach.")`,
+                logs: [
+                    "> Establishing Telethon socket loops...",
+                    "> Joined Freelance IT Jobs channel monitor",
+                    "> [LOG] Msg ID 48281: Scanning keywords match...",
+                    "> Match found: 'ищу разработчика ботов'",
+                    "--> Dispatched pitch auto-reply message (Latency: 42ms)"
+                ]
+            },
+            {
+                title: "Linux & Настройка",
+                code: `version: "3.8"\nservices:\n  web:\n    image: nginx:alpine\n    ports:\n      - "80:80"\n  db:\n    image: postgres:15-alpine\n    environment:\n      POSTGRES_DB: db_data`,
+                logs: [
+                    "> Parsing docker-compose.yml configuration files...",
+                    "> Pulling latest system builds from Hub node",
+                    "> Deploying PostgreSQL volume paths...",
+                    "> Launching server systemd services daemon...",
+                    "--> System checks: [All container clusters running successfully]"
+                ]
+            }
+        ];
+
+        let activeServiceIndex = 0;
+
+        window.updateSpeedVal = (val) => {
+            const el = document.getElementById('cfg-web-speed-val');
+            if (el) el.innerText = val;
+        };
+
+        window.updateLatVal = (val) => {
+            const el = document.getElementById('cfg-script-lat-val');
+            if (el) el.innerText = val;
+        };
+
+        window.updateCntVal = (val) => {
+            const el = document.getElementById('cfg-sys-cnt-val');
+            if (el) el.innerText = val;
+        };
+
+        window.updateWorkbenchCode = () => {
+            const domain = document.getElementById('cfg-web-domain')?.value || 'ave_dev.ru';
+            const speed = document.getElementById('cfg-web-speed')?.value || '99';
+            const db = document.getElementById('cfg-bot-db')?.value || 'PostgreSQL';
+            const hasPay = document.getElementById('cfg-bot-pay')?.checked;
+            const keyword = document.getElementById('cfg-script-key')?.value || 'ищу разработчика';
+            const latency = document.getElementById('cfg-script-lat')?.value || '42';
+            const profile = document.getElementById('cfg-sys-profile')?.value || 'Nginx Alpine';
+            const containers = document.getElementById('cfg-sys-cnt')?.value || '3';
+
+            // Web service code & logs
+            servicePlaygrounds[0].code = `class WebInterface:\n    def __init__(self, domain="${domain}"):\n        self.domain = domain\n        self.pages = ["index.html", "dashboard.html"]\n        self.speed_rank = "${speed}/100"\n\n    def deploy(self):\n        return f"Deploying fast frontend to {self.domain}... Complete."`;
+            servicePlaygrounds[0].logs = [
+                `> Initializing Nginx assets deployment for domain: ${domain}...`,
+                `> Code optimization checks: speed target is ${speed}/100`,
+                `> Minifying assets (index.html, styles.css)...`,
+                `> Compressing and deploying bundle (saved 45% size)`,
+                `--> Successfully deployed frontend instance to: https://${domain}/`
+            ];
+
+            // Bot service code & logs
+            const payCode = hasPay ? `\n    pay_client = PayokAPI(api_key="PAYOK_KEY")` : `\n    # Payment module: disabled`;
+            servicePlaygrounds[1].code = `from aiogram import Bot, Dispatcher\nimport ${db.toLowerCase()} as db\n\nbot = Bot(token="API_TOKEN")${payCode}\ndp = Dispatcher()\n\n@dp.message()\nasync def handler(message):\n    await message.answer("Подключение к ${db} успешно установлено.")`;
+            servicePlaygrounds[1].logs = [
+                `> Spawning Telegram bot webhook daemon...`,
+                `> Initializing database driver: target pool is ${db}...`,
+                hasPay ? `> Activating billing integration: Payok API payment webhook [ONLINE]` : `> Skipping billing integrations: sandbox mode only`,
+                `> Registering event dispatchers and inline keyboard maps...`,
+                `--> Bot instance @ave_dev_helper_bot successfully established connection!`
+            ];
+
+            // Script service code & logs
+            servicePlaygrounds[2].code = `import asyncio\nfrom telethon import TelegramClient\n\nasync def watch_chat():\n    async with TelegramClient('session', API_ID, API_HASH) as client:\n        async for msg in client.iter_messages(chat_id):\n            if "${keyword}" in msg.text.lower():\n                print(f"Match found! Latency: ${latency}ms")`;
+            servicePlaygrounds[2].logs = [
+                `> Spawning client socket loop for Telegram API...`,
+                `> Connected to monitor chat stream. Query keyword: "${keyword}"`,
+                `> Monitoring: client messages scanning... [OK]`,
+                `> Found keyword match for: "${keyword}"`,
+                `--> Outreach message sent. Process latency: ${latency}ms`
+            ];
+
+            // System configuration code & logs
+            const serviceDef = profile.toLowerCase().includes('alpine') ? 'nginx:alpine' : 'nginx:debian';
+            servicePlaygrounds[3].code = `version: "3.8"\nservices:\n  web:\n    image: ${serviceDef}\n    ports:\n      - "80:80"\n  db:\n    image: postgres:15-alpine\n    environment:\n      POSTGRES_DB: db_data\n  replicas:\n    count: ${containers}`;
+            servicePlaygrounds[3].logs = [
+                `> Validating docker-compose.yml with target image ${serviceDef}...`,
+                `> Scaling replica clusters: requesting ${containers} system nodes...`,
+                `> Provisioning PostgreSQL volumes and alpine runtime...`,
+                `> Launching Docker container daemon cluster...`,
+                `--> Deployed ${containers} container replicas with ${profile} successfully!`
+            ];
+
+            const data = servicePlaygrounds[activeServiceIndex];
+            const consoleBody = document.getElementById('workbench-console-body');
+            if (consoleBody) {
+                consoleBody.innerHTML = `
+                    <div style="color: var(--muted); font-size: 0.65rem; border-bottom: 1px solid var(--line); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">SOURCE CODE:</div>
+                    <div style="background: rgba(0,0,0,0.4); padding: 0.75rem; border-radius: var(--radius-control); border: 1px solid var(--line); font-family: var(--font-mono); white-space: pre-wrap; font-size: 0.7rem; color: #a9b2c3; line-height: 1.4;">${data.code}</div>
+                    <div style="color: var(--muted); font-size: 0.65rem; margin-top: 0.75rem;">OUTPUT LOG:</div>
+                    <div id="playground-output-log" style="font-family: var(--font-mono); color: #8e9099; font-size: 0.7rem;">Click "Run Script" to execute this module...</div>
+                `;
+            }
+        };
+
+        window.selectService = (idx) => {
+            document.querySelectorAll('.service-menu-item').forEach((item, index) => {
+                if (index === idx) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+            activeServiceIndex = idx;
+            window.updateWorkbenchCode();
+        };
+
+        window.runServicePlaygroundScript = () => {
+            const data = servicePlaygrounds[activeServiceIndex];
+            const logBox = document.getElementById('playground-output-log');
+            if (!logBox) return;
+
+            logBox.innerHTML = `
+                <div style="color: var(--accent); margin-bottom: 0.4rem; font-weight: 500;">▶ EXECUTING CODE MODULE...</div>
+                <div style="background: rgba(255,255,255,0.05); height: 6px; border-radius: 3px; width: 100%; overflow: hidden; margin-bottom: 0.6rem; border: 1px solid var(--line);">
+                    <div id="cfg-progress-bar" style="background: var(--accent); height: 100%; width: 0%; transition: width 0.05s linear;"></div>
+                </div>
+                <div id="cfg-progress-percent" style="font-size: 0.65rem; color: var(--muted); font-family: var(--font-mono); margin-bottom: 0.5rem;">PROGRESS: 0%</div>
+                <div id="cfg-console-lines" style="display: flex; flex-direction: column; gap: 0.25rem; font-family: var(--font-mono);"></div>
+            `;
+
+            const bar = document.getElementById('cfg-progress-bar');
+            const percent = document.getElementById('cfg-progress-percent');
+            const linesBox = document.getElementById('cfg-console-lines');
+
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += 5;
+                if (bar) bar.style.width = progress + '%';
+                if (percent) percent.innerText = `PROGRESS: ${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    // Start printing logs
+                    let lineIdx = 0;
+                    function printNextLine() {
+                        if (lineIdx < data.logs.length) {
+                            const div = document.createElement('div');
+                            div.style.cssText = 'margin-bottom: 2px; line-height: 1.4;';
+                            if (data.logs[lineIdx].startsWith('-->')) {
+                                div.style.color = 'var(--accent)';
+                                div.style.fontWeight = '600';
+                            } else if (data.logs[lineIdx].startsWith('>')) {
+                                div.style.color = '#d4e0f5';
+                            } else {
+                                div.style.color = '#8e9099';
+                            }
+                            div.innerText = data.logs[lineIdx];
+                            if (linesBox) linesBox.appendChild(div);
+                            lineIdx++;
+                            setTimeout(printNextLine, 180);
+                        }
+                    }
+                    setTimeout(printNextLine, 150);
+                }
+            }, 25);
+        };
+
+        window.toggleCrtScreen = () => {
+            const btn = document.getElementById('crt-toggle-btn');
+            const dot = document.getElementById('crt-status-dot');
+            document.body.classList.toggle('crt-active');
+            if (document.body.classList.contains('crt-active')) {
+                if (btn) {
+                    btn.querySelector('span:not(.status-dot)').innerText = 'CRT: ON';
+                    btn.style.borderColor = 'var(--accent)';
+                    btn.style.color = 'var(--accent)';
+                }
+                if (dot) dot.style.background = 'var(--accent)';
+            } else {
+                if (btn) {
+                    btn.querySelector('span:not(.status-dot)').innerText = 'CRT: OFF';
+                    btn.style.borderColor = 'var(--line)';
+                    btn.style.color = 'var(--muted)';
+                }
+                if (dot) dot.style.background = 'var(--muted)';
+            }
+        };
+
+        // Initialize default workbench view after DOM ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => window.selectService(0));
+        } else {
+            setTimeout(() => window.selectService(0), 50);
+        }
+
+        // ----------------------------------------------------
+        // INTERACTIVE SERVER MONITOR DASHBOARD (Slide 4 - Stats)
+        // ----------------------------------------------------
+        let dashboardCanvas = document.getElementById('dashboard-chart-canvas');
+        let activeMetric = 'cpu';
+        let metricPoints = [];
+        let dashboardInterval = null;
+
+        const metricsData = {
+            cpu: { label: "CPU Load (%)", max: 100, color: '#00ff66' },
+            ram: { label: "Memory limit (MB)", max: 1024, color: '#00d2ff' },
+            ping: { label: "Latency (ms)", max: 120, color: '#ff5500' }
+        };
+
+        window.setDashboardMetric = (metric) => {
+            document.querySelectorAll('.dashboard-tab-btn').forEach(btn => {
+                if (btn.id === `dash-btn-${metric}`) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            activeMetric = metric;
+            // Regenerate random metrics points for transition effect
+            metricPoints = Array.from({ length: 12 }, () => Math.random() * metricsData[metric].max * 0.7 + 10);
+            drawDashboardChart();
+        };
+
+        function drawDashboardChart() {
+            if (!dashboardCanvas) return;
+            const ctx = dashboardCanvas.getContext('2d');
+            const parent = document.getElementById('dashboard-chart-box');
+            
+            dashboardCanvas.width = parent.clientWidth;
+            dashboardCanvas.height = parent.clientHeight;
+
+            const w = dashboardCanvas.width;
+            const h = dashboardCanvas.height;
+            const meta = metricsData[activeMetric];
+
+            ctx.clearRect(0,0,w,h);
+
+            // 1. Draw Grid lines
+            ctx.strokeStyle = '#121319';
+            ctx.lineWidth = 1;
+            for(let i=1; i<4; i++) {
+                const y = (h / 4) * i;
+                ctx.beginPath();
+                ctx.moveTo(30, y);
+                ctx.lineTo(w - 20, y);
+                ctx.stroke();
+            }
+
+            // 2. Draw Spline Wave lines
+            ctx.strokeStyle = meta.color;
+            ctx.lineWidth = 3;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = meta.color;
+
+            const marginX = 40;
+            const chartW = w - 60;
+            const chartH = h - 60;
+            const pointsCount = metricPoints.length;
+
+            ctx.beginPath();
+            for(let i=0; i<pointsCount; i++) {
+                const x = marginX + (chartW / (pointsCount - 1)) * i;
+                const ratio = metricPoints[i] / meta.max;
+                const y = h - 30 - ratio * chartH;
+
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    // Spline control calculations
+                    const prevX = marginX + (chartW / (pointsCount - 1)) * (i - 1);
+                    const prevRatio = metricPoints[i - 1] / meta.max;
+                    const prevY = h - 30 - prevRatio * chartH;
+                    const cpX1 = prevX + (x - prevX) / 2;
+                    const cpY1 = prevY;
+                    const cpX2 = prevX + (x - prevX) / 2;
+                    const cpY2 = y;
+                    ctx.bezierCurveTo(cpX1, cpY1, cpX2, cpY2, x, y);
+                }
+            }
+            ctx.stroke();
+
+            // 3. Draw gradient underneath wave
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = hexToRgba(meta.color, 0.04);
+            ctx.beginPath();
+            ctx.moveTo(marginX, h - 30);
+            for(let i=0; i<pointsCount; i++) {
+                const x = marginX + (chartW / (pointsCount - 1)) * i;
+                const ratio = metricPoints[i] / meta.max;
+                const y = h - 30 - ratio * chartH;
+                if (i === 0) ctx.lineTo(x, y);
+                else {
+                    const prevX = marginX + (chartW / (pointsCount - 1)) * (i - 1);
+                    const prevRatio = metricPoints[i - 1] / meta.max;
+                    const prevY = h - 30 - prevRatio * chartH;
+                    ctx.bezierCurveTo(prevX + (x - prevX)/2, prevY, prevX + (x - prevX)/2, y, x, y);
+                }
+            }
+            ctx.lineTo(marginX + chartW, h - 30);
+            ctx.closePath();
+            ctx.fill();
+
+            // 4. Draw node circles
+            metricPoints.forEach((val, i) => {
+                const x = marginX + (chartW / (pointsCount - 1)) * i;
+                const ratio = val / meta.max;
+                const y = h - 30 - ratio * chartH;
+
+                ctx.fillStyle = '#090a0f';
+                ctx.strokeStyle = meta.color;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, Math.PI*2);
+                ctx.fill();
+                ctx.stroke();
+            });
+        }
+
+        function hexToRgba(hex, alpha) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        // Initialize dashboard state loop
+        setTimeout(() => {
+            setDashboardMetric('cpu');
+            
+            // Randomly update last metric point over time to simulate a real connection latency
+            setInterval(() => {
+                if (metricPoints.length > 0) {
+                    metricPoints.shift();
+                    const meta = metricsData[activeMetric];
+                    metricPoints.push(Math.random() * meta.max * 0.7 + 10);
+                    drawDashboardChart();
+                }
+            }, 2500);
+        }, 300);
+
+        // ----------------------------------------------------
+        // INTERACTIVE TERMINAL ENGINE
+        // ----------------------------------------------------
+        const termInput = document.getElementById('term-input');
+        const termBody = document.getElementById('term-body');
+        const currentInputLine = document.getElementById('current-input-line');
+
+        let commandHistory = [];
+        let historyIndex = -1;
+
+        const allowedCommands = ['help', 'about', 'skills', 'projects', 'contact', 'clear', 'ls', 'cat profile.py', 'cat deploy.py', 'history', 'matrix'];
+
+        const commands = {
+            help: () => [
+                "Доступные команды ave_dev CLI:",
+                "  about        - Информация о разработчике",
+                "  skills       - Технический стек и автоматизации",
+                "  projects     - Список ключевых выполненных кейсов",
+                "  contact      - Ссылки для быстрой связи",
+                "  ls           - Список файлов в текущей папке",
+                "  cat <file>   - Прочитать файл (например: cat profile.py)",
+                "  matrix       - Переключить цвет фоновой матрицы",
+                "  history      - Показать историю ваших команд",
+                "  clear        - Очистить консоль"
+            ],
+            about: () => [
+                "Имя: Артем Назаров (aka ave dev)",
+                "Роль: Lead Developer, Telegram Architect & Automations",
+                "Специализация: Высокопроизводительные скрипты на Python,",
+                "асинхронный парсинг данных, сборка Web-интерфейсов."
+            ],
+            skills: () => [
+                "Технический стек:",
+                "  [Python]  - asyncio, aiogram 3, pyrogram, telethon, bs4, Requests",
+                "  [Web]     - HTML5, CSS3, JavaScript (ES6+), React/Vite",
+                "  [DB]      - PostgreSQL, SQLite, SQLAlchemy",
+                "  [Server]  - VPS/VDS, Linux (Ubuntu/Debian), Nginx, Docker, systemd"
+            ],
+            projects: () => [
+                "Выполненные кейсы:",
+                "  1. snekit-neru.ru  - асинхронная витрина китайских сладостей",
+                "  2. PhantomAI Shop  - Telegram бот цифровых товаров с Payok API",
+                "  3. TerminalDroop   - Telegram бот мониторинга CPU/RAM серверов",
+                "  4. Auto-Outreach   - система авто-отклика в чатах фриланса"
+            ],
+            contact: () => [
+                "Связь с разработчиком:",
+                "  Telegram: @artemIT_web",
+                "  VK: vk.com/artem_project1"
+            ],
+            ls: () => [
+                "drwxr-xr-x  ave_dev  root  4096 Jul 15 09:38  .",
+                "drwxr-xr-x  ave_dev  root  4096 Jul 15 09:38  ..",
+                "-rw-r--r--  ave_dev  root   240 Jul 15 09:38  profile.py",
+                "-rw-r--r--  ave_dev  root   385 Jul 15 09:38  deploy.py",
+                "-rw-r--r--  ave_dev  root  9482 Jul 15 09:38  index.html"
+            ]
+        };
+
+        window.runTermCommand = (cmdName) => {
+            if (termInput) {
+                termInput.value = cmdName;
+                handleCommandSubmit(cmdName);
+            }
+        };
+
+        window.handleTermInput = (e) => {
+            if (e.key === 'Enter') {
+                const cmd = termInput.value.trim().toLowerCase();
+                if (cmd) {
+                    commandHistory.push(cmd);
+                    historyIndex = commandHistory.length;
+                }
+                handleCommandSubmit(cmd);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (commandHistory.length > 0) {
+                    historyIndex = Math.max(0, historyIndex - 1);
+                    termInput.value = commandHistory[historyIndex];
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    termInput.value = commandHistory[historyIndex];
+                } else {
+                    historyIndex = commandHistory.length;
+                    termInput.value = '';
+                }
+            } else if (e.key === 'Tab') {
+                e.preventDefault();
+                const val = termInput.value.trim().toLowerCase();
+                if (val) {
+                    const match = allowedCommands.find(c => c.startsWith(val));
+                    if (match) {
+                        termInput.value = match;
+                    }
+                }
+            }
+        };
+
+        function handleCommandSubmit(cmd) {
+            const inputLog = document.createElement('div');
+            inputLog.innerHTML = `<span class="term-prompt">root@ave_dev:~#</span> <span class="term-output-cmd">${cmd}</span>`;
+            termBody.insertBefore(inputLog, currentInputLine);
+            
+            termInput.value = '';
+
+            const appendTermLine = (text, className = '') => {
+                const row = document.createElement('div');
+                if (className) row.className = className;
+                row.innerText = text;
+                termBody.insertBefore(row, currentInputLine);
+            };
+
+            if (cmd) {
+                const parts = cmd.split(/\s+/);
+                const baseCmd = parts[0];
+                const arg = parts.slice(1).join(' ');
+
+                if (baseCmd === 'clear') {
+                    const lines = Array.from(termBody.children);
+                    lines.forEach(line => {
+                        if (line !== currentInputLine && 
+                            line.innerText.indexOf("ave_dev OS") === -1 && 
+                            line.innerText.indexOf("Загрузка выполнена") === -1 && 
+                            !line.classList.contains('term-quick-clicks')) {
+                            line.remove();
+                        }
+                    });
+                } else if (baseCmd === 'cat') {
+                    if (arg === 'profile.py') {
+                        const lines = [
+                            "class Developer:",
+                            "    def __init__(self):",
+                            "        self.name = 'ave dev'",
+                            "        self.focus = ['Web', 'Telegram Bots', 'Automations']",
+                            "        self.speed_optimized = True",
+                            "        self.uptime_target = 0.999"
+                        ];
+                        lines.forEach(t => appendTermLine(t));
+                    } else if (arg === 'deploy.py') {
+                        const lines = [
+                            "import subprocess",
+                            "import paramiko",
+                            "",
+                            "def deploy_to_vps(ip, user, port=22):",
+                            "    print(f'Connecting SSH tunnel to {ip}... [OK]')",
+                            "    # SFTP upload active package bundle",
+                            "    # Docker swarm daemon deploy container build",
+                            "    print('Status: Successfully Deployed production cluster!')"
+                        ];
+                        lines.forEach(t => appendTermLine(t));
+                    } else if (arg === 'index.html') {
+                        appendTermLine("<!-- ERROR: Terminal output stream size limit exceeded. Cannot cat index.html. -->", 'term-output-error');
+                    } else if (!arg) {
+                        appendTermLine("Usage: cat <filename> (e.g. cat profile.py)");
+                    } else {
+                        appendTermLine(`File not found: '${arg}'. Type 'ls' to see files.`);
+                    }
+                } else if (baseCmd === 'matrix') {
+                    const colors = ['#00ff66', '#00d2ff', '#ff5500', '#ff00ff', '#ffff00', '#00ffcc'];
+                    const currentIndex = colors.indexOf(window.activeMatrixColor || '#00ff66');
+                    const nextIndex = (currentIndex + 1) % colors.length;
+                    window.activeMatrixColor = colors[nextIndex];
+                    appendTermLine(`[SYSTEM] Matrix code rain color shifted to ${colors[nextIndex]}.`);
+                } else if (baseCmd === 'history') {
+                    appendTermLine("История команд CLI:");
+                    commandHistory.forEach((c, idx) => {
+                        appendTermLine(`  ${idx + 1}  ${c}`);
+                    });
+                } else if (commands[baseCmd]) {
+                    const lines = commands[baseCmd]();
+                    lines.forEach(text => appendTermLine(text));
+                } else {
+                    appendTermLine(`Command not found: '${cmd}'. Type 'help' for options.`, 'term-output-error');
+                }
+            }
+            termBody.scrollTop = termBody.scrollHeight;
+        }
+
+        // ----------------------------------------------------
+        // INTERACTIVE TELEGRAM BOT SIMULATOR
+        // ----------------------------------------------------
+        const tgChatArea = document.getElementById('tg-chat-area');
+        
+        const botAnswers = {
+            '🛍️ Каталог': {
+                text: "Загружаю актуальный каталог snekit-neru.ru:\n\n🍭 Сладкие Моти — 350₽\n🌶️ Острые Снеки — 210₽\n🍵 Чай Матча премиум — 480₽\n\nДля заказа со скидкой 10% нажмите соответствующую кнопку.",
+                buttons: ["💻 Заказать со скидкой", "⬅️ В главное меню"]
+            },
+            '🤖 Мои работы': {
+                text: "Выполненные проекты разработчика:\n\n1. Магазин @phantomAI_shop_bot\n2. Мониторинг @TerminalDroop_Bot\n3. Сайт snekit-neru.ru\n\nВсе проекты работают на выделенных серверах с аптаймом 99.9%.",
+                buttons: ["🛍️ Каталог", "⬅️ В главное меню"]
+            },
+            '💬 Заказать': {
+                text: "Вы можете заказать разработку бота, сайта или парсера со скидкой 10%!\n\nНапишите разработчику в личные сообщения: @artemIT_web с кодовым словом 'AVE_DEV', чтобы забронировать скидку.",
+                buttons: ["⬅️ В главное меню"]
+            },
+            '⬅️ Сброс': {
+                text: "Сброс сессии выполнен. Главное меню виртуального помощника ave dev:",
+                buttons: ["🛍️ Каталог", "🤖 Мои работы", "💬 Заказать"]
+            },
+            '⬅️ В главное меню': {
+                text: "Главное меню виртуального помощника ave dev:",
+                buttons: ["🛍️ Каталог", "🤖 Мои работы", "💬 Заказать"]
+            },
+            '💻 Заказать со скидкой': {
+                text: "Для получения скидки 10% напишите напрямую разработчику: @artemIT_web с промокодом 'AVE_DEV'.",
+                buttons: ["⬅️ В главное меню"]
+            }
+        };
+
+        window.sendTgMessage = (text) => {
+            const userBubble = document.createElement('div');
+            userBubble.className = 'tg-msg tg-msg-user';
+            userBubble.innerText = text;
+            tgChatArea.appendChild(userBubble);
+            tgChatArea.scrollTop = tgChatArea.scrollHeight;
+
+            const typingBubble = document.createElement('div');
+            typingBubble.className = 'tg-msg tg-msg-bot';
+            typingBubble.innerText = 'печать...';
+            tgChatArea.appendChild(typingBubble);
+            tgChatArea.scrollTop = tgChatArea.scrollHeight;
+
+            setTimeout(() => {
+                typingBubble.remove();
+                
+                const response = botAnswers[text] || { text: "Извините, я не распознал команду. Попробуйте нажать кнопку клавиатуры.", buttons: ["⬅️ В главное меню"] };
+                
+                const botBubble = document.createElement('div');
+                botBubble.className = 'tg-msg tg-msg-bot';
+                botBubble.innerText = response.text;
+                
+                if (response.buttons && response.buttons.length > 0) {
+                    const kbRow = document.createElement('div');
+                    kbRow.className = 'tg-msg-keyboard';
+                    response.buttons.forEach(btnText => {
+                        const btn = document.createElement('button');
+                        btn.className = 'tg-inline-btn';
+                        btn.innerText = btnText;
+                        btn.onclick = () => sendTgMessage(btnText);
+                        kbRow.appendChild(btn);
+                    });
+                    botBubble.appendChild(kbRow);
+                }
+                
+                tgChatArea.appendChild(botBubble);
+                tgChatArea.scrollTop = tgChatArea.scrollHeight;
+            }, 600);
+        };
+
+        // ----------------------------------------------------
+        // MOBILE OVERLAY MENU ACTIONS
+        // ----------------------------------------------------
+        const navMenu = document.getElementById('nav-menu');
+        window.toggleMenu = (open) => {
+            if (open) {
+                navMenu.style.display = 'flex';
+                setTimeout(() => {
+                    navMenu.style.opacity = 1;
+                    navMenu.classList.add('open');
+                }, 50);
+            } else {
+                navMenu.style.opacity = 0;
+                navMenu.classList.remove('open');
+                setTimeout(() => {
+                    navMenu.style.display = 'none';
+                }, 300);
+            }
+        };
+
+        window.menuRoute = (index) => {
+            toggleMenu(false);
+            setTimeout(() => {
+                goToSlide(index);
+            }, 350);
+        };
+
+        // ----------------------------------------------------
+        // CONTACT REQUEST FORM ACTIONS (Auto-redirect to TG)
+        // ----------------------------------------------------
+        const modalForm = document.getElementById('request-form');
+        const submitBtnText = document.getElementById('submit-btn-text');
+
+        window.submitForm = (e) => {
+            e.preventDefault();
+            if (submitBtnText) submitBtnText.innerText = 'Pushing...';
+            
+            setTimeout(() => {
+                const formInputs = modalForm.querySelectorAll('.form-control');
+                formInputs.forEach(input => input.disabled = true);
+                
+                const successBlock = document.getElementById('modal-success-content');
+                if (successBlock) {
+                    successBlock.style.display = 'flex';
+                    modalForm.style.display = 'none';
+                }
+                
+                setTimeout(() => {
+                    window.open('https://t.me/artemIT_web', '_blank');
+                    
+                    setTimeout(() => {
+                        if (successBlock) successBlock.style.display = 'none';
+                        modalForm.style.display = 'flex';
+                        modalForm.reset();
+                        formInputs.forEach(input => input.disabled = false);
+                        if (submitBtnText) submitBtnText.innerText = 'Push Commit';
+                    }, 1000);
+                }, 1500);
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
