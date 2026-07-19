@@ -1979,15 +1979,17 @@
         /* Mobile Responsive Overrides (max-width: 768px) */
         @media (max-width: 768px) {
             html, body {
-                overflow-x: hidden;
+                overflow-x: hidden !important;
                 overflow-y: auto !important;
-                height: auto;
+                height: auto !important;
+                position: relative !important;
             }
             .deck-container {
-                display: block;
-                height: auto;
-                overflow: visible;
-                width: 100vw;
+                display: block !important;
+                height: auto !important;
+                overflow: visible !important;
+                width: 100% !important;
+                max-width: 100% !important;
             }
             .deck-slide {
                 position: relative !important;
@@ -1999,37 +2001,47 @@
                 min-height: auto !important;
                 overflow: visible !important;
                 display: block !important;
-                padding-block: 4rem 2.5rem;
+                padding-block: 3.5rem 2rem !important;
                 border-bottom: 1px solid var(--line);
             }
             .shell.slide-shell {
-                padding-top: 1rem;
-                padding-bottom: 1rem;
+                padding-top: 0.5rem !important;
+                padding-bottom: 0.5rem !important;
                 height: auto !important;
                 min-height: auto !important;
+                max-height: none !important;
                 display: block !important;
             }
             .deck-nav {
                 display: none !important;
             }
-            .hero-row {
-                flex-direction: column !important;
+            .server-status-chip {
+                display: none !important;
+            }
+            .hero-grid {
+                grid-template-columns: 1fr !important;
+                gap: 1.75rem !important;
                 align-items: stretch !important;
-                gap: 2rem !important;
-                padding-top: 2rem !important;
             }
             .hero-left {
-                text-align: center !important;
+                text-align: left !important;
                 max-width: 100% !important;
             }
             .hero-left h1 {
-                font-size: 2.20rem !important;
+                font-size: 2.1rem !important;
+                line-height: 1.15 !important;
             }
-            .hero-actions {
+            .hero-buttons {
+                flex-direction: column !important;
+                align-items: stretch !important;
+            }
+            .cyber-btn {
                 justify-content: center !important;
+                width: 100% !important;
             }
             .hero-terminal {
                 max-width: 100% !important;
+                min-height: 18rem !important;
             }
             .about-grid {
                 grid-template-columns: 1fr !important;
@@ -2041,6 +2053,7 @@
             }
             .projects-grid {
                 grid-template-columns: 1fr !important;
+                gap: 1rem !important;
             }
             .services-workbench {
                 grid-template-columns: 1fr !important;
@@ -2052,20 +2065,26 @@
                 gap: 1.5rem !important;
             }
             .dashboard-widget-left {
-                min-height: 18rem !important;
+                min-height: 16rem !important;
+                padding: 1rem !important;
             }
             .contact-grid {
                 grid-template-columns: 1fr !important;
-                gap: 2.5rem !important;
+                gap: 2rem !important;
             }
             .contact-left {
-                text-align: center !important;
+                text-align: left !important;
             }
             .contact-methods {
-                justify-content: center !important;
+                justify-content: flex-start !important;
             }
             header {
                 padding-block: 0.5rem !important;
+            }
+            .project-drawer {
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
             }
         }
 
@@ -2355,6 +2374,21 @@
                 <div class="portfolio-bento">
                     <!-- Left: Cases Grid -->
                     <div class="projects-grid">
+                        <div class="project-card" onclick="openProjectDrawer('carrent')" style="border-color: var(--accent-glow);">
+                            <div class="project-meta">
+                                <span style="color: var(--accent);">АВТОПРОКАТ / WEB PLATFORM</span>
+                                <i class="fa-solid fa-car project-git-icon" style="color: var(--accent);"></i>
+                            </div>
+                            <div class="project-body">
+                                <h3>car-rent-arg.com</h3>
+                                <p>Двуязычная веб-платформа аренды авто в Буэнос-Айресе. Калькулятор стоимости, WhatsApp-бронирование и админка.</p>
+                            </div>
+                            <div class="project-tags">
+                                <span class="project-tag" style="color: var(--accent); border-color: rgba(0, 255, 102, 0.3);">car-rent-arg.com</span>
+                                <span class="project-tag">PHP / MySQL</span>
+                            </div>
+                        </div>
+
                         <div class="project-card" onclick="openProjectDrawer('snekit')">
                             <div class="project-meta">
                                 <span>ВЕБ-ВИТРИНА</span>
@@ -3382,6 +3416,14 @@
         // INTERACTIVE PROJECTS DETAILED DRAWER (Slide 2 - Cases detail panels)
         // ----------------------------------------------------
         const projectData = {
+            carrent: {
+                title: "car-rent-arg.com",
+                meta: "АВТОПРОКАТ / WEB PLATFORM & ADMIN",
+                desc: "Двуязычная веб-платформа (испанский/английский) для автопроката в Буэнос-Айресе. Калькулятор стоимости, мультивалютный расчет (ARS/USD), быстрый заказ в WhatsApp и панель администратора для управления автопарком.",
+                stack: ["HTML5", "Vanilla CSS", "JavaScript ES6+", "PHP", "MySQL", "WhatsApp API"],
+                schema: "Client Web Browser <---> Nginx <---> PHP API Engine <---> MySQL DB (Cars & Reservations)",
+                link: "https://car-rent-arg.com/"
+            },
             snekit: {
                 title: "snekit-neru.ru",
                 meta: "ВЕБ-ВИТРИНА С ПАНЕЛЬЮ УПРАВЛЕНИЯ",
@@ -3436,8 +3478,15 @@
                     <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); background: #050508; border: 1px solid var(--line); border-radius: var(--radius-card-sm); padding: 1rem; line-height: 1.45; overflow-x: auto; white-space: pre-wrap;">${data.schema}</div>
                 </div>
 
+                ${data.link ? `
+                <a href="${data.link}" target="_blank" class="cyber-btn cyber-btn-secondary" style="align-self: stretch; justify-content: center; border-color: var(--accent); color: var(--accent);">
+                    <span>Перейти на сайт ${data.title}</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+                ` : ''}
+
                 <a href="https://t.me/artemIT_web" target="_blank" class="cyber-btn cyber-btn-primary" style="align-self: stretch; justify-content: center;">
-                    <span>Заказать копию в TG</span>
+                    <span>Заказать похожий проект в TG</span>
                     <i class="fa-brands fa-telegram"></i>
                 </a>
             `;
