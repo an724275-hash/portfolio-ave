@@ -327,6 +327,12 @@
             align-items: center;
         }
 
+        @media (max-width: 1024px) {
+            .side-dots-nav {
+                display: none !important;
+            }
+        }
+
         .side-dot {
             width: 8px;
             height: 8px;
@@ -1438,6 +1444,281 @@
 
         .footer-links a:hover {
             color: var(--accent-gold);
+        }
+
+        /* ====================================================
+           COMPREHENSIVE MOBILE RESPONSIVE SYSTEM (360px - 768px)
+           ==================================================== */
+        @media (max-width: 768px) {
+            html, body {
+                overflow-x: hidden !important;
+                width: 100% !important;
+                max-width: 100vw !important;
+            }
+
+            .shell {
+                padding-inline: 1rem !important;
+                width: 100% !important;
+                max-width: 100vw !important;
+                box-sizing: border-box !important;
+            }
+
+            .section {
+                padding-block: 3.5rem 2.5rem !important;
+            }
+
+            /* HIDE OVERLAPPING SIDE DOTS ON MOBILE */
+            .side-dots-nav {
+                display: none !important;
+            }
+
+            /* SCALED BACKGROUND SHAPES FOR MOBILE */
+            .bg-interactive-shape svg {
+                transform: scale(0.55) !important;
+                transform-origin: center center;
+            }
+
+            /* NAVBAR PILL MOBILE FIT */
+            .navbar-wrap {
+                top: 0.5rem !important;
+                padding-inline: 0.5rem !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            .navbar-pill {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0.45rem 0.75rem !important;
+                justify-content: space-between !important;
+                gap: 0.4rem !important;
+            }
+
+            .brand-link span {
+                font-size: 0.9rem !important;
+            }
+
+            .btn-nav-gold {
+                padding: 0.4rem 0.75rem !important;
+                font-size: 0.76rem !important;
+            }
+
+            .theme-toggle-btn {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 0.8rem !important;
+            }
+
+            /* HERO SECTION MOBILE TUNING */
+            .hero-section {
+                padding-top: 5rem !important;
+                padding-bottom: 2rem !important;
+                min-height: auto !important;
+            }
+
+            .hero-header-top {
+                margin-bottom: 0.75rem !important;
+            }
+
+            .hero-sticker-top {
+                width: 65px !important;
+                height: 65px !important;
+            }
+
+            .hero-title {
+                font-size: clamp(1.75rem, 7vw, 2.4rem) !important;
+                line-height: 1.15 !important;
+                margin-bottom: 1rem !important;
+                letter-spacing: -0.02em !important;
+            }
+
+            .hero-subtitle {
+                font-size: 0.92rem !important;
+                line-height: 1.55 !important;
+                margin-bottom: 1.75rem !important;
+            }
+
+            .hero-bottom-row {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 0.75rem !important;
+                width: 100% !important;
+            }
+
+            .btn-primary-gold, .btn-secondary-dark {
+                width: 100% !important;
+                justify-content: center !important;
+                text-align: center !important;
+                box-sizing: border-box !important;
+                padding: 0.85rem 1.25rem !important;
+            }
+
+            .hero-sticker-bottom {
+                width: 70px !important;
+                height: 70px !important;
+                align-self: center !important;
+                margin-top: 0.5rem !important;
+            }
+
+            /* CASES SECTION TABS & CAROUSEL MOBILE */
+            .carousel-tabs-row {
+                display: flex !important;
+                overflow-x: auto !important;
+                flex-wrap: nowrap !important;
+                gap: 0.5rem !important;
+                padding-bottom: 0.5rem !important;
+                margin-bottom: 1.25rem !important;
+                -webkit-overflow-scrolling: touch !important;
+                scrollbar-width: none !important;
+            }
+
+            .carousel-tabs-row::-webkit-scrollbar {
+                display: none !important;
+            }
+
+            .carousel-tab-btn {
+                flex-shrink: 0 !important;
+                white-space: nowrap !important;
+                padding: 0.5rem 0.85rem !important;
+                font-size: 0.78rem !important;
+            }
+
+            .carousel-slide {
+                padding: 1.35rem 1.15rem !important;
+                border-radius: 20px !important;
+                grid-template-columns: 1fr !important;
+                gap: 1.25rem !important;
+            }
+
+            .slide-title {
+                font-size: 1.35rem !important;
+            }
+
+            .slide-subtitle {
+                font-size: 0.88rem !important;
+            }
+
+            .slide-narrative {
+                font-size: 0.88rem !important;
+                line-height: 1.55 !important;
+            }
+
+            .slide-action-btn {
+                width: 100% !important;
+                justify-content: center !important;
+                box-sizing: border-box !important;
+            }
+
+            .slide-preview-panel {
+                padding: 1rem !important;
+            }
+
+            /* APPROACH GOLDEN RAIL TIMELINE MOBILE */
+            .golden-rail-container {
+                padding-left: 1.25rem !important;
+            }
+
+            .golden-rail-line {
+                left: 6px !important;
+            }
+
+            .rail-node-dot {
+                left: -1.25rem !important;
+                width: 14px !important;
+                height: 14px !important;
+            }
+
+            .rail-item-node .rail-card-body {
+                opacity: 1 !important;
+                transform: none !important;
+                padding: 1.25rem 1rem !important;
+                border-radius: 18px !important;
+                grid-template-columns: 1fr !important;
+                gap: 1.25rem !important;
+            }
+
+            /* PROCESS PIPELINE MOBILE */
+            .arthouse-pipeline-container {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 1.25rem !important;
+                min-height: auto !important;
+            }
+
+            .arthouse-card {
+                position: relative !important;
+                width: 100% !important;
+                left: 0 !important;
+                right: 0 !important;
+                top: 0 !important;
+                transform: none !important;
+                padding: 1.35rem 1.15rem !important;
+                border-radius: 20px !important;
+                box-sizing: border-box !important;
+            }
+
+            .arthouse-svg-layer {
+                display: none !important;
+            }
+
+            /* TECH STACK HOVER GRID MOBILE */
+            .stack-hover-grid {
+                grid-template-columns: 1fr !important;
+                gap: 1.25rem !important;
+            }
+
+            .stack-hover-card {
+                padding: 1.5rem 1.25rem !important;
+                border-radius: 20px !important;
+            }
+
+            .stack-hover-card .card-hover-content {
+                opacity: 1 !important;
+                visibility: visible !important;
+                position: relative !important;
+                transform: none !important;
+                margin-top: 1rem !important;
+                pointer-events: auto !important;
+            }
+
+            .stack-hover-card:hover .card-default-content {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+
+            /* CONTACTS & TG PROFILE CARD MOBILE */
+            .tg-profile-container {
+                padding-inline: 0 !important;
+                width: 100% !important;
+            }
+
+            .tg-profile-card {
+                padding: 1.25rem 1rem !important;
+                border-radius: 20px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            .tg-channel-box {
+                padding: 0.75rem 0.85rem !important;
+                flex-direction: row !important;
+                align-items: center !important;
+            }
+
+            .tg-channel-title {
+                font-size: 0.92rem !important;
+            }
+
+            .tg-channel-sub {
+                font-size: 0.76rem !important;
+            }
+
+            .footer-row {
+                flex-direction: column !important;
+                align-items: center !important;
+                text-align: center !important;
+                gap: 1rem !important;
+            }
         }
 
     </style>
