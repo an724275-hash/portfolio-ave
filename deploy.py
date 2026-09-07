@@ -11,7 +11,7 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parent
-PUBLIC_FILES = ["index.html", "style.css", "script.js", "duck.js", "avatar.png",
+PUBLIC_FILES = ["index.html", "style.css", "polish.css", "script.js", "duck.js", "avatar.png",
                 "channel-avatar.png", "robots.txt", "sitemap.xml", "CNAME",
                 "assets", "stickers_json"]
 

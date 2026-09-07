@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Артем · ave dev — разработка сайтов и Telegram-ботов</title>
+    <title>Артем · ave dev | разработка сайтов и Telegram-ботов</title>
     <meta name="description" content="Сайты для бизнеса, интернет-каталоги и Telegram-боты. Портфолио Артема (ave dev): проекты, процесс работы и контакты." />
     <meta name="theme-color" content="#0C0C0A" />
 
@@ -13,14 +13,18 @@
     <meta name="keywords" content="разработка сайтов, Telegram-боты, сайты для бизнеса, портфолио разработчика, ave dev">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="ru_RU">
-    <meta property="og:title" content="Артем · ave dev — сайты и Telegram-боты">
+    <meta property="og:title" content="Артем · ave dev | сайты и Telegram-боты">
     <meta property="og:description" content="Портфолио разработчика: сайты для бизнеса, каталоги, сервисы и Telegram-боты. Посмотрите проекты и обсудим вашу задачу.">
     <meta property="og:url" content="https://giveaway-one.ru/">
     <meta property="og:image" content="https://giveaway-one.ru/avatar.png">
     <meta name="twitter:card" content="summary">
     <link rel="stylesheet" href="assets/vendor/fontawesome.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="polish.css">
     <script src="assets/vendor/lottie.min.js" defer></script>
+    <script type="importmap">
+        {"imports":{"three":"./assets/vendor/three.module.min.js"}}
+    </script>
 </head>
 <body>
     <a class="skip-link" href="#main">Перейти к содержимому</a>
@@ -28,14 +32,14 @@
 
 
     <!-- SIDE SCROLL INDICATOR DOTS (IMAGE 3) -->
-    <div class="side-dots-nav" id="sideDotsNav">
+    <nav class="side-dots-nav" id="sideDotsNav" aria-label="Навигация по разделам">
         <a href="#hero" class="side-dot active" data-target="hero"></a>
         <a href="#cases" class="side-dot" data-target="cases"></a>
         <a href="#approach" class="side-dot" data-target="approach"></a>
         <a href="#process" class="side-dot" data-target="process"></a>
         <a href="#stack" class="side-dot" data-target="stack"></a>
         <a href="#contacts" class="side-dot" data-target="contacts"></a>
-    </div>
+    </nav>
 
     <!-- NAVBAR PILL CONTAINER WITH COMPACT SHRINK & SCROLL UP EXPAND -->
     <div class="navbar-wrap" id="navbarWrap">
@@ -45,14 +49,18 @@
                 <span>ave.dev</span>
             </a>
 
-            <div class="nav-collapsible">
+            <nav class="nav-collapsible" aria-label="Основная навигация">
                 <ul class="nav-links">
                     <li><a href="#cases">Кейсы</a></li>
                     <li><a href="#approach">Подход</a></li>
                     <li><a href="#process">Процесс</a></li>
                     <li><a href="#stack">Стек</a></li>
                 </ul>
-            </div>
+            </nav>
+
+            <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobileNavPanel">
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
 
             <a href="https://t.me/ave93" target="_blank" rel="noopener noreferrer" class="btn-nav-gold">
                 <i class="fa-brands fa-telegram"></i> Написать
@@ -61,53 +69,60 @@
             <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Переключить тему" title="Переключить тему (Светлая / Тёмная)">
                 <i class="fa-solid fa-moon"></i>
             </button>
+
+            <nav class="mobile-nav-panel" id="mobileNavPanel" aria-label="Навигация по странице" hidden>
+                <a href="#cases">Кейсы</a>
+                <a href="#approach">Подход</a>
+                <a href="#process">Процесс</a>
+                <a href="#stack">Стек</a>
+                <a href="#contacts">Контакты</a>
+            </nav>
         </header>
     </div>
 
-    <main id="main">
+    <main id="main" tabindex="-1">
         <!-- HERO SECTION -->
         <section class="section hero-section" id="hero">
-            <div class="section-bg-shapes">
-                <div class="bg-interactive-shape spin-cw-fast" style="left: 2%; top: 5%;">
-                    <svg viewBox="0 0 200 200" width="340" height="340"><path d="M100 25 C107 25 110 38 117 41 C124 44 135 37 141 43 C147 49 140 60 143 67 C146 74 159 77 159 85 C159 93 146 96 143 103 C140 110 147 121 141 127 C135 133 124 126 117 129 C110 132 107 145 100 145 C93 145 90 132 83 129 C76 126 65 133 59 127 C53 121 60 110 57 103 C54 96 41 93 41 85 C41 77 54 74 57 67 C60 60 53 49 59 43 C65 37 76 44 83 41 C90 38 93 25 100 25 Z" fill="currentColor"></path></svg>
+            <div class="hero-backdrop section-bg-shapes" aria-hidden="true">
+                <span class="hero-backdrop-ring"></span>
+                <span class="hero-backdrop-line"></span>
+                <div class="bg-interactive-shape hero-shape-one spin-cw-slow">
+                    <svg viewBox="0 0 200 200" width="260" height="260"><path d="M100 25 C107 25 110 38 117 41 C124 44 135 37 141 43 C147 49 140 60 143 67 C146 74 159 77 159 85 C159 93 146 96 143 103 C140 110 147 121 141 127 C135 133 124 126 117 129 C110 132 107 145 100 145 C93 145 90 132 83 129 C76 126 65 133 59 127 C53 121 60 110 57 103 C54 96 41 93 41 85 C41 77 54 74 57 67 C60 60 53 49 59 43 C65 37 76 44 83 41 C90 38 93 25 100 25 Z" fill="currentColor"></path></svg>
                 </div>
-                <div class="bg-interactive-shape spin-ccw-medium" style="left: 78%; top: 10%;">
-                    <svg viewBox="0 0 200 200" width="290" height="290"><path d="M100,28 C122,28 136,42 150,56 C164,70 172,88 172,100 C172,112 164,130 150,144 C136,158 122,172 100,172 C78,172 64,158 50,144 C36,130 28,112 28,100 C28,88 36,70 50,56 C64,42 78,28 100,28 Z" fill="currentColor"></path></svg>
-                </div>
-                <div class="bg-interactive-shape spin-cw-slow" style="left: 48%; top: 55%;">
-                    <svg viewBox="0 0 200 200" width="220" height="220"><path d="M100 15 C145 35 165 55 185 100 C165 145 145 165 100 185 C55 165 35 145 15 100 C35 55 55 35 100 15 Z" fill="currentColor"></path></svg>
+                <div class="bg-interactive-shape hero-shape-two spin-ccw-slow">
+                    <svg viewBox="0 0 200 200" width="210" height="210"><path d="M100 15 C145 35 165 55 185 100 C165 145 145 165 100 185 C55 165 35 145 15 100 C35 55 55 35 100 15 Z" fill="currentColor"></path></svg>
                 </div>
             </div>
             <div class="shell">
+                <div class="hero-copy">
+                    <p class="hero-eyebrow"><span aria-hidden="true"></span> Сайты, каталоги и Telegram-боты</p>
+                    <h1 class="hero-title">
+                        Сайты для бизнеса<br/><span>и Telegram-боты</span>
+                    </h1>
+
+                    <p class="hero-subtitle">
+                        Я Артем, разработчик ave dev. Собираю понятные цифровые продукты: от идеи и интерфейса до запуска и поддержки.
+                    </p>
+
+                    <div class="hero-bottom-row">
+                        <a href="#cases" class="btn-primary-gold">
+                            <span>Смотреть проекты</span>
+                            <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://t.me/ave93" target="_blank" rel="noopener noreferrer" class="btn-secondary-dark">
+                            <i class="fa-brands fa-telegram" aria-hidden="true"></i>
+                            <span>Обсудить задачу</span>
+                        </a>
+                    </div>
+
+                    <p class="hero-note">Дизайн, разработка и запуск в одном проекте</p>
+                </div>
+
                 <figure class="duck-stage" id="duckStage" tabindex="0" aria-label="Объёмная утка. Поворачивайте стрелками клавиатуры." aria-describedby="duckHint">
-                    <div class="duck-fallback" aria-hidden="true">🦆</div>
-                    <figcaption id="duckHint">Поведите курсором — я слежу за вами</figcaption>
+                    <span class="duck-stage-light" aria-hidden="true"></span>
+                    <span class="duck-stage-label" aria-hidden="true">AVE / 3D</span>
+                    <span class="sr-only" id="duckHint">Двигайте курсором или стрелками клавиатуры, чтобы повернуть утку</span>
                 </figure>
-                <div class="hero-header-top">
-                    <!-- TOP-LEFT STICKER ALIGNED TO THE LEFT OF HEADING -->
-
-                </div>
-
-                <h1 class="hero-title">
-                    Сайты для бизнеса<br/>и <span>Telegram-боты</span>
-                </h1>
-
-                <p class="hero-subtitle">
-                    Я Артем, разработчик ave dev. Создаю сайты, каталоги и ботов, которые помогают принимать заявки, продавать и автоматизировать ежедневную работу.
-                </p>
-
-                <div class="hero-bottom-row">
-                    <a href="#cases" class="btn-primary-gold">
-                        <span>Посмотреть кейсы</span>
-                    </a>
-                    <a href="https://t.me/ave93" target="_blank" rel="noopener noreferrer" class="btn-secondary-dark">
-                        <i class="fa-brands fa-telegram"></i>
-                        <span>Telegram @ave93</span>
-                    </a>
-
-                    <!-- BOTTOM-RIGHT TELEGRAM STICKER -->
-
-                </div>
             </div>
         </section>
 
@@ -144,11 +159,11 @@
                 <div class="carousel-tabs-row reveal-scroll" role="tablist" aria-label="Проекты">
                     <button class="carousel-tab-btn active" onclick="goToSlide(0)">01. Nordic Timbers</button>
                     <button class="carousel-tab-btn" onclick="goToSlide(1)">02. Китайский Магазинчик</button>
-                    <button class="carousel-tab-btn" onclick="goToSlide(2)">03. GRVM.LOL</button>
-                    <button class="carousel-tab-btn" onclick="goToSlide(3)">04. @All_senoritas_bot</button>
-                    <button class="carousel-tab-btn" onclick="goToSlide(4)">05. СЕВЕР</button>
-                    <button class="carousel-tab-btn" onclick="goToSlide(5)">06. GoldenFix</button>
-                    <button class="carousel-tab-btn" onclick="goToSlide(6)">07. Маркос Молл</button>
+                    <button class="carousel-tab-btn" onclick="goToSlide(2)">03. @All_senoritas_bot</button>
+                    <button class="carousel-tab-btn" onclick="goToSlide(3)">04. СЕВЕР</button>
+                    <button class="carousel-tab-btn" onclick="goToSlide(4)">05. GoldenFix</button>
+                    <button class="carousel-tab-btn" onclick="goToSlide(5)">06. Маркос Молл</button>
+                    <button class="carousel-tab-btn" onclick="goToSlide(6)">07. GRVM.LOL</button>
                 </div>
 
                 <!-- CAROUSEL VIEWPORT -->
@@ -159,8 +174,8 @@
                         <div class="carousel-slide">
                             <div>
                                 <div class="slide-top-meta">
-
-                                    <span class="slide-index">01 / FEATURED</span>
+                                    <div class="slide-lottie-box" id="stickerCase1"></div>
+                                    <span class="slide-index">01 / САЙТ</span>
                                 </div>
                                 <h3 class="slide-title">Nordic Timbers 🇦🇺</h3>
                                 <div class="slide-subtitle">Лендинг для компании по постройке домов в Австралии</div>
@@ -179,18 +194,19 @@
                                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                 </a>
                             </div>
-                            <figure class="project-preview">
-                                <button class="preview-open" data-preview="assets/projects/nordic-screen.jpg" aria-label="Увеличить скриншот Nordic Timbers"><img src="assets/projects/nordic-screen.jpg" alt="Скриншот сайта Nordic Timbers" width="1265" height="712" loading="lazy"></button>
-                                <figcaption>Nordic Timbers · Скриншот сайта</figcaption>
-                            </figure>
+                            <div class="slide-preview-panel">
+                                <div class="slide-preview-lottie" id="slide1LottiePreview"></div>
+                                <div class="preview-title">Nordic Timbers Australia</div>
+                                <div class="preview-copy">Адаптивный интерфейс и заявки в Telegram</div>
+                            </div>
                         </div>
 
                         <!-- SLIDE 2: Snekit Neru -->
                         <div class="carousel-slide">
                             <div>
                                 <div class="slide-top-meta">
-
-                                    <span class="slide-index">02 / CATALOG</span>
+                                    <div class="slide-lottie-box" id="stickerCase2"></div>
+                                    <span class="slide-index">02 / КАТАЛОГ</span>
                                 </div>
                                 <h3 class="slide-title">Китайский Магазинчик</h3>
                                 <div class="slide-subtitle">Онлайн-каталог азиатских товаров в Нерюнгри</div>
@@ -208,48 +224,19 @@
                                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                 </a>
                             </div>
-                            <figure class="project-preview">
-                                <button class="preview-open" data-preview="assets/projects/snekit-screen.jpg" aria-label="Увеличить скриншот Китайский Магазинчик"><img src="assets/projects/snekit-screen.jpg" alt="Скриншот сайта Китайский Магазинчик" width="1265" height="712" loading="lazy"></button>
-                                <figcaption>Китайский Магазинчик · Скриншот сайта</figcaption>
-                            </figure>
-                        </div>
-
-                        <!-- SLIDE 3: GRVM.LOL -->
-                        <div class="carousel-slide">
-                            <div>
-                                <div class="slide-top-meta">
-
-                                    <span class="slide-index">03 / AI GATEWAY</span>
-                                </div>
-                                <h3 class="slide-title">GRVM.LOL ⚡️</h3>
-                                <div class="slide-subtitle">Шлюз доступа к нейросетям и Claude по токенам</div>
-                                <p class="slide-narrative">
-                                    Спроектировал сервисный веб-шлюз для работы с ИИ-моделями (Claude 3.5 Sonnet, GPT-4) по токен-системе. Написал асинхронный backend на FastAPI, подключил Claude API со стримингом ответов и автопополнение криптой.
-                                </p>
-                                <div class="slide-stack">
-                                    <span class="slide-chip">FastAPI</span>
-                                    <span class="slide-chip">Python</span>
-                                    <span class="slide-chip">Claude API</span>
-                                    <span class="slide-chip">Crypto API</span>
-                                </div>
-                                <a href="https://grvm.lol/" target="_blank" rel="noopener noreferrer" class="slide-action-btn">
-                                    <span>Посмотреть сервис (grvm.lol)</span>
-                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                </a>
-                            </div>
                             <div class="slide-preview-panel">
-                                <p class="preview-label">О проекте</p>
-                                <div style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.4rem;">GRVM AI Platform</div>
-                                <div style="font-size: 0.9rem; color: var(--text-muted);">FastAPI Backend + Claude API Streaming</div>
+                                <div class="slide-preview-lottie" id="slide2LottiePreview"></div>
+                                <div class="preview-title">Asian Food Neryungri</div>
+                                <div class="preview-copy">Каталог, фильтры и заказ через Telegram</div>
                             </div>
                         </div>
 
-                        <!-- SLIDE 4: All Senoritas Bot -->
+                        <!-- SLIDE 3: All Senoritas Bot -->
                         <div class="carousel-slide">
                             <div>
                                 <div class="slide-top-meta">
-
-                                    <span class="slide-index">04 / TG BOT</span>
+                                    <div class="slide-lottie-box" id="stickerCase4"></div>
+                                    <span class="slide-index">03 / TELEGRAM-БОТ</span>
                                 </div>
                                 <h3 class="slide-title">Telegram-бот All Senoritas 🔍</h3>
                                 <div class="slide-subtitle">Асинхронный сервис с аналитикой и кабинетом</div>
@@ -268,53 +255,88 @@
                                 </a>
                             </div>
                             <div class="slide-preview-panel">
-                                <p class="preview-label">О проекте</p>
-                                <div style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.4rem;">@All_senoritas_bot</div>
-                                <div style="font-size: 0.9rem; color: var(--text-muted);">aiogram 3 + PostgreSQL + Redis Rate Limiter</div>
+                                <div class="slide-preview-lottie" id="slide4LottiePreview"></div>
+                                <div class="preview-title">@All_senoritas_bot</div>
+                                <div class="preview-copy">aiogram 3, PostgreSQL и Redis</div>
                             </div>
                         </div>
 
                         <article class="carousel-slide">
                             <div>
-                                <p class="slide-index">05 / WEB</p>
+                                <div class="slide-top-meta">
+                                    <div class="slide-lottie-box" id="stickerCase5"></div>
+                                    <span class="slide-index">04 / САЙТ</span>
+                                </div>
                                 <h3 class="slide-title">СЕВЕР</h3>
                                 <p class="slide-subtitle">Фестивальный лендинг</p>
                                 <p class="slide-narrative">Сайт фестиваля новой культуры: программа по дням, площадка, варианты билетов и обратный отсчёт. Крупная типографика и концертные фотографии задают настроение.</p>
                                 <p class="project-features">Лендинг · Программа · Билеты</p>
                                 <a href="https://an724275-hash.github.io/proj-for-portfolio/" target="_blank" rel="noopener noreferrer" class="slide-action-btn">Открыть СЕВЕР <span aria-hidden="true">↗</span></a>
                             </div>
-                            <figure class="project-preview">
-                                <button class="preview-open" data-preview="assets/projects/sever-screen.jpg" aria-label="Увеличить скриншот СЕВЕР"><img src="assets/projects/sever-screen.jpg" alt="Скриншот сайта СЕВЕР" width="1265" height="712" loading="lazy"></button>
-                                <figcaption>СЕВЕР · Скриншот сайта</figcaption>
-                            </figure>
+                            <div class="slide-preview-panel project-wordmark-panel">
+                                <div class="slide-preview-lottie" id="slide5LottiePreview"></div>
+                                <span class="project-wordmark">СЕВЕР</span>
+                                <div class="preview-copy">Программа, площадка и билеты</div>
+                            </div>
                         </article>
                         <article class="carousel-slide">
                             <div>
-                                <p class="slide-index">06 / WEB</p>
+                                <div class="slide-top-meta">
+                                    <div class="slide-lottie-box" id="stickerCase6"></div>
+                                    <span class="slide-index">05 / САЙТ</span>
+                                </div>
                                 <h3 class="slide-title">GoldenFix</h3>
                                 <p class="slide-subtitle">Сайт сервиса ремонта кожи</p>
                                 <p class="slide-narrative">Англоязычный сайт выездного ремонта кожи в Сан-Диего. Страницы услуг, интерактивное сравнение «до / после» и форма заявки с фотографиями повреждений.</p>
                                 <p class="project-features">Услуги · До / после · Заявка</p>
                                 <a href="https://sandiegoleatherrepair.com/" target="_blank" rel="noopener noreferrer" class="slide-action-btn">Открыть GoldenFix <span aria-hidden="true">↗</span></a>
                             </div>
-                            <figure class="project-preview">
-                                <button class="preview-open" data-preview="assets/projects/goldenfix-screen.jpg" aria-label="Увеличить скриншот GoldenFix"><img src="assets/projects/goldenfix-screen.jpg" alt="Скриншот сайта GoldenFix" width="1265" height="712" loading="lazy"></button>
-                                <figcaption>GoldenFix · Скриншот сайта</figcaption>
-                            </figure>
+                            <div class="slide-preview-panel project-wordmark-panel">
+                                <div class="slide-preview-lottie" id="slide6LottiePreview"></div>
+                                <span class="project-wordmark">GoldenFix</span>
+                                <div class="preview-copy">Выездной ремонт кожи в Сан-Диего</div>
+                            </div>
                         </article>
                         <article class="carousel-slide">
                             <div>
-                                <p class="slide-index">07 / WEB</p>
+                                <div class="slide-top-meta">
+                                    <div class="slide-lottie-box" id="stickerCase7"></div>
+                                    <span class="slide-index">06 / САЙТ</span>
+                                </div>
                                 <h3 class="slide-title">Маркос Молл</h3>
                                 <p class="slide-subtitle">Сайт торгового центра</p>
                                 <p class="slide-narrative">Сайт торгового центра в Москве: каталог магазинов и кафе, навигация по этажам, информация для посетителей и арендаторов. Маршруты и часы работы доступны прямо с главной.</p>
                                 <p class="project-features">Каталог · Этажи · Навигация</p>
                                 <a href="https://marcos-mall.ru/" target="_blank" rel="noopener noreferrer" class="slide-action-btn">Открыть Маркос Молл <span aria-hidden="true">↗</span></a>
                             </div>
-                            <figure class="project-preview">
-                                <button class="preview-open" data-preview="assets/projects/marcos-screen.jpg" aria-label="Увеличить скриншот Маркос Молл"><img src="assets/projects/marcos-screen.jpg" alt="Скриншот сайта Маркос Молл" width="1265" height="712" loading="lazy"></button>
-                                <figcaption>Маркос Молл · Скриншот сайта</figcaption>
-                            </figure>
+                            <div class="slide-preview-panel project-wordmark-panel">
+                                <div class="slide-preview-lottie" id="slide7LottiePreview"></div>
+                                <span class="project-wordmark">МАРКОС МОЛЛ</span>
+                                <div class="preview-copy">Каталог магазинов и навигация по этажам</div>
+                            </div>
+                        </article>
+                        <article class="carousel-slide">
+                            <div>
+                                <div class="slide-top-meta">
+                                    <div class="slide-lottie-box" id="stickerCase3"></div>
+                                    <span class="slide-index">07 / ИИ-СЕРВИС</span>
+                                </div>
+                                <h3 class="slide-title">GRVM.LOL</h3>
+                                <p class="slide-subtitle">Шлюз доступа к нейросетям по токенам</p>
+                                <p class="slide-narrative">Асинхронный backend на FastAPI, потоковая выдача ответов моделей и пополнение баланса криптовалютой. Проект оставлен в портфолио как выполненная инженерная работа, но ссылка отключена, пока сервис не работает.</p>
+                                <div class="slide-stack">
+                                    <span class="slide-chip">FastAPI</span>
+                                    <span class="slide-chip">Python</span>
+                                    <span class="slide-chip">LLM API</span>
+                                    <span class="slide-chip">Crypto API</span>
+                                </div>
+                                <span class="project-state">Сервис сейчас не запущен</span>
+                            </div>
+                            <div class="slide-preview-panel">
+                                <div class="slide-preview-lottie" id="slide3LottiePreview"></div>
+                                <div class="preview-title">GRVM AI Platform</div>
+                                <div class="preview-copy">Седьмой проект, временно без рабочей ссылки</div>
+                            </div>
                         </article>
                     </div>
                 </div>
@@ -324,6 +346,7 @@
                     <button class="btn-arrow" onclick="prevSlide()" aria-label="Предыдущий проект"><i class="fa-solid fa-arrow-left"></i></button>
                     <button class="btn-arrow" onclick="nextSlide()" aria-label="Следующий проект"><i class="fa-solid fa-arrow-right"></i></button>
                 </div>
+
             </div>
         </section>
 
@@ -349,7 +372,7 @@
             </div>
             <div class="shell">
                 <div class="reveal-scroll">
-                    <p class="eyebrow">Принципы и Инженерия</p>
+                    <p class="eyebrow">Результат и поддержка</p>
                     <h2 class="display-title">Подход к работе<span>.</span></h2>
                     <p class="section-desc">Как договариваемся о сроках, подключаем сервисы и сопровождаем результат.</p>
                 </div>
@@ -365,7 +388,7 @@
                             <div>
                                 <div class="slide-top-meta">
                                     <div style="font-size: 2.2rem; color: var(--accent-gold);"><i class="fa-solid fa-bolt"></i></div>
-                                    <span class="slide-index">01 / FAST MVP</span>
+                                    <span class="slide-index">01 / ПРОТОТИП</span>
                                 </div>
                                 <h3 class="slide-title">Первый прототип за 2–3 дня</h3>
                                 <div class="slide-subtitle">Быстрый запуск для проверки бизнес-гипотезы</div>
@@ -393,7 +416,7 @@
                             <div>
                                 <div class="slide-top-meta">
                                     <div style="font-size: 2.2rem; color: var(--accent-gold);"><i class="fa-solid fa-brain"></i></div>
-                                    <span class="slide-index">02 / STREAMING AI</span>
+                                    <span class="slide-index">02 / ИИ</span>
                                 </div>
                                 <h3 class="slide-title">Интеграция нейросетей</h3>
                                 <div class="slide-subtitle">Интеграция ИИ-моделей с экономией бюджета</div>
@@ -421,7 +444,7 @@
                             <div>
                                 <div class="slide-top-meta">
                                     <div style="font-size: 2.2rem; color: var(--accent-gold);"><i class="fa-solid fa-user-shield"></i></div>
-                                    <span class="slide-index">03 / WARRANTY</span>
+                                    <span class="slide-index">03 / ГАРАНТИЯ</span>
                                 </div>
                                 <h3 class="slide-title">15 дней бесплатной гарантии</h3>
                                 <div class="slide-subtitle">Техническая поддержка и сопровождение после сдачи</div>
@@ -449,12 +472,12 @@
                             <div>
                                 <div class="slide-top-meta">
                                     <div style="font-size: 2.2rem; color: var(--accent-gold);"><i class="fa-solid fa-lock"></i></div>
-                                    <span class="slide-index">04 / STRICT NDA</span>
+                                    <span class="slide-index">04 / ЗАЩИТА ДАННЫХ</span>
                                 </div>
                                 <h3 class="slide-title">Конфиденциальность</h3>
                                 <div class="slide-subtitle">Защита бизнес-логики и приватных данных</div>
                                 <p class="slide-narrative">
-                                    Для закрытых коммерческих проектов работаю по согласованному NDA. Исходный код хранится в приватном репозитории, секреты — отдельно от кода. Доступы и условия конфиденциальности согласовываем до начала работы.
+                                    Для закрытых коммерческих проектов работаю по согласованному NDA. Исходный код хранится в приватном репозитории, секреты хранятся отдельно от кода. Доступы и условия конфиденциальности согласовываем до начала работы.
                                 </p>
                                 <div class="slide-stack">
                                     <span class="slide-chip"><i class="fa-solid fa-lock" style="color: var(--accent-gold);"></i> Приватные Git-репо</span>
@@ -526,7 +549,7 @@
                     <!-- STEP 01 -->
                     <div class="arthouse-card arthouse-card-1">
                         <div class="arthouse-card-top">
-                            <span class="step-pill-badge">STEP 01</span>
+                            <span class="step-pill-badge">ЭТАП 01</span>
                             <div class="step-icon-box"><i class="fa-solid fa-clipboard-list"></i></div>
                         </div>
                         <h3 class="pipeline-card-title">Задача и план</h3>
@@ -534,15 +557,15 @@
                             Обсуждаем вашу задачу, составляем список функций, согласовываем стоимость и сроки. До начала разработки фиксируем, что должно получиться.
                         </p>
                         <div class="arthouse-card-chips">
-                            <span class="micro-chip">ТЗ & Метрики</span>
-                            <span class="micro-chip">Стек & Архитектура</span>
+                            <span class="micro-chip">ТЗ и цели</span>
+                            <span class="micro-chip">План решения</span>
                         </div>
                     </div>
 
                     <!-- STEP 02 -->
                     <div class="arthouse-card arthouse-card-2">
                         <div class="arthouse-card-top">
-                            <span class="step-pill-badge">STEP 02</span>
+                            <span class="step-pill-badge">ЭТАП 02</span>
                             <div class="step-icon-box"><i class="fa-solid fa-code"></i></div>
                         </div>
                         <h3 class="pipeline-card-title">Разработка</h3>
@@ -551,14 +574,14 @@
                         </p>
                         <div class="arthouse-card-chips">
                             <span class="micro-chip">Python 3.11+</span>
-                            <span class="micro-chip">FastAPI & Redis</span>
+                            <span class="micro-chip">FastAPI + Redis</span>
                         </div>
                     </div>
 
                     <!-- STEP 03 -->
                     <div class="arthouse-card arthouse-card-3">
                         <div class="arthouse-card-top">
-                            <span class="step-pill-badge">STEP 03</span>
+                            <span class="step-pill-badge">ЭТАП 03</span>
                             <div class="step-icon-box"><i class="fa-solid fa-server"></i></div>
                         </div>
                         <h3 class="pipeline-card-title">Запуск сайта</h3>
@@ -566,15 +589,15 @@
                             Размещаю проект на сервере, подключаю домен и защищённое соединение. Проверяю основные сценарии перед запуском.
                         </p>
                         <div class="arthouse-card-chips">
-                            <span class="micro-chip">Docker & Nginx</span>
-                            <span class="micro-chip">SSL & Security</span>
+                            <span class="micro-chip">Docker + Nginx</span>
+                            <span class="micro-chip">SSL и защита</span>
                         </div>
                     </div>
 
                     <!-- STEP 04 -->
                     <div class="arthouse-card arthouse-card-4">
                         <div class="arthouse-card-top">
-                            <span class="step-pill-badge">STEP 04</span>
+                            <span class="step-pill-badge">ЭТАП 04</span>
                             <div class="step-icon-box"><i class="fa-solid fa-handshake"></i></div>
                         </div>
                         <h3 class="pipeline-card-title">Передача и Сопровождение</h3>
@@ -624,7 +647,7 @@
                     <div class="stack-hover-card">
                         <div class="card-default-content">
                             <div class="card-icon-lg"><i class="fa-solid fa-code"></i></div>
-                            <h3 class="card-category-title">Languages & Core</h3>
+                            <h3 class="card-category-title">Языки и основа</h3>
                             <span class="card-count-tag">6 инструментов</span>
                         </div>
                         <div class="card-hover-content">
@@ -643,7 +666,7 @@
                     <div class="stack-hover-card">
                         <div class="card-default-content">
                             <div class="card-icon-lg"><i class="fa-solid fa-server"></i></div>
-                            <h3 class="card-category-title">Backend & API</h3>
+                            <h3 class="card-category-title">Сервер и API</h3>
                             <span class="card-count-tag">4 инструмента</span>
                         </div>
                         <div class="card-hover-content">
@@ -660,7 +683,7 @@
                     <div class="stack-hover-card">
                         <div class="card-default-content">
                             <div class="card-icon-lg"><i class="fa-solid fa-layer-group"></i></div>
-                            <h3 class="card-category-title">Frontend & Web</h3>
+                            <h3 class="card-category-title">Интерфейсы</h3>
                             <span class="card-count-tag">4 инструмента</span>
                         </div>
                         <div class="card-hover-content">
@@ -677,7 +700,7 @@
                     <div class="stack-hover-card">
                         <div class="card-default-content">
                             <div class="card-icon-lg"><i class="fa-solid fa-database"></i></div>
-                            <h3 class="card-category-title">Databases</h3>
+                            <h3 class="card-category-title">Базы данных</h3>
                             <span class="card-count-tag">2 инструмента</span>
                         </div>
                         <div class="card-hover-content">
@@ -692,7 +715,7 @@
                     <div class="stack-hover-card">
                         <div class="card-default-content">
                             <div class="card-icon-lg"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                            <h3 class="card-category-title">AI & Automation</h3>
+                            <h3 class="card-category-title">ИИ и автоматизация</h3>
                             <span class="card-count-tag">3 инструмента</span>
                         </div>
                         <div class="card-hover-content">
@@ -708,7 +731,7 @@
                     <div class="stack-hover-card">
                         <div class="card-default-content">
                             <div class="card-icon-lg"><i class="fa-brands fa-docker"></i></div>
-                            <h3 class="card-category-title">DevOps & Tools</h3>
+                            <h3 class="card-category-title">Запуск и инфраструктура</h3>
                             <span class="card-count-tag">5 инструментов</span>
                         </div>
                         <div class="card-hover-content">
@@ -790,7 +813,7 @@
 
                             <div class="tg-info-row">
                                 <span class="tg-info-label">о себе</span>
-                                <span class="tg-info-value" style="color: var(--text-main); font-size: 0.95rem;">Подписчикам канала @avee_dev — скидка 10% 🔥</span>
+                                <span class="tg-info-value" style="color: var(--text-main); font-size: 0.95rem;">Подписчикам канала @avee_dev, скидка 10% 🔥</span>
                             </div>
 
                             <div class="tg-divider"></div>
@@ -828,10 +851,6 @@
     </footer>
 
     <!-- JAVASCRIPT: STICKERS, CAROUSEL, INTERACTIVE SHAPES & SIDE DOTS -->
-    <dialog id="previewDialog" aria-label="Скриншот проекта">
-        <button class="preview-close" aria-label="Закрыть скриншот">Закрыть ×</button>
-        <img id="previewImage" alt="">
-    </dialog>
     <script src="script.js" defer></script>
     <script type="module" src="duck.js"></script>
 </body>

@@ -34,6 +34,14 @@ class PortfolioChecks(unittest.TestCase):
             self.assertTrue((deploy.ROOT / resource).is_file(), resource)
         for target in page.anchors:
             self.assertIn(target, page.ids, "Broken anchor: " + target)
+        for resource in [
+            "assets/models/ave-duck.glb",
+            "assets/vendor/loaders/GLTFLoader.js",
+            "assets/vendor/utils/BufferGeometryUtils.js",
+        ]:
+            self.assertTrue((deploy.ROOT / resource).is_file(), resource)
+        self.assertEqual((deploy.ROOT / "assets/models/ave-duck.glb").read_bytes()[:4], b"glTF")
+        self.assertFalse((deploy.ROOT / "assets/projects").exists(), "Project screenshots must stay removed")
         deploy.check_assets()
 
     @patch("deploy.subprocess.check_output", return_value="already-staged.txt")
@@ -54,7 +62,7 @@ class PortfolioChecks(unittest.TestCase):
         deploy.deploy_vps()
         upload = run.call_args_list[-1].args[0]
         self.assertEqual(upload[0], "scp")
-        for resource in ["assets", "stickers_json", "style.css", "script.js", "duck.js"]:
+        for resource in ["assets", "stickers_json", "style.css", "polish.css", "script.js", "duck.js"]:
             self.assertIn(resource, upload)
         self.assertIn("StrictHostKeyChecking=yes", upload)
 

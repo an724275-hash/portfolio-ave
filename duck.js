@@ -1,158 +1,203 @@
-import * as THREE from './assets/vendor/three.module.min.js';
+import * as THREE from 'three';
+import { GLTFLoader } from './assets/vendor/loaders/GLTFLoader.js';
 
 const stage = document.getElementById('duckStage');
 const hint = document.getElementById('duckHint');
+const hero = document.getElementById('hero');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
 let renderer;
 try {
-    renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' });
+    renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
 } catch {
     hint.textContent = 'Фирменная утка ave dev';
     stage.removeAttribute('tabindex');
 }
 
 if (renderer) {
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.4;
+    renderer.toneMappingExposure = 1;
     renderer.domElement.setAttribute('aria-hidden', 'true');
     stage.prepend(renderer.domElement);
+    stage.setAttribute('aria-busy', 'true');
+
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 30);
-    camera.position.set(0, 1.1, 7.8);
-    camera.lookAt(0, .2, 0);
-    scene.add(new THREE.HemisphereLight(0xfff7df, 0x80602a, 2.4));
-    const key = new THREE.DirectionalLight(0xffffff, 4);
-    key.position.set(-3, 5, 4);
+    const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 30);
+    camera.position.set(0, 0.15, 6.6);
+    camera.lookAt(0, 0, 0);
+
+    scene.add(new THREE.HemisphereLight(0xfff7df, 0x513815, 0.84));
+    scene.add(new THREE.AmbientLight(0xffefd0, 0.12));
+    const key = new THREE.DirectionalLight(0xffe2ad, 1.62);
+    key.position.set(-7, 8, 6);
     scene.add(key);
-    const rim = new THREE.DirectionalLight(0xffdc79, 2.5);
-    rim.position.set(4, 3, -3);
+    const fill = new THREE.DirectionalLight(0xc9dcff, 0.42);
+    fill.position.set(4, 1.5, 4.5);
+    scene.add(fill);
+    const rim = new THREE.DirectionalLight(0xffb43b, 0.62);
+    rim.position.set(4, 2, -4);
     scene.add(rim);
 
     const duck = new THREE.Group();
     scene.add(duck);
-    const yellow = new THREE.MeshStandardMaterial({ color: 0xffc928, roughness: .29, metalness: .03 });
-    const wingMaterial = new THREE.MeshStandardMaterial({ color: 0xf2b51b, roughness: .38 });
-    const orange = new THREE.MeshStandardMaterial({ color: 0xf17d16, roughness: .36 });
-    const black = new THREE.MeshStandardMaterial({ color: 0x17120a, roughness: .18 });
-    const white = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    const sphere = new THREE.SphereGeometry(1, 40, 28);
-    function part(material, position, scale) {
-        const mesh = new THREE.Mesh(sphere, material);
-        mesh.position.set(...position);
-        mesh.scale.set(...scale);
-        duck.add(mesh);
-        return mesh;
-    }
-    part(yellow, [0, -.35, 0], [1.18, .87, .9]);
-    part(yellow, [0, .4, .2], [.66, .78, .62]);
-    part(yellow, [0, 1.04, .37], [.78, .77, .73]);
-    part(orange, [0, .88, 1.02], [.46, .13, .49]);
-    part(orange, [0, .76, 1.04], [.42, .085, .42]);
-    const billLine = part(black, [0, .807, 1.27], [.34, .012, .18]);
-    billLine.material = black.clone();
-    billLine.material.color.setHex(0x9e4a11);
-    [-1, 1].forEach(side => {
-        part(black, [side * .43, 1.23, .942], [.094, .12, .065]);
-        part(white, [side * .43 - .018, 1.267, .997], [.025, .03, .012]);
-        const wing = part(wingMaterial, [side * 1.03, -.25, .14], [.22, .46, .58]);
-        wing.rotation.x = -.25;
-        wing.rotation.z = side * -.25;
-    });
-    const tail = part(yellow, [0, -.03, -.86], [.37, .46, .59]);
-    tail.rotation.x = -.55;
-    duck.rotation.set(-.07, -.45, 0);
 
-    let targetX = -.07;
-    let targetY = -.45;
+    const BASE_PITCH = -0.02;
+    const BASE_YAW = -0.34;
+    const POINTER_YAW = 0.34;
+    const POINTER_PITCH = 0.12;
+    let targetPitch = BASE_PITCH;
+    let targetYaw = BASE_YAW;
     let visible = true;
     let frameActive = false;
     let previousTime = 0;
+    let modelReady = false;
     const clamp = THREE.MathUtils.clamp;
+
     function draw() {
         renderer.render(scene, camera);
-        stage.classList.add('duck-ready');
     }
+
     function stop() {
         renderer.setAnimationLoop(null);
         frameActive = false;
         previousTime = 0;
     }
+
     function animate(time) {
-        const dt = previousTime ? Math.min((time - previousTime) / 1000, .05) : 1 / 60;
+        const dt = previousTime ? Math.min((time - previousTime) / 1000, 0.05) : 1 / 60;
         previousTime = time;
-        const smoothing = 1 - Math.exp(-9 * dt);
-        duck.rotation.x += (targetX - duck.rotation.x) * smoothing;
-        duck.rotation.y += (targetY - duck.rotation.y) * smoothing;
+        const easing = 1 - Math.exp(-6.2 * dt);
+        duck.rotation.x += (targetPitch - duck.rotation.x) * easing;
+        duck.rotation.y += (targetYaw - duck.rotation.y) * easing;
         draw();
-        if (Math.abs(targetX - duck.rotation.x) + Math.abs(targetY - duck.rotation.y) < .001) stop();
+        if (Math.abs(targetPitch - duck.rotation.x) + Math.abs(targetYaw - duck.rotation.y) < 0.0007) stop();
     }
+
     function requestRender() {
-        if (!visible || document.hidden) return;
+        if (!modelReady || !visible || document.hidden) return;
         if (reducedMotion.matches) {
             stop();
-            duck.rotation.set(-.07, -.45, 0);
+            duck.rotation.set(BASE_PITCH, BASE_YAW, 0);
             draw();
         } else if (!frameActive) {
             frameActive = true;
             renderer.setAnimationLoop(animate);
         }
     }
+
     function resize() {
         const width = stage.clientWidth;
         const height = stage.clientHeight;
         if (!width || !height) return;
-        renderer.setSize(width, height);
+        renderer.setSize(width, height, false);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
-        draw();
+        if (modelReady) draw();
     }
+
+    new GLTFLoader().load(
+        './assets/models/ave-duck.glb',
+        gltf => {
+            const model = gltf.scene;
+            const bounds = new THREE.Box3().setFromObject(model);
+            const center = bounds.getCenter(new THREE.Vector3());
+            const size = bounds.getSize(new THREE.Vector3());
+            const scale = 2.65 / size.y;
+            model.scale.setScalar(scale);
+            model.position.set(-center.x * scale, -center.y * scale + 0.14, -center.z * scale);
+            model.traverse(child => {
+                if (!child.isMesh) return;
+                child.frustumCulled = true;
+                const materials = Array.isArray(child.material) ? child.material : [child.material];
+                materials.forEach(material => {
+                    material.envMapIntensity = 0.65;
+                    ['map', 'normalMap', 'roughnessMap', 'metalnessMap', 'aoMap'].forEach(key => {
+                        if (material[key]) material[key].anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+                    });
+                });
+            });
+            duck.add(model);
+            duck.rotation.set(BASE_PITCH, BASE_YAW, 0);
+            modelReady = true;
+            stage.classList.add('duck-ready');
+            stage.removeAttribute('aria-busy');
+            resize();
+            requestRender();
+        },
+        undefined,
+        () => {
+            stage.removeAttribute('aria-busy');
+            stage.removeAttribute('tabindex');
+            hint.textContent = 'Фирменная утка ave dev';
+        }
+    );
+
     new ResizeObserver(resize).observe(stage);
     new IntersectionObserver(entries => {
         visible = entries[0].isIntersecting;
         if (visible) requestRender();
         else stop();
     }).observe(stage);
-    document.addEventListener('visibilitychange', () => document.hidden ? stop() : requestRender());
+
     function updatePointer(event) {
         if (reducedMotion.matches || !visible) return;
         if (event.pointerType === 'touch' && !stage.contains(event.target)) return;
         const bounds = stage.getBoundingClientRect();
         const x = (event.clientX - bounds.left - bounds.width / 2) / (bounds.width / 2);
         const y = (event.clientY - bounds.top - bounds.height / 2) / (bounds.height / 2);
-        targetY = clamp(x, -1.5, 1.5) * .85;
-        targetX = clamp(y, -1, 1) * .28 - .07;
+        targetYaw = BASE_YAW + clamp(x, -1, 1) * POINTER_YAW;
+        targetPitch = BASE_PITCH + clamp(y, -1, 1) * POINTER_PITCH;
         requestRender();
     }
-    document.getElementById('hero').addEventListener('pointermove', updatePointer, { passive: true });
-    document.getElementById('hero').addEventListener('pointerleave', () => {
-        targetX = -.07; targetY = -.45; requestRender();
+
+    hero.addEventListener('pointermove', updatePointer, { passive: true });
+    hero.addEventListener('pointerleave', () => {
+        targetPitch = BASE_PITCH;
+        targetYaw = BASE_YAW;
+        requestRender();
     });
+
     stage.addEventListener('keydown', event => {
         if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home'].includes(event.key)) return;
         event.preventDefault();
-        if (event.key === 'ArrowLeft') targetY -= .25;
-        if (event.key === 'ArrowRight') targetY += .25;
-        if (event.key === 'ArrowUp') targetX -= .15;
-        if (event.key === 'ArrowDown') targetX += .15;
-        if (event.key === 'Home') { targetX = -.07; targetY = -.45; }
-        targetX = clamp(targetX, -.5, .5);
-        targetY = clamp(targetY, -1.5, 1.5);
+        if (event.key === 'ArrowLeft') targetYaw -= 0.16;
+        if (event.key === 'ArrowRight') targetYaw += 0.16;
+        if (event.key === 'ArrowUp') targetPitch -= 0.08;
+        if (event.key === 'ArrowDown') targetPitch += 0.08;
+        if (event.key === 'Home') {
+            targetPitch = BASE_PITCH;
+            targetYaw = BASE_YAW;
+        }
+        targetPitch = clamp(targetPitch, BASE_PITCH - 0.2, BASE_PITCH + 0.2);
+        targetYaw = clamp(targetYaw, BASE_YAW - 0.5, BASE_YAW + 0.5);
         requestRender();
     });
+
     function updateHint() {
-        hint.textContent = reducedMotion.matches ? 'Фирменная утка ave dev · движение отключено' : matchMedia('(pointer: coarse)').matches ? 'Проведите пальцем по утке' : 'Поведите курсором — я слежу за вами';
+        hint.textContent = reducedMotion.matches
+            ? 'Фирменная утка ave dev · движение отключено'
+            : matchMedia('(pointer: coarse)').matches
+                ? 'Проведите пальцем по утке'
+                : 'Двигайте курсором, утка повернётся за ним';
         requestRender();
     }
+
     reducedMotion.addEventListener('change', updateHint);
+    document.addEventListener('visibilitychange', () => document.hidden ? stop() : requestRender());
     renderer.domElement.addEventListener('webglcontextlost', event => {
         event.preventDefault();
         stop();
         stage.classList.remove('duck-ready');
         hint.textContent = 'Фирменная утка ave dev';
     });
-    renderer.domElement.addEventListener('webglcontextrestored', () => { resize(); updateHint(); });
+    renderer.domElement.addEventListener('webglcontextrestored', () => {
+        if (modelReady) stage.classList.add('duck-ready');
+        resize();
+        updateHint();
+    });
+
     resize();
     updateHint();
 }
