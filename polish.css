@@ -427,9 +427,18 @@ html[data-theme="light"] .duck-stage::after {
 }
 
 .reveal-scroll {
+    opacity: 0;
+    transform: translate3d(0, 1.25rem, 0);
+    transition:
+        opacity 480ms ease-out,
+        transform 640ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.reveal-scroll.active {
     opacity: 1;
-    transform: none;
-    transition: none;
+    transform: translate3d(0, 0, 0);
+    will-change: auto;
 }
 
 /* Project carousel */
@@ -504,6 +513,20 @@ html[data-theme="light"] .duck-stage::after {
     font-weight: 650;
 }
 
+.rail-card-body .slide-top-meta > div:first-child {
+    display: grid;
+    flex: 0 0 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+}
+
+.rail-card-body .slide-chip i {
+    width: 1.05em;
+    color: var(--accent-gold);
+    text-align: center;
+}
+
 .project-features {
     font-family: var(--font-sans);
     font-size: 0.86rem;
@@ -571,7 +594,7 @@ html[data-theme="light"] :is(#cases, #process, #contacts) .eyebrow {
     box-shadow: none;
     transform: scaleY(0);
     transform-origin: center top;
-    transition: none;
+    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform;
 }
 
@@ -1006,7 +1029,21 @@ footer {
     }
 
     .golden-rail-container {
-        padding-left: 1.15rem !important;
+        padding-left: 2rem !important;
+    }
+
+    .rail-track-line,
+    .rail-glow-progress {
+        left: 0.55rem;
+    }
+
+    .rail-node-dot {
+        left: -2rem !important;
+        transform: translateX(calc(0.55rem - 50%));
+    }
+
+    .rail-item-node.active .rail-node-dot {
+        transform: translateX(calc(0.55rem - 50%)) scale(1.3);
     }
 
     .rail-card-body,
@@ -1154,5 +1191,14 @@ footer {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .rail-glow-progress { will-change: auto; }
+    .reveal-scroll {
+        opacity: 1;
+        transform: none;
+        will-change: auto;
+    }
+
+    .rail-glow-progress {
+        transition: none;
+        will-change: auto;
+    }
 }

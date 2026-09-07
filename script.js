@@ -1,6 +1,20 @@
 const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
 const themeButton = document.getElementById('themeToggleBtn');
 
+const revealElements = Array.from(document.querySelectorAll('.reveal-scroll'));
+if (motionPreference.matches || !('IntersectionObserver' in window)) {
+    revealElements.forEach(element => element.classList.add('active'));
+} else {
+    const revealObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('active');
+            revealObserver.unobserve(entry.target);
+        });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    revealElements.forEach(element => revealObserver.observe(element));
+}
+
 function applyTheme(theme) {
     document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
     themeButton.innerHTML = theme === 'light'
