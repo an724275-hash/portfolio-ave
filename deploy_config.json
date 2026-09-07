@@ -1,5 +1,5 @@
 {
-    "github_repo": "git@github.com:username/portfolio.git",
+    "github_repo": "https://github.com/an724275-hash/portfolio-ave.git",
     "vps_ip": "194.58.120.40",
     "vps_user": "root",
     "vps_path": "/var/www/ave_dev_portfolio",
