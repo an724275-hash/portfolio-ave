@@ -3,27 +3,1727 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Артем · ave dev — разработка сайтов и Telegram-ботов</title>
-    <meta name="description" content="Сайты для бизнеса, интернет-каталоги и Telegram-боты. Портфолио Артема (ave dev): проекты, процесс работы и контакты." />
+    <title>Артем (ave dev) — Full-stack & Python Инженер</title>
+    <meta name="description" content="Разработка веб-сервисов, сайтов и Telegram-систем под ключ. Артем (ave dev)." />
     <meta name="theme-color" content="#0C0C0A" />
 
-    <link rel="icon" type="image/png" href="avatar.png">
-    <link rel="canonical" href="https://giveaway-one.ru/">
-    <meta name="robots" content="index, follow">
-    <meta name="keywords" content="разработка сайтов, Telegram-боты, сайты для бизнеса, портфолио разработчика, ave dev">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="ru_RU">
-    <meta property="og:title" content="Артем · ave dev — сайты и Telegram-боты">
-    <meta property="og:description" content="Портфолио разработчика: сайты для бизнеса, каталоги, сервисы и Telegram-боты. Посмотрите проекты и обсудим вашу задачу.">
-    <meta property="og:url" content="https://giveaway-one.ru/">
-    <meta property="og:image" content="https://giveaway-one.ru/avatar.png">
-    <meta name="twitter:card" content="summary">
-    <link rel="stylesheet" href="assets/vendor/fontawesome.min.css">
-    <link rel="stylesheet" href="style.css">
-    <script src="assets/vendor/lottie.min.js" defer></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Lottie Web Player for Animated Telegram Stickers -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root, html[data-theme="dark"] {
+            --bg-main: #0C0C0A;
+            --bg-card: #151412;
+            --bg-card-hover: #1E1C18;
+            --bg-pill: #211F1A;
+            
+            --accent-gold: #F4C444;
+            --accent-gold-hover: #FFD254;
+            --accent-gold-light: rgba(244, 196, 68, 0.12);
+            --accent-gold-glow: rgba(244, 196, 68, 0.25);
+            
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(244, 196, 68, 0.35);
+            
+            --text-main: #F6F3EA;
+            --text-muted: #A39D91;
+            --text-dim: #787267;
+
+            --shape-color: rgba(244, 196, 68, 0.14);
+
+            --tg-card-bg: #1B1A17;
+            --tg-banner-bg: #0E0E0C;
+            --tg-box-bg: rgba(255, 255, 255, 0.05);
+            --tg-box-hover: rgba(255, 255, 255, 0.09);
+            --tg-text-name: #FFFFFF;
+            
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            --radius-pill: 9999px;
+            --radius-card: 28px;
+            
+            --transition-smooth: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        html[data-theme="light"] {
+            --bg-main: #F6F4EE;
+            --bg-card: #FFFFFF;
+            --bg-card-hover: #EDE8DE;
+            --bg-pill: #E5DFD3;
+            
+            --accent-gold: #C68E08;
+            --accent-gold-hover: #A67400;
+            --accent-gold-light: rgba(198, 142, 8, 0.14);
+            --accent-gold-glow: rgba(198, 142, 8, 0.25);
+            
+            --border-color: rgba(0, 0, 0, 0.10);
+            --border-hover: rgba(198, 142, 8, 0.45);
+            
+            --text-main: #1A1917;
+            --text-muted: #5C564C;
+            --text-dim: #8A8378;
+
+            --shape-color: rgba(0, 0, 0, 0.13);
+
+            --tg-card-bg: #FFFFFF;
+            --tg-banner-bg: #EBE7DF;
+            --tg-box-bg: rgba(0, 0, 0, 0.04);
+            --tg-box-hover: rgba(0, 0, 0, 0.08);
+            --tg-text-name: #1A1917;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            overflow-x: hidden;
+            background: var(--bg-main);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+            color: inherit;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .shell {
+            max-width: 1160px;
+            margin-inline: auto;
+            padding-inline: 1.5rem;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ----------------------------------------------------
+           HOVER REVEAL GROUP CARDS (TECH STACK)
+           ---------------------------------------------------- */
+        /* ----------------------------------------------------
+           HOVER REVEAL GROUP CARDS (TECH STACK)
+           ---------------------------------------------------- */
+        .stack-hover-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.75rem;
+            margin-top: 3rem;
+            margin-bottom: 5.5rem;
+        }
+
+        .stack-hover-card {
+            position: relative;
+            height: 220px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2rem;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+
+        .stack-hover-card:hover {
+            border-color: var(--accent-gold);
+            transform: translateY(-6px) translateZ(0);
+            box-shadow: 0 20px 50px rgba(244, 196, 68, 0.16);
+        }
+
+        .card-default-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 0.8rem;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+        }
+
+        .stack-hover-card:hover .card-default-content {
+            opacity: 0;
+            transform: scale(0.9) translateY(-20px);
+            pointer-events: none;
+        }
+
+        .card-icon-lg {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: rgba(244, 196, 68, 0.1);
+            border: 1px solid rgba(244, 196, 68, 0.25);
+            color: var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+        }
+
+        .card-category-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .card-count-tag {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            background: rgba(244, 196, 68, 0.1);
+            border: 1px solid rgba(244, 196, 68, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-pill);
+        }
+
+        .card-hover-content {
+            position: absolute;
+            inset: 0;
+            padding: 1.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .stack-hover-card:hover .card-hover-content {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+        }
+
+        .card-tools-grid {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.65rem;
+        }
+
+        /* ----------------------------------------------------
+           GUARDIANBOT FLOATING INTERACTIVE BACKGROUND SHAPES
+           ---------------------------------------------------- */
+        .ambient-shapes-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .bg-interactive-shape {
+            position: absolute;
+            color: var(--shape-color);
+            pointer-events: none;
+            will-change: transform;
+            transform-origin: center center;
+            transform: translateZ(0);
+            transition: color 0.4s ease;
+        }
+
+        .spin-cw-fast {
+            animation: spinCW 26s linear infinite;
+            will-change: transform;
+        }
+
+        .spin-ccw-medium {
+            animation: spinCCW 38s linear infinite;
+            will-change: transform;
+        }
+
+        .spin-cw-slow {
+            animation: spinCW 54s linear infinite;
+            will-change: transform;
+        }
+
+        .spin-ccw-slow {
+            animation: spinCCW 70s linear infinite;
+            will-change: transform;
+        }
+
+        @keyframes spinCW {
+            from { transform: rotate(0deg) translateZ(0); }
+            to { transform: rotate(360deg) translateZ(0); }
+        }
+
+        @keyframes spinCCW {
+            from { transform: rotate(0deg) translateZ(0); }
+            to { transform: rotate(-360deg) translateZ(0); }
+        }
+
+        /* ----------------------------------------------------
+           WAVY SECTION DIVIDERS (GUARDIANBOT STYLE - IMAGE 2)
+           ---------------------------------------------------- */
+        .wavy-divider {
+            width: 100%;
+            height: 38px;
+            overflow: hidden;
+            line-height: 0;
+            margin-block: 2.5rem;
+            position: relative;
+            z-index: 5;
+            opacity: 0.6;
+        }
+
+        .wavy-divider svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ----------------------------------------------------
+           SIDE SCROLL INDICATOR DOTS (IMAGE 3)
+           ---------------------------------------------------- */
+        .side-dots-nav {
+            position: fixed;
+            right: 1.6rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 95;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        @media (max-width: 1024px) {
+            .side-dots-nav {
+                display: none !important;
+            }
+        }
+
+        .side-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.22);
+            transition: transform 0.3s ease, background-color 0.3s ease, height 0.3s ease;
+            cursor: pointer;
+            display: block;
+        }
+
+        .side-dot:hover {
+            background: rgba(244, 196, 68, 0.6);
+            transform: scale(1.3);
+        }
+
+        .side-dot.active {
+            height: 22px;
+            border-radius: var(--radius-pill);
+            background: var(--accent-gold);
+            box-shadow: 0 0 14px var(--accent-gold);
+        }
+
+        /* ----------------------------------------------------
+           NAVBAR: EXPAND ON SCROLL UP / COMPACT ON SCROLL DOWN
+           ---------------------------------------------------- */
+        .navbar-wrap {
+            position: fixed;
+            top: 1.25rem;
+            inset-inline: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            padding-inline: 1rem;
+            pointer-events: none;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+
+        .navbar-pill {
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            padding: 0.65rem 1.4rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-pill);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+            transition: padding 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.3s ease, border-color 0.3s ease, gap 0.3s ease;
+            will-change: padding, gap;
+            transform: translateZ(0);
+        }
+
+        .nav-collapsible {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            max-width: 500px;
+            opacity: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            transition: max-width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s ease;
+            will-change: max-width, opacity;
+        }
+
+        .navbar-wrap.scrolled .nav-collapsible {
+            max-width: 0px;
+            opacity: 0;
+            margin: 0;
+            gap: 0;
+            pointer-events: none;
+        }
+
+        .navbar-wrap.scrolled .navbar-pill {
+            padding: 0.45rem 1.15rem;
+            background: var(--bg-card-hover);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            border-color: rgba(244, 196, 68, 0.3);
+            gap: 0.8rem;
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 800;
+            font-size: 1.05rem;
+            letter-spacing: -0.01em;
+        }
+
+        .brand-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-gold);
+        }
+
+        .nav-links {
+            display: none;
+            align-items: center;
+            gap: 1.4rem;
+            list-style: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        @media (min-width: 768px) {
+            .nav-links { display: flex; }
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        .nav-divider {
+            display: none;
+            width: 1px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        @media (min-width: 768px) {
+            .nav-divider { display: block; }
+        }
+
+
+
+        .btn-nav-gold {
+            padding: 0.5rem 1.25rem;
+            background: var(--accent-gold);
+            color: #0E0E0C;
+            font-weight: 800;
+            font-size: 0.85rem;
+            border-radius: var(--radius-pill);
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-nav-gold:hover {
+            background: var(--accent-gold-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--accent-gold-glow);
+        }
+
+        /* ----------------------------------------------------
+           SECTIONS & LAYOUT
+           ---------------------------------------------------- */
+        .section {
+            padding-block: 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-bg-shapes {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* ----------------------------------------------------
+           HERO SECTION
+           ---------------------------------------------------- */
+        .hero-section {
+            min-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-top: 7rem;
+            padding-bottom: 4rem;
+            text-align: left;
+        }
+
+        .hero-header-top {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-sticker-top {
+            width: 110px;
+            height: 110px;
+            flex-shrink: 0;
+        }
+
+        .hero-title {
+            font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+            font-weight: 900;
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+            color: var(--text-main);
+            max-width: 920px;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title span {
+            color: var(--accent-gold);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.25rem);
+            line-height: 1.65;
+            color: var(--text-muted);
+            max-width: 760px;
+            margin-bottom: 2.75rem;
+            font-weight: 400;
+        }
+
+        .hero-bottom-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1.25rem;
+            position: relative;
+        }
+
+        .hero-sticker-bottom {
+            width: 95px;
+            height: 95px;
+            flex-shrink: 0;
+            margin-left: -0.25rem;
+        }
+
+        .btn-primary-gold {
+            padding: 0.95rem 2.2rem;
+            background: var(--accent-gold);
+            color: #0E0E0C;
+            font-weight: 800;
+            font-size: 1.05rem;
+            border-radius: var(--radius-pill);
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary-gold:hover {
+            background: var(--accent-gold-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px var(--accent-gold-glow);
+        }
+
+        .btn-secondary-dark {
+            padding: 0.95rem 2rem;
+            background: var(--bg-pill);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: var(--radius-pill);
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary-dark:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+            transform: translateY(-3px);
+        }
+
+        /* ----------------------------------------------------
+           TYPOGRAPHY & REVEAL ANIMATIONS
+           ---------------------------------------------------- */
+        .reveal-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .reveal-scroll.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .eyebrow {
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-gold);
+            margin-bottom: 0.75rem;
+        }
+
+        .display-title {
+            font-size: clamp(2.1rem, 4vw, 3.2rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            line-height: 1.15;
+        }
+
+        .display-title span {
+            color: var(--accent-gold);
+        }
+
+        .section-desc {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+        }
+
+        /* ----------------------------------------------------
+           PROJECTS HORIZONTAL SLIDER
+           ---------------------------------------------------- */
+        .carousel-tabs-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .carousel-tab-btn {
+            padding: 0.6rem 1.25rem;
+            background: var(--bg-pill);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: var(--radius-pill);
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .carousel-tab-btn:hover {
+            color: var(--text-main);
+            border-color: var(--border-hover);
+        }
+
+        .carousel-tab-btn.active {
+            background: var(--accent-gold);
+            color: #0E0E0C;
+            border-color: var(--accent-gold);
+            font-weight: 800;
+        }
+
+        .carousel-viewport {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-card);
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+            width: 100%;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-card);
+            padding: 3rem 2.5rem;
+            display: grid;
+            grid-template-columns: 1.25fr 0.75fr;
+            gap: 2.5rem;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 850px) {
+            .carousel-slide {
+                grid-template-columns: 1fr;
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        .slide-top-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+
+        .slide-lottie-box {
+            width: 75px;
+            height: 75px;
+        }
+
+        .slide-index {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            background: var(--accent-gold-light);
+            padding: 0.3rem 0.8rem;
+            border-radius: var(--radius-pill);
+        }
+
+        .slide-title {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .slide-subtitle {
+            font-size: 0.98rem;
+            color: var(--accent-gold);
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+        }
+
+        .slide-narrative {
+            font-size: 1.02rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 1.75rem;
+        }
+
+        .slide-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .slide-chip {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--text-main);
+            background: var(--bg-pill);
+            padding: 0.3rem 0.75rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .slide-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--accent-gold);
+            transition: var(--transition-smooth);
+        }
+
+        .slide-action-btn:hover {
+            color: var(--accent-gold-hover);
+            transform: translateX(4px);
+        }
+
+        .slide-preview-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2.5rem 1.75rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+            transition: var(--transition-smooth);
+        }
+
+        .slide-preview-panel:hover {
+            border-color: var(--accent-gold);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(244, 196, 68, 0.12);
+        }
+
+        .slide-preview-lottie {
+            width: 130px;
+            height: 130px;
+            margin-bottom: 1rem;
+        }
+
+        .carousel-controls {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+        }
+
+        .btn-arrow {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: var(--bg-pill);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .btn-arrow:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            transform: scale(1.08);
+        }
+
+        /* ----------------------------------------------------
+           INTERACTIVE GOLDEN RAIL TIMELINE
+           ---------------------------------------------------- */
+        .golden-rail-container {
+            position: relative;
+            padding-left: 3rem;
+            margin-top: 2.5rem;
+        }
+
+        .rail-track-line {
+            position: absolute;
+            left: 1rem;
+            top: 2rem;
+            bottom: 2rem;
+            width: 3px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 9999px;
+        }
+
+        .rail-glow-progress {
+            position: absolute;
+            left: 1rem;
+            top: 2rem;
+            width: 3px;
+            height: 0%;
+            background: linear-gradient(180deg, var(--accent-gold) 0%, var(--accent-gold-hover) 100%);
+            box-shadow: 0 0 14px var(--accent-gold);
+            border-radius: 9999px;
+            transition: height 0.4s ease-out;
+        }
+
+        .rail-item-node {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+
+        .rail-item-node:last-child {
+            margin-bottom: 0;
+        }
+
+        .rail-node-dot {
+            position: absolute;
+            left: -3rem;
+            top: 2.2rem;
+            transform: translateX(calc(1rem - 50%));
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 10;
+        }
+
+        .rail-item-node.active .rail-node-dot {
+            border-color: var(--accent-gold);
+            background: var(--accent-gold);
+            box-shadow: 0 0 20px var(--accent-gold), 0 0 35px var(--accent-gold-glow);
+            transform: translateX(calc(1rem - 50%)) scale(1.3);
+        }
+
+        .rail-card-body {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-card);
+            padding: 2.75rem 2.5rem;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 2.5rem;
+            align-items: center;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0.35;
+            transform: translateX(25px);
+        }
+
+        .rail-item-node.active .rail-card-body {
+            opacity: 1;
+            transform: translateX(0);
+            border-color: rgba(244, 196, 68, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        @media (max-width: 850px) {
+            .golden-rail-container {
+                padding-left: 2rem;
+            }
+            .rail-card-body {
+                grid-template-columns: 1fr;
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        /* ----------------------------------------------------
+           ARTHOUSE PIPELINE (ORGANIC STAGGERED FLOW WITH ARROWS)
+           ---------------------------------------------------- */
+        .arthouse-pipeline-container {
+            position: relative;
+            min-height: 940px;
+            margin-top: 3rem;
+        }
+
+        .arthouse-svg-layer {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: visible;
+        }
+
+        .arthouse-arrow-path {
+            stroke: var(--accent-gold);
+            stroke-width: 2.8;
+            stroke-linecap: round;
+            stroke-dasharray: 10 6;
+            animation: dashFlow 20s linear infinite;
+            filter: drop-shadow(0 0 10px var(--accent-gold-glow));
+            opacity: 0.85;
+            will-change: stroke-dashoffset;
+        }
+
+        .arthouse-card {
+            position: absolute;
+            z-index: 2;
+            width: 45%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.25rem 2rem;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+            will-change: transform;
+            transform: translateZ(0);
+        }
+
+        .arthouse-card:hover {
+            border-color: var(--accent-gold);
+            transform: scale(1.03) rotate(0deg) !important;
+            z-index: 10;
+            box-shadow: 0 20px 50px rgba(244, 196, 68, 0.18);
+        }
+
+        .arthouse-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .step-pill-badge {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: var(--accent-gold);
+            background: rgba(244, 196, 68, 0.1);
+            border: 1px solid rgba(244, 196, 68, 0.25);
+            padding: 0.35rem 0.85rem;
+            border-radius: var(--radius-pill);
+            text-transform: uppercase;
+        }
+
+        .step-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: var(--bg-pill);
+            border: 1px solid var(--border-color);
+            color: var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            transition: var(--transition-smooth);
+        }
+
+        .arthouse-card:hover .step-icon-box {
+            background: var(--accent-gold);
+            color: #0E0E0C;
+            border-color: var(--accent-gold);
+            transform: rotate(6deg) scale(1.08);
+        }
+
+        .arthouse-card-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .micro-chip {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: var(--bg-pill);
+            border: 1px solid var(--border-color);
+            padding: 0.25rem 0.65rem;
+            border-radius: 8px;
+        }
+
+        .arthouse-card-1 { left: 1%; top: 20px; transform: rotate(-1.8deg); }
+        .arthouse-card-2 { right: 1%; top: 140px; transform: rotate(2deg); }
+        .arthouse-card-3 { left: 4%; top: 480px; transform: rotate(-1.2deg); }
+        .arthouse-card-4 { right: 2%; top: 590px; transform: rotate(2.4deg); }
+
+        @media (max-width: 900px) {
+            .arthouse-pipeline-container {
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+                min-height: auto;
+            }
+            .arthouse-card {
+                position: relative;
+                width: 100%;
+                left: 0 !important;
+                right: 0 !important;
+                top: 0 !important;
+                transform: none !important;
+            }
+            .arthouse-svg-layer {
+                display: none;
+            }
+        }
+
+        /* ----------------------------------------------------
+           APPROACH & PROCESS CARDS
+           ---------------------------------------------------- */
+        .cards-trio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-card);
+            padding: 2.25rem 2rem;
+            transition: var(--transition-smooth);
+        }
+
+        .info-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-5px);
+        }
+
+        .info-card-icon {
+            font-size: 1.6rem;
+            color: var(--accent-gold);
+            margin-bottom: 1.25rem;
+        }
+
+        .info-card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.6rem;
+        }
+
+        .info-card-desc {
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ----------------------------------------------------
+           TECH STACK GRID
+           ---------------------------------------------------- */
+        .stack-pills-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.85rem;
+            margin-top: 1.5rem;
+        }
+
+        .tech-pill {
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            background: var(--bg-pill);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.65rem 1.25rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .tech-pill:hover {
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(244, 196, 68, 0.15);
+        }
+
+        /* ----------------------------------------------------
+           CTA SECTION
+           ---------------------------------------------------- */
+        .cta-section {
+            padding: 7rem 0 10rem 0;
+            margin-bottom: 5rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        .theme-toggle-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            margin-left: 0.2rem;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            transform: scale(1.08) rotate(15deg);
+        }
+
+        /* ----------------------------------------------------
+           TELEGRAM NATIVE PROFILE CARD (CONTACT SECTION)
+           ---------------------------------------------------- */
+        .tg-profile-container {
+            max-width: 620px;
+            margin: 2.5rem auto 0 auto;
+        }
+
+        .tg-profile-card {
+            background: var(--tg-card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .tg-profile-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--border-hover);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4), 0 0 50px var(--accent-gold-glow);
+        }
+
+        .tg-profile-banner {
+            position: relative;
+            padding: 4.5rem 2rem 2.5rem 2rem;
+            background: var(--tg-banner-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .tg-profile-banner::before {
+            content: '';
+            position: absolute;
+            bottom: -35%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 440px;
+            height: 440px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-gold-glow) 0%, var(--accent-gold-light) 45%, transparent 75%);
+            animation: orbPulse 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes orbPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.75; }
+            50% { transform: translateX(-50%) scale(1.65) translateY(-30px); opacity: 1; }
+        }
+
+        .tg-avatar-wrapper {
+            position: relative;
+            z-index: 2;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            padding: 3px;
+            background: var(--tg-card-bg);
+            border: 1px solid var(--border-color);
+            margin-bottom: 0.75rem;
+        }
+
+        .tg-avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .tg-name-row {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.85rem;
+            font-weight: 900;
+            color: var(--tg-text-name);
+        }
+
+        .tg-name-sticker {
+            width: 36px;
+            height: 36px;
+            display: inline-block;
+        }
+
+        .tg-bottom-sticker {
+            width: 80px;
+            height: 80px;
+            margin-top: 1.25rem;
+        }
+
+        .tg-status-online {
+            position: relative;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+        }
+
+        .tg-status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4ADE80;
+            box-shadow: 0 0 8px #4ADE80;
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.85); }
+        }
+
+        .tg-profile-body {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            background: var(--tg-card-bg);
+        }
+
+        .tg-channel-box {
+            background: var(--tg-box-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+        }
+
+        .tg-channel-box:hover {
+            background: var(--tg-box-hover);
+            border-color: var(--border-hover);
+        }
+
+        .tg-channel-left {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .tg-channel-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .tg-channel-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.2rem;
+        }
+
+        .tg-channel-sub {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .tg-info-row {
+            background: var(--tg-box-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 0.9rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.2rem;
+        }
+
+        .tg-info-label {
+            font-size: 0.78rem;
+            font-weight: 400;
+            color: #8E8E93;
+        }
+
+        .tg-info-value {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #24A1DE;
+        }
+
+        .tg-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.06);
+            margin: 0.25rem 0;
+        }
+
+        /* ----------------------------------------------------
+           CTA SECTION & FOOTER
+           ---------------------------------------------------- */
+        .cta-inner {
+            text-align: center;
+            max-width: 760px;
+            margin-inline: auto;
+        }
+
+        .cta-lottie-container {
+            width: 140px;
+            height: 140px;
+            margin-inline: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-title {
+            font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 1.25rem;
+            line-height: 1.1;
+        }
+
+        .cta-title span {
+            color: var(--accent-gold);
+        }
+
+        .cta-desc {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding-block: 3rem;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .footer-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        /* ====================================================
+           COMPREHENSIVE MOBILE RESPONSIVE SYSTEM (360px - 768px)
+           ==================================================== */
+        @media (max-width: 768px) {
+            html, body {
+                overflow-x: hidden !important;
+                width: 100% !important;
+                max-width: 100vw !important;
+            }
+
+            .shell {
+                padding-inline: 1rem !important;
+                width: 100% !important;
+                max-width: 100vw !important;
+                box-sizing: border-box !important;
+            }
+
+            .section {
+                padding-block: 3.5rem 2.5rem !important;
+            }
+
+            /* HIDE OVERLAPPING SIDE DOTS ON MOBILE */
+            .side-dots-nav {
+                display: none !important;
+            }
+
+            /* SCALED BACKGROUND SHAPES FOR MOBILE */
+            .bg-interactive-shape svg {
+                transform: scale(0.55) !important;
+                transform-origin: center center;
+            }
+
+            /* NAVBAR PILL MOBILE FIT */
+            .navbar-wrap {
+                top: 0.5rem !important;
+                padding-inline: 0.5rem !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            .navbar-pill {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0.45rem 0.75rem !important;
+                justify-content: space-between !important;
+                gap: 0.4rem !important;
+            }
+
+            .brand-link span {
+                font-size: 0.9rem !important;
+            }
+
+            .btn-nav-gold {
+                padding: 0.4rem 0.75rem !important;
+                font-size: 0.76rem !important;
+            }
+
+            .theme-toggle-btn {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 0.8rem !important;
+            }
+
+            /* HERO SECTION MOBILE TUNING */
+            .hero-section {
+                padding-top: 5rem !important;
+                padding-bottom: 2rem !important;
+                min-height: auto !important;
+            }
+
+            .hero-header-top {
+                margin-bottom: 0.75rem !important;
+            }
+
+            .hero-sticker-top {
+                width: 65px !important;
+                height: 65px !important;
+            }
+
+            .hero-title {
+                font-size: clamp(1.75rem, 7vw, 2.4rem) !important;
+                line-height: 1.15 !important;
+                margin-bottom: 1rem !important;
+                letter-spacing: -0.02em !important;
+            }
+
+            .hero-subtitle {
+                font-size: 0.92rem !important;
+                line-height: 1.55 !important;
+                margin-bottom: 1.75rem !important;
+            }
+
+            .hero-bottom-row {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 0.75rem !important;
+                width: 100% !important;
+            }
+
+            .btn-primary-gold, .btn-secondary-dark {
+                width: 100% !important;
+                justify-content: center !important;
+                text-align: center !important;
+                box-sizing: border-box !important;
+                padding: 0.85rem 1.25rem !important;
+            }
+
+            .hero-sticker-bottom {
+                width: 70px !important;
+                height: 70px !important;
+                align-self: center !important;
+                margin-top: 0.5rem !important;
+            }
+
+            /* CASES SECTION TABS & CAROUSEL MOBILE */
+            .carousel-tabs-row {
+                display: flex !important;
+                overflow-x: auto !important;
+                flex-wrap: nowrap !important;
+                gap: 0.5rem !important;
+                padding-bottom: 0.5rem !important;
+                margin-bottom: 1.25rem !important;
+                -webkit-overflow-scrolling: touch !important;
+                scrollbar-width: none !important;
+            }
+
+            .carousel-tabs-row::-webkit-scrollbar {
+                display: none !important;
+            }
+
+            .carousel-tab-btn {
+                flex-shrink: 0 !important;
+                white-space: nowrap !important;
+                padding: 0.5rem 0.85rem !important;
+                font-size: 0.78rem !important;
+            }
+
+            .carousel-slide {
+                padding: 1.35rem 1.15rem !important;
+                border-radius: 20px !important;
+                grid-template-columns: 1fr !important;
+                gap: 1.25rem !important;
+            }
+
+            .slide-title {
+                font-size: 1.35rem !important;
+            }
+
+            .slide-subtitle {
+                font-size: 0.88rem !important;
+            }
+
+            .slide-narrative {
+                font-size: 0.88rem !important;
+                line-height: 1.55 !important;
+            }
+
+            .slide-action-btn {
+                width: 100% !important;
+                justify-content: center !important;
+                box-sizing: border-box !important;
+            }
+
+            .slide-preview-panel {
+                padding: 1rem !important;
+            }
+
+            /* APPROACH GOLDEN RAIL TIMELINE MOBILE */
+            .golden-rail-container {
+                padding-left: 1.25rem !important;
+            }
+
+            .golden-rail-line {
+                left: 6px !important;
+            }
+
+            .rail-node-dot {
+                left: -1.25rem !important;
+                width: 14px !important;
+                height: 14px !important;
+            }
+
+            .rail-item-node .rail-card-body {
+                opacity: 1 !important;
+                transform: none !important;
+                padding: 1.25rem 1rem !important;
+                border-radius: 18px !important;
+                grid-template-columns: 1fr !important;
+                gap: 1.25rem !important;
+            }
+
+            /* PROCESS PIPELINE MOBILE */
+            .arthouse-pipeline-container {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 1.25rem !important;
+                min-height: auto !important;
+            }
+
+            .arthouse-card {
+                position: relative !important;
+                width: 100% !important;
+                left: 0 !important;
+                right: 0 !important;
+                top: 0 !important;
+                transform: none !important;
+                padding: 1.35rem 1.15rem !important;
+                border-radius: 20px !important;
+                box-sizing: border-box !important;
+            }
+
+            .arthouse-svg-layer {
+                display: none !important;
+            }
+
+            /* TECH STACK HOVER GRID MOBILE */
+            .stack-hover-grid {
+                grid-template-columns: 1fr !important;
+                gap: 1.25rem !important;
+            }
+
+            .stack-hover-card {
+                padding: 1.5rem 1.25rem !important;
+                border-radius: 20px !important;
+            }
+
+            .stack-hover-card .card-hover-content {
+                opacity: 1 !important;
+                visibility: visible !important;
+                position: relative !important;
+                transform: none !important;
+                margin-top: 1rem !important;
+                pointer-events: auto !important;
+            }
+
+            .stack-hover-card:hover .card-default-content {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+
+            /* CONTACTS & TG PROFILE CARD MOBILE */
+            .tg-profile-container {
+                padding-inline: 0 !important;
+                width: 100% !important;
+            }
+
+            .tg-profile-card {
+                padding: 1.25rem 1rem !important;
+                border-radius: 20px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            .tg-channel-box {
+                padding: 0.75rem 0.85rem !important;
+                flex-direction: row !important;
+                align-items: center !important;
+            }
+
+            .tg-channel-title {
+                font-size: 0.92rem !important;
+            }
+
+            .tg-channel-sub {
+                font-size: 0.76rem !important;
+            }
+
+            .footer-row {
+                flex-direction: column !important;
+                align-items: center !important;
+                text-align: center !important;
+                gap: 1rem !important;
+            }
+        }
+
+    </style>
 </head>
 <body>
-    <a class="skip-link" href="#main">Перейти к содержимому</a>
 
 
 
@@ -40,7 +1740,7 @@
     <!-- NAVBAR PILL CONTAINER WITH COMPACT SHRINK & SCROLL UP EXPAND -->
     <div class="navbar-wrap" id="navbarWrap">
         <header class="navbar-pill">
-            <a href="#hero" class="brand-link">
+            <a href="#" class="brand-link">
                 <span class="brand-dot"></span>
                 <span>ave.dev</span>
             </a>
@@ -54,7 +1754,7 @@
                 </ul>
             </div>
 
-            <a href="https://t.me/ave93" target="_blank" rel="noopener noreferrer" class="btn-nav-gold">
+            <a href="https://t.me/ave93" target="_blank" class="btn-nav-gold">
                 <i class="fa-brands fa-telegram"></i> Написать
             </a>
 
@@ -64,7 +1764,7 @@
         </header>
     </div>
 
-    <main id="main">
+    <main>
         <!-- HERO SECTION -->
         <section class="section hero-section" id="hero">
             <div class="section-bg-shapes">
@@ -79,34 +1779,30 @@
                 </div>
             </div>
             <div class="shell">
-                <figure class="duck-stage" id="duckStage" tabindex="0" aria-label="Объёмная утка. Поворачивайте стрелками клавиатуры." aria-describedby="duckHint">
-                    <div class="duck-fallback" aria-hidden="true">🦆</div>
-                    <figcaption id="duckHint">Поведите курсором — я слежу за вами</figcaption>
-                </figure>
                 <div class="hero-header-top">
                     <!-- TOP-LEFT STICKER ALIGNED TO THE LEFT OF HEADING -->
-
+                    <div class="hero-sticker-top" id="heroStickerTop"></div>
                 </div>
 
                 <h1 class="hero-title">
-                    Сайты для бизнеса<br/>и <span>Telegram-боты</span>
+                    Веб-разработка, сервисы<br/>и <span>Telegram-системы</span>
                 </h1>
 
                 <p class="hero-subtitle">
-                    Я Артем, разработчик ave dev. Создаю сайты, каталоги и ботов, которые помогают принимать заявки, продавать и автоматизировать ежедневную работу.
+                    Артем | ave dev — Full-stack & Python инженер. Проектирую и создаю Лендинги, микросервисы, высоконагруженные боты и API под ключ. Чистый код и функциональные решения.
                 </p>
 
                 <div class="hero-bottom-row">
                     <a href="#cases" class="btn-primary-gold">
                         <span>Посмотреть кейсы</span>
                     </a>
-                    <a href="https://t.me/ave93" target="_blank" rel="noopener noreferrer" class="btn-secondary-dark">
+                    <a href="https://t.me/ave93" target="_blank" class="btn-secondary-dark">
                         <i class="fa-brands fa-telegram"></i>
                         <span>Telegram @ave93</span>
                     </a>
 
                     <!-- BOTTOM-RIGHT TELEGRAM STICKER -->
-
+                    <div class="hero-sticker-bottom" id="heroStickerBottom"></div>
                 </div>
             </div>
         </section>
@@ -136,19 +1832,16 @@
                     <p class="eyebrow">Портфолио</p>
                     <h2 class="display-title">Выполненные кейсы<span>.</span></h2>
                     <p class="section-desc">
-                        Сайты, каталоги и сервисы: какую задачу решает каждый проект и как он выглядит.
+                        Личный путь разработки проектов от первого лица — инженерная задача, стек и конечное решение.
                     </p>
                 </div>
 
                 <!-- CAROUSEL TABS NAVIGATION -->
-                <div class="carousel-tabs-row reveal-scroll" role="tablist" aria-label="Проекты">
+                <div class="carousel-tabs-row reveal-scroll">
                     <button class="carousel-tab-btn active" onclick="goToSlide(0)">01. Nordic Timbers</button>
                     <button class="carousel-tab-btn" onclick="goToSlide(1)">02. Китайский Магазинчик</button>
                     <button class="carousel-tab-btn" onclick="goToSlide(2)">03. GRVM.LOL</button>
                     <button class="carousel-tab-btn" onclick="goToSlide(3)">04. @All_senoritas_bot</button>
-                    <button class="carousel-tab-btn" onclick="goToSlide(4)">05. СЕВЕР</button>
-                    <button class="carousel-tab-btn" onclick="goToSlide(5)">06. GoldenFix</button>
-                    <button class="carousel-tab-btn" onclick="goToSlide(6)">07. Маркос Молл</button>
                 </div>
 
                 <!-- CAROUSEL VIEWPORT -->
@@ -159,13 +1852,13 @@
                         <div class="carousel-slide">
                             <div>
                                 <div class="slide-top-meta">
-
+                                    <div class="slide-lottie-box" id="stickerCase1"></div>
                                     <span class="slide-index">01 / FEATURED</span>
                                 </div>
                                 <h3 class="slide-title">Nordic Timbers 🇦🇺</h3>
                                 <div class="slide-subtitle">Лендинг для компании по постройке домов в Австралии</div>
                                 <p class="slide-narrative">
-                                    Сайт модульных домов для австралийского рынка. Каталог моделей с площадью, планировками и ценами помогает сравнить варианты. Страницы о материалах, доставке и компании отвечают на вопросы перед обращением.
+                                    Разработал стильный и быстрый веб-интерфейс для австралийской строительной компании из скандинавского бруса. Важно было передать архитектурную эстетику и обеспечить моментальную загрузку. Написал адаптивную верстку и Python/PHP скрипты интеграции с Telegram-ботом отдела продаж.
                                 </p>
                                 <div class="slide-stack">
                                     <span class="slide-chip">HTML5</span>
@@ -174,28 +1867,29 @@
                                     <span class="slide-chip">PHP</span>
                                     <span class="slide-chip">Python</span>
                                 </div>
-                                <a href="https://joboffice.info/" target="_blank" rel="noopener noreferrer" class="slide-action-btn">
+                                <a href="https://joboffice.info/" target="_blank" class="slide-action-btn">
                                     <span>Посмотреть проект (joboffice.info)</span>
                                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                 </a>
                             </div>
-                            <figure class="project-preview">
-                                <button class="preview-open" data-preview="assets/projects/nordic-screen.jpg" aria-label="Увеличить скриншот Nordic Timbers"><img src="assets/projects/nordic-screen.jpg" alt="Скриншот сайта Nordic Timbers" width="1265" height="712" loading="lazy"></button>
-                                <figcaption>Nordic Timbers · Скриншот сайта</figcaption>
-                            </figure>
+                            <div class="slide-preview-panel">
+                                <div class="slide-preview-lottie" id="slide1LottiePreview"></div>
+                                <div style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.4rem;">Nordic Timbers Australia</div>
+                                <div style="font-size: 0.9rem; color: var(--text-muted);">Адаптивный UI + Лидогенерация в Telegram-бот</div>
+                            </div>
                         </div>
 
                         <!-- SLIDE 2: Snekit Neru -->
                         <div class="carousel-slide">
                             <div>
                                 <div class="slide-top-meta">
-
+                                    <div class="slide-lottie-box" id="stickerCase2"></div>
                                     <span class="slide-index">02 / CATALOG</span>
                                 </div>
                                 <h3 class="slide-title">Китайский Магазинчик</h3>
                                 <div class="slide-subtitle">Онлайн-каталог азиатских товаров в Нерюнгри</div>
                                 <p class="slide-narrative">
-                                    Веб-каталог для магазина азиатских продуктов в Нерюнгри. Более 200 товаров, поиск, фильтры по категориям, сортировка и избранное. Посетитель может выбрать товары и найти контакты магазина.
+                                    Запустил веб-витрину на 200+ позиций для офлайн-магазина азиатских сладостей и лапши. Реализовал мгновенную фильтрацию товаров по категориям без перезагрузок страниц, а также корзину с отправкой чека напрямую в Telegram менеджера.
                                 </p>
                                 <div class="slide-stack">
                                     <span class="slide-chip">HTML5</span>
@@ -203,22 +1897,23 @@
                                     <span class="slide-chip">PHP</span>
                                     <span class="slide-chip">Python</span>
                                 </div>
-                                <a href="https://snekit-neru.ru/" target="_blank" rel="noopener noreferrer" class="slide-action-btn">
+                                <a href="https://snekit-neru.ru/" target="_blank" class="slide-action-btn">
                                     <span>Посмотреть витрину (snekit-neru.ru)</span>
                                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                 </a>
                             </div>
-                            <figure class="project-preview">
-                                <button class="preview-open" data-preview="assets/projects/snekit-screen.jpg" aria-label="Увеличить скриншот Китайский Магазинчик"><img src="assets/projects/snekit-screen.jpg" alt="Скриншот сайта Китайский Магазинчик" width="1265" height="712" loading="lazy"></button>
-                                <figcaption>Китайский Магазинчик · Скриншот сайта</figcaption>
-                            </figure>
+                            <div class="slide-preview-panel">
+                                <div class="slide-preview-lottie" id="slide2LottiePreview"></div>
+                                <div style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.4rem;">Asian Food Neryungri</div>
+                                <div style="font-size: 0.9rem; color: var(--text-muted);">200+ товаров + Заказ в Telegram в 1 клик</div>
+                            </div>
                         </div>
 
                         <!-- SLIDE 3: GRVM.LOL -->
                         <div class="carousel-slide">
                             <div>
                                 <div class="slide-top-meta">
-
+                                    <div class="slide-lottie-box" id="stickerCase3"></div>
                                     <span class="slide-index">03 / AI GATEWAY</span>
                                 </div>
                                 <h3 class="slide-title">GRVM.LOL ⚡️</h3>
@@ -232,13 +1927,13 @@
                                     <span class="slide-chip">Claude API</span>
                                     <span class="slide-chip">Crypto API</span>
                                 </div>
-                                <a href="https://grvm.lol/" target="_blank" rel="noopener noreferrer" class="slide-action-btn">
+                                <a href="https://grvm.lol/" target="_blank" class="slide-action-btn">
                                     <span>Посмотреть сервис (grvm.lol)</span>
                                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                 </a>
                             </div>
                             <div class="slide-preview-panel">
-                                <p class="preview-label">О проекте</p>
+                                <div class="slide-preview-lottie" id="slide3LottiePreview"></div>
                                 <div style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.4rem;">GRVM AI Platform</div>
                                 <div style="font-size: 0.9rem; color: var(--text-muted);">FastAPI Backend + Claude API Streaming</div>
                             </div>
@@ -248,7 +1943,7 @@
                         <div class="carousel-slide">
                             <div>
                                 <div class="slide-top-meta">
-
+                                    <div class="slide-lottie-box" id="stickerCase4"></div>
                                     <span class="slide-index">04 / TG BOT</span>
                                 </div>
                                 <h3 class="slide-title">Telegram-бот All Senoritas 🔍</h3>
@@ -262,67 +1957,25 @@
                                     <span class="slide-chip">PostgreSQL</span>
                                     <span class="slide-chip">Redis</span>
                                 </div>
-                                <a href="https://t.me/All_senoritas_bot" target="_blank" rel="noopener noreferrer" class="slide-action-btn">
+                                <a href="https://t.me/All_senoritas_bot" target="_blank" class="slide-action-btn">
                                     <span>Открыть бота (@All_senoritas_bot)</span>
                                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                 </a>
                             </div>
                             <div class="slide-preview-panel">
-                                <p class="preview-label">О проекте</p>
+                                <div class="slide-preview-lottie" id="slide4LottiePreview"></div>
                                 <div style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.4rem;">@All_senoritas_bot</div>
                                 <div style="font-size: 0.9rem; color: var(--text-muted);">aiogram 3 + PostgreSQL + Redis Rate Limiter</div>
                             </div>
                         </div>
 
-                        <article class="carousel-slide">
-                            <div>
-                                <p class="slide-index">05 / WEB</p>
-                                <h3 class="slide-title">СЕВЕР</h3>
-                                <p class="slide-subtitle">Фестивальный лендинг</p>
-                                <p class="slide-narrative">Сайт фестиваля новой культуры: программа по дням, площадка, варианты билетов и обратный отсчёт. Крупная типографика и концертные фотографии задают настроение.</p>
-                                <p class="project-features">Лендинг · Программа · Билеты</p>
-                                <a href="https://an724275-hash.github.io/proj-for-portfolio/" target="_blank" rel="noopener noreferrer" class="slide-action-btn">Открыть СЕВЕР <span aria-hidden="true">↗</span></a>
-                            </div>
-                            <figure class="project-preview">
-                                <button class="preview-open" data-preview="assets/projects/sever-screen.jpg" aria-label="Увеличить скриншот СЕВЕР"><img src="assets/projects/sever-screen.jpg" alt="Скриншот сайта СЕВЕР" width="1265" height="712" loading="lazy"></button>
-                                <figcaption>СЕВЕР · Скриншот сайта</figcaption>
-                            </figure>
-                        </article>
-                        <article class="carousel-slide">
-                            <div>
-                                <p class="slide-index">06 / WEB</p>
-                                <h3 class="slide-title">GoldenFix</h3>
-                                <p class="slide-subtitle">Сайт сервиса ремонта кожи</p>
-                                <p class="slide-narrative">Англоязычный сайт выездного ремонта кожи в Сан-Диего. Страницы услуг, интерактивное сравнение «до / после» и форма заявки с фотографиями повреждений.</p>
-                                <p class="project-features">Услуги · До / после · Заявка</p>
-                                <a href="https://sandiegoleatherrepair.com/" target="_blank" rel="noopener noreferrer" class="slide-action-btn">Открыть GoldenFix <span aria-hidden="true">↗</span></a>
-                            </div>
-                            <figure class="project-preview">
-                                <button class="preview-open" data-preview="assets/projects/goldenfix-screen.jpg" aria-label="Увеличить скриншот GoldenFix"><img src="assets/projects/goldenfix-screen.jpg" alt="Скриншот сайта GoldenFix" width="1265" height="712" loading="lazy"></button>
-                                <figcaption>GoldenFix · Скриншот сайта</figcaption>
-                            </figure>
-                        </article>
-                        <article class="carousel-slide">
-                            <div>
-                                <p class="slide-index">07 / WEB</p>
-                                <h3 class="slide-title">Маркос Молл</h3>
-                                <p class="slide-subtitle">Сайт торгового центра</p>
-                                <p class="slide-narrative">Сайт торгового центра в Москве: каталог магазинов и кафе, навигация по этажам, информация для посетителей и арендаторов. Маршруты и часы работы доступны прямо с главной.</p>
-                                <p class="project-features">Каталог · Этажи · Навигация</p>
-                                <a href="https://marcos-mall.ru/" target="_blank" rel="noopener noreferrer" class="slide-action-btn">Открыть Маркос Молл <span aria-hidden="true">↗</span></a>
-                            </div>
-                            <figure class="project-preview">
-                                <button class="preview-open" data-preview="assets/projects/marcos-screen.jpg" aria-label="Увеличить скриншот Маркос Молл"><img src="assets/projects/marcos-screen.jpg" alt="Скриншот сайта Маркос Молл" width="1265" height="712" loading="lazy"></button>
-                                <figcaption>Маркос Молл · Скриншот сайта</figcaption>
-                            </figure>
-                        </article>
                     </div>
                 </div>
 
                 <!-- CAROUSEL CONTROLS -->
                 <div class="carousel-controls reveal-scroll">
-                    <button class="btn-arrow" onclick="prevSlide()" aria-label="Предыдущий проект"><i class="fa-solid fa-arrow-left"></i></button>
-                    <button class="btn-arrow" onclick="nextSlide()" aria-label="Следующий проект"><i class="fa-solid fa-arrow-right"></i></button>
+                    <button class="btn-arrow" onclick="prevSlide()"><i class="fa-solid fa-arrow-left"></i></button>
+                    <button class="btn-arrow" onclick="nextSlide()"><i class="fa-solid fa-arrow-right"></i></button>
                 </div>
             </div>
         </section>
@@ -351,7 +2004,7 @@
                 <div class="reveal-scroll">
                     <p class="eyebrow">Принципы и Инженерия</p>
                     <h2 class="display-title">Подход к работе<span>.</span></h2>
-                    <p class="section-desc">Как договариваемся о сроках, подключаем сервисы и сопровождаем результат.</p>
+                    <p class="section-desc">Четыре ключевых стандарта разработки — скорость, безопасность, качество и гарантия.</p>
                 </div>
 
                 <div class="golden-rail-container reveal-scroll" id="goldenRailContainer">
@@ -367,10 +2020,10 @@
                                     <div style="font-size: 2.2rem; color: var(--accent-gold);"><i class="fa-solid fa-bolt"></i></div>
                                     <span class="slide-index">01 / FAST MVP</span>
                                 </div>
-                                <h3 class="slide-title">Первый прототип за 2–3 дня</h3>
+                                <h3 class="slide-title">MVP за 48–72 часа</h3>
                                 <div class="slide-subtitle">Быстрый запуск для проверки бизнес-гипотезы</div>
                                 <p class="slide-narrative">
-                                    Срок 48–72 часа возможен для небольшого прототипа с заранее согласованным объёмом. Позволяет оперативно запустить сервис, протестировать спрос реальной аудитории и начать получать первые транзакции без долгих месяцев ожидания.
+                                    Сборка полностью работающего прототипа Telegram Mini App или прототипа сайта в сжатые сроки. Позволяет оперативно запустить сервис, протестировать спрос реальной аудитории и начать получать первые транзакции без долгих месяцев ожидания.
                                 </p>
                                 <div class="slide-stack">
                                     <span class="slide-chip"><i class="fa-solid fa-clock" style="color: var(--accent-gold);"></i> 48-72 Часов</span>
@@ -386,7 +2039,7 @@
                         </div>
                     </div>
 
-                    <!-- NODE 2: Интеграция нейросетей -->
+                    <!-- NODE 2: Streaming AI & Token Saver -->
                     <div class="rail-item-node" data-rail-index="1">
                         <div class="rail-node-dot"></div>
                         <div class="rail-card-body">
@@ -395,15 +2048,15 @@
                                     <div style="font-size: 2.2rem; color: var(--accent-gold);"><i class="fa-solid fa-brain"></i></div>
                                     <span class="slide-index">02 / STREAMING AI</span>
                                 </div>
-                                <h3 class="slide-title">Интеграция нейросетей</h3>
+                                <h3 class="slide-title">Streaming AI & Token Saver</h3>
                                 <div class="slide-subtitle">Интеграция ИИ-моделей с экономией бюджета</div>
                                 <p class="slide-narrative">
-                                    Подключаю нейросети к сайту или боту: пользователь видит ответ по мере готовности. Повторяющиеся запросы можно сохранять, чтобы не оплачивать их заново. Экономию оцениваем на реальной нагрузке проекта.
+                                    Глубокая интеграция нейросетей (Gemini 3.6 & Opus) со стримингом ответа (SSE / WebSockets) для моментального отклика юзеру. Настройка кэширования токенов и контекста для снижения расходов на API до 50%.
                                 </p>
                                 <div class="slide-stack">
-                                    <span class="slide-chip"><i class="fa-solid fa-brain" style="color: var(--accent-gold);"></i> ИИ-модели</span>
-                                    <span class="slide-chip"><i class="fa-solid fa-bolt"></i> Ответ без ожидания</span>
-                                    <span class="slide-chip"><i class="fa-solid fa-piggy-bank"></i> Контроль расходов</span>
+                                    <span class="slide-chip"><i class="fa-solid fa-brain" style="color: var(--accent-gold);"></i> Gemini 3.6 & Opus</span>
+                                    <span class="slide-chip"><i class="fa-solid fa-bolt"></i> SSE Streaming</span>
+                                    <span class="slide-chip"><i class="fa-solid fa-piggy-bank"></i> Token Cache</span>
                                 </div>
                             </div>
                             <div class="slide-preview-panel">
@@ -430,7 +2083,7 @@
                                 </p>
                                 <div class="slide-stack">
                                     <span class="slide-chip"><i class="fa-solid fa-shield-halved" style="color: var(--accent-gold);"></i> 15 Дней Гарантии</span>
-                                    <span class="slide-chip"><i class="fa-solid fa-headset"></i> Согласованный график</span>
+                                    <span class="slide-chip"><i class="fa-solid fa-headset"></i> Поддержка 24/7</span>
                                     <span class="slide-chip"><i class="fa-solid fa-screwdriver-wrench"></i> Фикс недочетов</span>
                                 </div>
                             </div>
@@ -451,14 +2104,14 @@
                                     <div style="font-size: 2.2rem; color: var(--accent-gold);"><i class="fa-solid fa-lock"></i></div>
                                     <span class="slide-index">04 / STRICT NDA</span>
                                 </div>
-                                <h3 class="slide-title">Конфиденциальность</h3>
+                                <h3 class="slide-title">Строгий NDA и Конфиденциальность</h3>
                                 <div class="slide-subtitle">Защита бизнес-логики и приватных данных</div>
                                 <p class="slide-narrative">
-                                    Для закрытых коммерческих проектов работаю по согласованному NDA. Исходный код хранится в приватном репозитории, секреты — отдельно от кода. Доступы и условия конфиденциальности согласовываем до начала работы.
+                                    Любой закрытый коммерческий проект, внутренний бот или сервис защищены соглашением NDA. Ваша бизнес-логика, базы данных и API-токены хранятся в приватных защищенных репозиториях и никогда не попадают в сеть.
                                 </p>
                                 <div class="slide-stack">
                                     <span class="slide-chip"><i class="fa-solid fa-lock" style="color: var(--accent-gold);"></i> Приватные Git-репо</span>
-                                    <span class="slide-chip"><i class="fa-solid fa-key"></i> Секреты вне кода</span>
+                                    <span class="slide-chip"><i class="fa-solid fa-key"></i> Шифрование API</span>
                                     <span class="slide-chip"><i class="fa-solid fa-file-contract"></i> Полный NDA</span>
                                 </div>
                             </div>
@@ -501,7 +2154,7 @@
                 <div class="reveal-scroll">
                     <p class="eyebrow">Этапы</p>
                     <h2 class="display-title">Ход разработки<span>.</span></h2>
-                    <p class="section-desc">От первого разговора до запуска и передачи проекта.</p>
+                    <p class="section-desc">Пошаговый живой процесс от первого бриф-звонка до сдачи готовой системы.</p>
                 </div>
 
                 <div class="arthouse-pipeline-container reveal-scroll">
@@ -529,9 +2182,9 @@
                             <span class="step-pill-badge">STEP 01</span>
                             <div class="step-icon-box"><i class="fa-solid fa-clipboard-list"></i></div>
                         </div>
-                        <h3 class="pipeline-card-title">Задача и план</h3>
+                        <h3 class="pipeline-card-title">Бриф и Архитектура</h3>
                         <p class="pipeline-card-desc">
-                            Обсуждаем вашу задачу, составляем список функций, согласовываем стоимость и сроки. До начала разработки фиксируем, что должно получиться.
+                            Разбираем техзадание, подбираем стек технологий, фиксируем метрики, согласовываем стоимость и проектируем структуру базы данных и API.
                         </p>
                         <div class="arthouse-card-chips">
                             <span class="micro-chip">ТЗ & Метрики</span>
@@ -545,9 +2198,9 @@
                             <span class="step-pill-badge">STEP 02</span>
                             <div class="step-icon-box"><i class="fa-solid fa-code"></i></div>
                         </div>
-                        <h3 class="pipeline-card-title">Разработка</h3>
+                        <h3 class="pipeline-card-title">Код и Backend</h3>
                         <p class="pipeline-card-desc">
-                            Собираю интерфейс и функции проекта, подключаю нужные сервисы. Показываю промежуточный результат, чтобы вовремя учесть обратную связь.
+                            Пишем асинхронную бизнес-логику на Python (FastAPI / aiogram 3), настраиваем СУБД PostgreSQL, Redis-кэш и подключаем внешние API и ИИ.
                         </p>
                         <div class="arthouse-card-chips">
                             <span class="micro-chip">Python 3.11+</span>
@@ -561,9 +2214,9 @@
                             <span class="step-pill-badge">STEP 03</span>
                             <div class="step-icon-box"><i class="fa-solid fa-server"></i></div>
                         </div>
-                        <h3 class="pipeline-card-title">Запуск сайта</h3>
+                        <h3 class="pipeline-card-title">Деплой и Настройка</h3>
                         <p class="pipeline-card-desc">
-                            Размещаю проект на сервере, подключаю домен и защищённое соединение. Проверяю основные сценарии перед запуском.
+                            Упаковываем в Docker-контейнеры, разворачиваем на VPS с Nginx, устанавливаем SSL-сертификаты, ставим защиту от спама и тестируем под нагрузкой.
                         </p>
                         <div class="arthouse-card-chips">
                             <span class="micro-chip">Docker & Nginx</span>
@@ -579,7 +2232,7 @@
                         </div>
                         <h3 class="pipeline-card-title">Передача и Сопровождение</h3>
                         <p class="pipeline-card-desc">
-                            Передаю исходный код и инструкцию по работе с проектом. В течение 15 дней исправляю ошибки в согласованном объёме работ.
+                            Передаем исходный код в приватном репозитории, даем понятную документацию и включаем 15 дней технической поддержки.
                         </p>
                         <div class="arthouse-card-chips">
                             <span class="micro-chip">Git-репозиторий</span>
@@ -615,7 +2268,7 @@
                 <div class="reveal-scroll">
                     <p class="eyebrow">Инструменты</p>
                     <h2 class="display-title">Технологический стек<span>.</span></h2>
-                    <p class="section-desc">Инструменты, с которыми я работаю в веб-разработке и автоматизации.</p>
+                    <p class="section-desc">Наведите на категорию, чтобы открыть стек инструментов.</p>
                 </div>
 
                 <div class="stack-hover-grid reveal-scroll">
@@ -743,7 +2396,7 @@
                 <div class="reveal-scroll" style="text-align: center;">
                     <p class="eyebrow">Контакт</p>
                     <h2 class="display-title">Есть задача или проект<span>?</span></h2>
-                    <p class="section-desc" style="text-align: center; max-width: 560px; margin-left: auto; margin-right: auto;">Расскажите, что хотите сделать. Обсудим задачу, сроки и стоимость.</p>
+                    <p class="section-desc" style="text-align: center; max-width: 560px; margin-left: auto; margin-right: auto;">Напишите мне — обсудим архитектуру, подберу стек и рассчитаю сроки.</p>
                 </div>
 
                 <div class="tg-profile-container reveal-scroll">
@@ -759,7 +2412,8 @@
                                 <div class="tg-name-sticker" id="tgNameSticker"></div>
                             </div>
                             <span class="tg-status-online">
-                                Связаться в Telegram
+                                <span class="tg-status-dot"></span>
+                                в сети
                             </span>
                         </div>
 
@@ -767,7 +2421,7 @@
                         <div class="tg-profile-body">
 
                             <!-- CHANNEL BOX WITH CAT AVATAR -->
-                            <a href="https://t.me/avee_dev" target="_blank" rel="noopener noreferrer" class="tg-channel-box">
+                            <a href="https://t.me/avee_dev" target="_blank" class="tg-channel-box">
                                 <div class="tg-channel-left">
                                     <img src="channel-avatar.png" alt="ave dev" class="tg-channel-avatar">
                                     <div>
@@ -801,7 +2455,7 @@
                             </div>
 
                             <!-- PRIMARY CTA BUTTON -->
-                            <a href="https://t.me/ave93" target="_blank" rel="noopener noreferrer" class="btn-primary-gold" style="margin-top: 0.5rem; justify-content: center;">
+                            <a href="https://t.me/ave93" target="_blank" class="btn-primary-gold" style="margin-top: 0.5rem; justify-content: center;">
                                 <i class="fa-brands fa-telegram"></i>
                                 <span>Написать в Telegram</span>
                             </a>
@@ -820,19 +2474,252 @@
                 <span>ave dev (Артем)</span>
             </div>
             <div class="footer-links">
-                <a href="https://t.me/ave93" target="_blank" rel="noopener noreferrer">Telegram @ave93</a>
-                <a href="https://giveaway-one.ru" target="_blank" rel="noopener noreferrer">giveaway-one.ru</a>
+                <a href="https://t.me/ave93" target="_blank">Telegram @ave93</a>
+                <a href="http://giveaway-one.ru" target="_blank">giveaway-one.ru</a>
             </div>
             <p>© 2026 ave dev</p>
         </div>
     </footer>
 
     <!-- JAVASCRIPT: STICKERS, CAROUSEL, INTERACTIVE SHAPES & SIDE DOTS -->
-    <dialog id="previewDialog" aria-label="Скриншот проекта">
-        <button class="preview-close" aria-label="Закрыть скриншот">Закрыть ×</button>
-        <img id="previewImage" alt="">
-    </dialog>
-    <script src="script.js" defer></script>
-    <script type="module" src="duck.js"></script>
+    <script>
+        // ----------------------------------------------------
+        // LOTTIE TELEGRAM ANIMATED STICKERS MAPPING
+        // ----------------------------------------------------
+        const stickerMap = {
+            'heroStickerTop': 'stickers_json/file_1866911.tgs.json',
+            'heroStickerBottom': 'stickers_json/file_1866921.tgs.json',
+            'stickerCase1': 'stickers_json/file_1866923.tgs.json',
+            'stickerCase2': 'stickers_json/file_1866925.tgs.json',
+            'stickerCase3': 'stickers_json/file_1866931.tgs.json',
+            'stickerCase4': 'stickers_json/file_1866946.tgs.json',
+            'slide1LottiePreview': 'stickers_json/file_1866914.tgs.json',
+            'slide2LottiePreview': 'stickers_json/file_1866916.tgs.json',
+            'slide3LottiePreview': 'stickers_json/file_1866918.tgs.json',
+            'slide4LottiePreview': 'stickers_json/file_1866922.tgs.json',
+            'approachLottie1': 'stickers_json/file_1866915.tgs.json', // MVP duck
+            'approachLottie2': 'stickers_json/file_1866920.tgs.json', // AI engineering duck
+            'approachLottie3': 'stickers_json/file_1866926.tgs.json', // 15 days guarantee duck
+            'approachLottie4': 'stickers_json/file_1866946.tgs.json', // Detective NDA duck
+            'ctaSticker': 'stickers_json/file_1866940.tgs.json',
+            'tgNameSticker': 'stickers_json/file_1866919.tgs.json',
+            'tgBottomSticker': 'stickers_json/file_1866912.tgs.json'
+        };
+
+        Object.keys(stickerMap).forEach(id => {
+            const container = document.getElementById(id);
+            if (container && typeof lottie !== 'undefined') {
+                lottie.loadAnimation({
+                    container: container,
+                    renderer: 'svg',
+                    loop: true,
+                    autoplay: true,
+                    path: stickerMap[id]
+                });
+            }
+        });
+
+        // ----------------------------------------------------
+        // GOLDEN RAIL TIMELINE SCROLL TRACKER
+        // ----------------------------------------------------
+        const railNodes = document.querySelectorAll('.rail-item-node');
+        const railProgress = document.getElementById('railGlowProgress');
+        const railContainer = document.getElementById('goldenRailContainer');
+
+        function updateRailTracker() {
+            if (!railContainer || railNodes.length === 0) return;
+            const rect = railContainer.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+
+            if (rect.top < windowHeight && rect.bottom > 0) {
+                const totalHeight = rect.height;
+                const visibleProgress = Math.min(totalHeight, Math.max(0, windowHeight * 0.5 - rect.top));
+                const percentage = Math.min(100, Math.max(0, (visibleProgress / totalHeight) * 100));
+
+                if (railProgress) {
+                    railProgress.style.height = `${percentage}%`;
+                }
+
+                railNodes.forEach((node) => {
+                    const nodeRect = node.getBoundingClientRect();
+                    if (nodeRect.top < windowHeight * 0.75) {
+                        node.classList.add('active');
+                    }
+                });
+            }
+        }
+
+        // Interactive background shape squish click listener
+        document.querySelectorAll('.bg-interactive-shape').forEach(shape => {
+            shape.addEventListener('click', function() {
+                this.classList.add('squish');
+                setTimeout(() => { this.classList.remove('squish'); }, 400);
+            });
+        });
+
+        // ----------------------------------------------------
+        // CAROUSEL SLIDER CONTROLS (CASES & APPROACH)
+        // ----------------------------------------------------
+        let currentSlide = 0;
+        const totalSlides = 4;
+        const track = document.getElementById('carouselTrack');
+        const tabBtns = document.querySelectorAll('.carousel-tab-btn');
+
+        function goToSlide(index) {
+            currentSlide = index;
+            if (currentSlide < 0) currentSlide = totalSlides - 1;
+            if (currentSlide >= totalSlides) currentSlide = 0;
+
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+            tabBtns.forEach((btn, idx) => {
+                if (idx === currentSlide) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        function nextSlide() { goToSlide(currentSlide + 1); }
+        function prevSlide() { goToSlide(currentSlide - 1); }
+
+        // APPROACH SLIDER CONTROLS
+        let currentApproachSlide = 0;
+        const totalApproachSlides = 3;
+        const approachTrack = document.getElementById('approachTrack');
+        const approachTabBtns = document.querySelectorAll('.approach-tab-btn');
+
+        function goToApproachSlide(index) {
+            currentApproachSlide = index;
+            if (currentApproachSlide < 0) currentApproachSlide = totalApproachSlides - 1;
+            if (currentApproachSlide >= totalApproachSlides) currentApproachSlide = 0;
+
+            if (approachTrack) {
+                approachTrack.style.transform = `translateX(-${currentApproachSlide * 100}%)`;
+            }
+
+            approachTabBtns.forEach((btn, idx) => {
+                if (idx === currentApproachSlide) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        function nextApproachSlide() { goToApproachSlide(currentApproachSlide + 1); }
+        function prevApproachSlide() { goToApproachSlide(currentApproachSlide - 1); }
+
+        // ----------------------------------------------------
+        // COMPACT HEADER SHRINK ON SCROLL DOWN & EXPAND ON SCROLL UP (OPTIMIZED)
+        // ----------------------------------------------------
+        let lastScrollY = window.scrollY;
+        const navbarWrap = document.getElementById('navbarWrap');
+        const sideDots = document.querySelectorAll('.side-dot');
+        const sections = document.querySelectorAll('section[id]');
+        let isScrollTicking = false;
+
+        function onScrollFrame() {
+            const currentScrollY = window.scrollY;
+            const scrollDelta = currentScrollY - lastScrollY;
+            
+            // Scrolling DOWN (past 80px and moving down > 4px) -> collapse to compact pill
+            // Scrolling UP (moving up < -4px) or near top (<= 80px) -> IMMEDIATELY expand navbar!
+            if (currentScrollY > 80 && scrollDelta > 4) {
+                navbarWrap.classList.add('scrolled');
+            } else if (scrollDelta < -4 || currentScrollY <= 80) {
+                navbarWrap.classList.remove('scrolled');
+            }
+
+            lastScrollY = currentScrollY;
+
+            // Update side dots navigation active state
+            let currentSecId = 'hero';
+            sections.forEach(sec => {
+                const secTop = sec.offsetTop - 180;
+                if (currentScrollY >= secTop) {
+                    currentSecId = sec.getAttribute('id');
+                }
+            });
+
+            sideDots.forEach(dot => {
+                if (dot.getAttribute('data-target') === currentSecId) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+
+            updateRailTracker();
+            isScrollTicking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!isScrollTicking) {
+                requestAnimationFrame(onScrollFrame);
+                isScrollTicking = true;
+            }
+        }, { passive: true });
+
+        window.addEventListener('resize', () => {
+            if (!isScrollTicking) {
+                requestAnimationFrame(onScrollFrame);
+                isScrollTicking = true;
+            }
+        }, { passive: true });
+
+        updateRailTracker();
+
+        // ----------------------------------------------------
+        // SCROLL REVEAL OBSERVER
+        // ----------------------------------------------------
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll('.reveal-scroll').forEach(el => observer.observe(el));
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // ----------------------------------------------------
+        // THEME SWITCHER (DARK & LIGHT THEMES - DEFAULT DARK)
+        // ----------------------------------------------------
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('ave_portfolio_theme', theme);
+            if (themeToggleBtn) {
+                themeToggleBtn.innerHTML = theme === 'light' 
+                    ? '<i class="fa-solid fa-sun" style="color: #D9A014;"></i>' 
+                    : '<i class="fa-solid fa-moon"></i>';
+            }
+        }
+
+        // Default to dark theme
+        const storedTheme = localStorage.getItem('ave_portfolio_theme') || 'dark';
+        applyTheme(storedTheme);
+
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+                const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                applyTheme(nextTheme);
+            });
+        }
+    </script>
 </body>
 </html>
