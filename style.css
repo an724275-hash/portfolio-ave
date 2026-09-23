@@ -1773,12 +1773,13 @@ section[id], main { scroll-margin-top: 105px; }
 }
 .side-dots-nav { gap: 4px; right: 8px; }
 .side-dot, .side-dot.active { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: transparent; box-shadow: none; transform: none; }
-.side-dot::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--text-muted); transition: height .2s, background-color .2s; }
+.side-dot::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--text-muted); transition: height .2s, background-color .2s, transform .2s; }
 .side-dot.active::before { height: 24px; border-radius: 6px; background: var(--accent-gold); }
-.side-dot:hover { background: var(--accent-gold-light); transform: none; }
+.side-dot:hover { background: transparent; transform: none; }
+.side-dot:hover::before { background: var(--accent-gold); transform: scale(1.15); }
 @media (max-width: 1024px) {
-    .side-dots-nav { right: 0; gap: 0; }
-    .side-dot { justify-items: end; padding-right: 5px; }
+    .side-dots-nav { right: 1px; gap: 0; }
+    .side-dot, .side-dot.active { width: 34px; height: 34px; }
     .side-dot::before { width: 7px; height: 7px; }
     .side-dot.active::before { height: 20px; }
 }
