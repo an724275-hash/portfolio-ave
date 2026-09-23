@@ -294,6 +294,15 @@ button {
     height: 100%;
 }
 
+.wavy-divider path {
+    animation: waveDrift 18s linear infinite;
+    will-change: transform;
+}
+
+@keyframes waveDrift {
+    to { transform: translateX(-450px); }
+}
+
 /* ----------------------------------------------------
    SIDE SCROLL INDICATOR DOTS (IMAGE 3)
    ---------------------------------------------------- */
