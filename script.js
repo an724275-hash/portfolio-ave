@@ -188,18 +188,31 @@ const sectionNames = {
     hero: 'Главная', cases: 'Проекты', approach: 'Подход к работе',
     process: 'Этапы разработки', stack: 'Технологии', contacts: 'Контакты'
 };
+let mobileNavHideTimer;
 
-function setMobileNav(open) {
+function setMobileNav(open, focusFirst = false) {
     if (!mobileNavToggle || !mobileNavPanel) return;
+    clearTimeout(mobileNavHideTimer);
+    if (open && mobileNavPanel.hidden) {
+        mobileNavPanel.hidden = false;
+        void mobileNavPanel.offsetWidth;
+    }
     mobileNavPanel.classList.toggle('is-open', open);
     mobileNavPanel.inert = !open;
     mobileNavToggle.setAttribute('aria-expanded', String(open));
     mobileNavToggle.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
-    if (open) requestAnimationFrame(() => mobileNavPanel.querySelector('a')?.focus());
+    mobileNavToggle.innerHTML = open
+        ? '<i class="fa-solid fa-xmark" aria-hidden="true"></i>'
+        : '<i class="fa-solid fa-bars" aria-hidden="true"></i>';
+    if (!open) {
+        if (motionPreference.matches) mobileNavPanel.hidden = true;
+        else mobileNavHideTimer = setTimeout(() => { mobileNavPanel.hidden = true; }, 260);
+    }
+    if (open && focusFirst) requestAnimationFrame(() => mobileNavPanel.querySelector('a')?.focus());
 }
 
-mobileNavToggle?.addEventListener('click', () => {
-    setMobileNav(mobileNavToggle.getAttribute('aria-expanded') !== 'true');
+mobileNavToggle?.addEventListener('click', event => {
+    setMobileNav(mobileNavToggle.getAttribute('aria-expanded') !== 'true', event.detail === 0);
 });
 document.addEventListener('keydown', event => {
     if (event.key !== 'Escape' || !mobileNavPanel?.classList.contains('is-open')) return;

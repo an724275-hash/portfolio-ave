@@ -1826,22 +1826,6 @@ html[data-theme="light"] :is(.stack-hover-card,.navbar-pill,.navbar-wrap.scrolle
         position: relative;
     }
 
-    .mobile-nav-toggle i {
-        position: absolute;
-        transition: opacity .2s ease, transform .24s ease;
-    }
-
-    .mobile-nav-toggle .fa-xmark,
-    .mobile-nav-toggle[aria-expanded="true"] .fa-bars {
-        opacity: 0;
-        transform: rotate(-70deg) scale(.7);
-    }
-
-    .mobile-nav-toggle[aria-expanded="true"] .fa-xmark {
-        opacity: 1;
-        transform: rotate(0) scale(1);
-    }
-
     .mobile-nav-panel {
         position: absolute;
         display: grid;
@@ -1867,6 +1851,10 @@ html[data-theme="light"] :is(.stack-hover-card,.navbar-pill,.navbar-wrap.scrolle
         pointer-events: auto;
         transform: translateY(0);
         transition: opacity .24s ease, transform .24s cubic-bezier(.2,.8,.2,1), visibility 0s;
+    }
+
+    .mobile-nav-panel[hidden] {
+        display: none;
     }
 
     .mobile-nav-panel a {
