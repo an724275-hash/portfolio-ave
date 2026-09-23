@@ -191,12 +191,10 @@ const sectionNames = {
 
 function setMobileNav(open) {
     if (!mobileNavToggle || !mobileNavPanel) return;
-    mobileNavPanel.hidden = !open;
+    mobileNavPanel.classList.toggle('is-open', open);
+    mobileNavPanel.inert = !open;
     mobileNavToggle.setAttribute('aria-expanded', String(open));
     mobileNavToggle.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
-    mobileNavToggle.innerHTML = open
-        ? '<i class="fa-solid fa-xmark" aria-hidden="true"></i>'
-        : '<i class="fa-solid fa-bars" aria-hidden="true"></i>';
     if (open) requestAnimationFrame(() => mobileNavPanel.querySelector('a')?.focus());
 }
 
@@ -204,12 +202,12 @@ mobileNavToggle?.addEventListener('click', () => {
     setMobileNav(mobileNavToggle.getAttribute('aria-expanded') !== 'true');
 });
 document.addEventListener('keydown', event => {
-    if (event.key !== 'Escape' || mobileNavPanel?.hidden) return;
+    if (event.key !== 'Escape' || !mobileNavPanel?.classList.contains('is-open')) return;
     setMobileNav(false);
     mobileNavToggle.focus();
 });
 document.addEventListener('pointerdown', event => {
-    if (mobileNavPanel?.hidden || nav.contains(event.target)) return;
+    if (!mobileNavPanel?.classList.contains('is-open') || nav.contains(event.target)) return;
     setMobileNav(false);
 });
 
@@ -245,7 +243,7 @@ function updateScroll() {
         if (scrollY > 80 && delta > 4) nav.classList.add('scrolled');
         else if (delta < -4 || scrollY <= 80) nav.classList.remove('scrolled');
     }
-    if (delta > 4 && !mobileNavPanel?.hidden) setMobileNav(false);
+    if (delta > 4 && mobileNavPanel?.classList.contains('is-open')) setMobileNav(false);
     collapsible.inert = nav.classList.contains('scrolled');
     lastScroll = scrollY;
 
@@ -396,15 +394,26 @@ if (typeof lottie !== 'undefined' && 'IntersectionObserver' in window) {
 }
 
 const flow = document.querySelector('.arthouse-svg-layer');
+const mobileFlowPaths = Array.from(document.querySelectorAll('.mobile-step-connector svg > path'));
 let flowVisible = false;
 function syncFlow() {
     flow?.classList.toggle('is-visible', flowVisible && !document.hidden && !motionPreference.matches);
+    mobileFlowPaths.forEach(path => path.style.animationPlayState =
+        !document.hidden && !motionPreference.matches && path.closest('.mobile-step-connector').classList.contains('is-visible')
+            ? 'running' : 'paused');
 }
 if (flow && 'IntersectionObserver' in window) {
     new IntersectionObserver(entries => {
         flowVisible = entries[0].isIntersecting;
         syncFlow();
     }).observe(flow);
+}
+if (mobileFlowPaths.length && 'IntersectionObserver' in window) {
+    const mobileFlowObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => entry.target.classList.toggle('is-visible', entry.isIntersecting));
+        syncFlow();
+    }, { threshold: 0.1 });
+    mobileFlowPaths.forEach(path => mobileFlowObserver.observe(path.closest('.mobile-step-connector')));
 }
 
 document.addEventListener('visibilitychange', () => {

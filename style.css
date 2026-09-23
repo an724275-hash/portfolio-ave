@@ -1041,6 +1041,14 @@ button {
     display: none;
 }
 
+@keyframes dashFlow {
+    to { stroke-dashoffset: -32; }
+}
+
+@keyframes dashFlowMobile {
+    to { stroke-dashoffset: -26; }
+}
+
 @media (max-width: 900px) {
     .arthouse-pipeline-container {
         display: flex;
@@ -1081,6 +1089,7 @@ button {
         stroke-width: 2.5;
         stroke-linecap: round;
         stroke-dasharray: 7 6;
+        animation: dashFlowMobile 8s linear infinite paused;
     }
     .mobile-step-connector marker path {
         fill: currentColor;
@@ -1814,9 +1823,26 @@ html[data-theme="light"] :is(.stack-hover-card,.navbar-pill,.navbar-wrap.scrolle
         background: transparent;
         color: var(--text-main);
         cursor: pointer;
+        position: relative;
     }
 
-    .mobile-nav-panel:not([hidden]) {
+    .mobile-nav-toggle i {
+        position: absolute;
+        transition: opacity .2s ease, transform .24s ease;
+    }
+
+    .mobile-nav-toggle .fa-xmark,
+    .mobile-nav-toggle[aria-expanded="true"] .fa-bars {
+        opacity: 0;
+        transform: rotate(-70deg) scale(.7);
+    }
+
+    .mobile-nav-toggle[aria-expanded="true"] .fa-xmark {
+        opacity: 1;
+        transform: rotate(0) scale(1);
+    }
+
+    .mobile-nav-panel {
         position: absolute;
         display: grid;
         z-index: 10;
@@ -1828,6 +1854,19 @@ html[data-theme="light"] :is(.stack-hover-card,.navbar-pill,.navbar-wrap.scrolle
         border-radius: 18px;
         background: var(--bg-card);
         box-shadow: 0 12px 32px rgb(0 0 0 / 28%);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(-10px);
+        transition: opacity .24s ease, transform .24s cubic-bezier(.2,.8,.2,1), visibility 0s linear .24s;
+    }
+
+    .mobile-nav-panel.is-open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+        transition: opacity .24s ease, transform .24s cubic-bezier(.2,.8,.2,1), visibility 0s;
     }
 
     .mobile-nav-panel a {
