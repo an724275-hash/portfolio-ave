@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch
 from html.parser import HTMLParser
 import subprocess
+from urllib.parse import urlsplit
 import deploy
 
 
@@ -31,7 +32,7 @@ class PortfolioChecks(unittest.TestCase):
         self.assertEqual(len(page.ids), len(set(page.ids)), "Duplicate HTML IDs")
         for resource in page.resources:
             self.assertNotIn("://", resource, "External page dependency")
-            self.assertTrue((deploy.ROOT / resource).is_file(), resource)
+            self.assertTrue((deploy.ROOT / urlsplit(resource).path).is_file(), resource)
         for target in page.anchors:
             self.assertIn(target, page.ids, "Broken anchor: " + target)
         for resource in [
