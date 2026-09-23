@@ -239,7 +239,9 @@ function updateRailTracker() {
 
 function updateScroll() {
     const delta = scrollY - lastScroll;
-    if (!nav.contains(document.activeElement)) {
+    const keepNavVisible = nav.contains(document.activeElement)
+        && (innerWidth > 768 || document.activeElement.matches(':focus-visible'));
+    if (!keepNavVisible) {
         if (scrollY > 80 && delta > 4) nav.classList.add('scrolled');
         else if (delta < -4 || scrollY <= 80) nav.classList.remove('scrolled');
     }
