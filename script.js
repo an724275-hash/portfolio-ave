@@ -279,6 +279,8 @@ addEventListener('resize', () => {
 updateScroll();
 
 const stickerMap = {
+    heroStickerTop: 'file_1866911',
+    heroStickerBottom: 'file_1866921',
     stickerCase1: 'file_1866923',
     stickerCase2: 'file_1866925',
     stickerCase3: 'file_1866931',

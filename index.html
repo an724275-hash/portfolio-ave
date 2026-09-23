@@ -19,12 +19,8 @@
     <meta property="og:image" content="https://giveaway-one.ru/avatar.png">
     <meta name="twitter:card" content="summary">
     <link rel="stylesheet" href="assets/vendor/fontawesome.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="polish.css">
+    <link rel="stylesheet" href="style.css?v=classic-20260923-2">
     <script src="assets/vendor/lottie.min.js" defer></script>
-    <script type="importmap">
-        {"imports":{"three":"./assets/vendor/three.module.min.js"}}
-    </script>
 </head>
 <body>
     <a class="skip-link" href="#main">Перейти к содержимому</a>
@@ -83,46 +79,41 @@
     <main id="main" tabindex="-1">
         <!-- HERO SECTION -->
         <section class="section hero-section" id="hero">
-            <div class="hero-backdrop section-bg-shapes" aria-hidden="true">
-                <span class="hero-backdrop-ring"></span>
-                <span class="hero-backdrop-line"></span>
-                <div class="bg-interactive-shape hero-shape-one spin-cw-slow">
-                    <svg viewBox="0 0 200 200" width="260" height="260"><path d="M100 25 C107 25 110 38 117 41 C124 44 135 37 141 43 C147 49 140 60 143 67 C146 74 159 77 159 85 C159 93 146 96 143 103 C140 110 147 121 141 127 C135 133 124 126 117 129 C110 132 107 145 100 145 C93 145 90 132 83 129 C76 126 65 133 59 127 C53 121 60 110 57 103 C54 96 41 93 41 85 C41 77 54 74 57 67 C60 60 53 49 59 43 C65 37 76 44 83 41 C90 38 93 25 100 25 Z" fill="currentColor"></path></svg>
+            <div class="section-bg-shapes" aria-hidden="true">
+                <div class="bg-interactive-shape spin-cw-fast" style="left: 2%; top: 5%;">
+                    <svg viewBox="0 0 200 200" width="340" height="340"><path d="M100 25 C107 25 110 38 117 41 C124 44 135 37 141 43 C147 49 140 60 143 67 C146 74 159 77 159 85 C159 93 146 96 143 103 C140 110 147 121 141 127 C135 133 124 126 117 129 C110 132 107 145 100 145 C93 145 90 132 83 129 C76 126 65 133 59 127 C53 121 60 110 57 103 C54 96 41 93 41 85 C41 77 54 74 57 67 C60 60 53 49 59 43 C65 37 76 44 83 41 C90 38 93 25 100 25 Z" fill="currentColor"></path></svg>
                 </div>
-                <div class="bg-interactive-shape hero-shape-two spin-ccw-slow">
-                    <svg viewBox="0 0 200 200" width="210" height="210"><path d="M100 15 C145 35 165 55 185 100 C165 145 145 165 100 185 C55 165 35 145 15 100 C35 55 55 35 100 15 Z" fill="currentColor"></path></svg>
+                <div class="bg-interactive-shape spin-ccw-medium" style="left: 78%; top: 10%;">
+                    <svg viewBox="0 0 200 200" width="290" height="290"><path d="M100,28 C122,28 136,42 150,56 C164,70 172,88 172,100 C172,112 164,130 150,144 C136,158 122,172 100,172 C78,172 64,158 50,144 C36,130 28,112 28,100 C28,88 36,70 50,56 C64,42 78,28 100,28 Z" fill="currentColor"></path></svg>
+                </div>
+                <div class="bg-interactive-shape spin-cw-slow" style="left: 48%; top: 55%;">
+                    <svg viewBox="0 0 200 200" width="220" height="220"><path d="M100 15 C145 35 165 55 185 100 C165 145 145 165 100 185 C55 165 35 145 15 100 C35 55 55 35 100 15 Z" fill="currentColor"></path></svg>
                 </div>
             </div>
             <div class="shell">
-                <div class="hero-copy">
-                    <p class="hero-eyebrow"><span aria-hidden="true"></span> Сайты, каталоги и Telegram-боты</p>
-                    <h1 class="hero-title">
-                        Сайты для бизнеса<br/><span>и Telegram-боты</span>
-                    </h1>
-
-                    <p class="hero-subtitle">
-                        Я Артем, разработчик ave dev. Собираю понятные цифровые продукты: от идеи и интерфейса до запуска и поддержки.
-                    </p>
-
-                    <div class="hero-bottom-row">
-                        <a href="#cases" class="btn-primary-gold">
-                            <span>Смотреть проекты</span>
-                            <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
-                        </a>
-                        <a href="https://t.me/ave93" target="_blank" rel="noopener noreferrer" class="btn-secondary-dark">
-                            <i class="fa-brands fa-telegram" aria-hidden="true"></i>
-                            <span>Обсудить задачу</span>
-                        </a>
-                    </div>
-
-                    <p class="hero-note">Дизайн, разработка и запуск в одном проекте</p>
+                <div class="hero-header-top">
+                    <div class="hero-sticker-top" id="heroStickerTop" aria-hidden="true"></div>
                 </div>
 
-                <figure class="duck-stage" id="duckStage" tabindex="0" aria-label="Объёмная утка. Поворачивайте стрелками клавиатуры." aria-describedby="duckHint">
-                    <span class="duck-stage-light" aria-hidden="true"></span>
-                    <span class="duck-stage-label" aria-hidden="true">AVE / 3D</span>
-                    <span class="sr-only" id="duckHint">Двигайте курсором или стрелками клавиатуры, чтобы повернуть утку</span>
-                </figure>
+                <h1 class="hero-title">
+                    Веб-разработка, сервисы<br/>и <span>Telegram-системы</span>
+                </h1>
+
+                <p class="hero-subtitle">
+                    Артем | ave dev, Full-stack и Python инженер. Проектирую и создаю лендинги, микросервисы, высоконагруженные боты и API под ключ. Чистый код и функциональные решения.
+                </p>
+
+                <div class="hero-bottom-row">
+                    <a href="#cases" class="btn-primary-gold">
+                        <span>Посмотреть кейсы</span>
+                    </a>
+                    <a href="https://t.me/ave93" target="_blank" rel="noopener noreferrer" class="btn-secondary-dark">
+                        <i class="fa-brands fa-telegram" aria-hidden="true"></i>
+                        <span>Telegram @ave93</span>
+                    </a>
+
+                    <div class="hero-sticker-bottom" id="heroStickerBottom" aria-hidden="true"></div>
+                </div>
             </div>
         </section>
 
@@ -851,7 +842,6 @@
     </footer>
 
     <!-- JAVASCRIPT: STICKERS, CAROUSEL, INTERACTIVE SHAPES & SIDE DOTS -->
-    <script src="script.js" defer></script>
-    <script type="module" src="duck.js"></script>
+    <script src="script.js?v=classic-20260923-2" defer></script>
 </body>
 </html>
