@@ -231,7 +231,7 @@ function updateRailTracker() {
     const progress = Math.min(rect.height, Math.max(0, innerHeight * 0.58 - rect.top));
     const ratio = Math.min(1, Math.max(0, progress / rect.height));
     const nodeTops = railNodes.map(node => node.getBoundingClientRect().top);
-    railProgress.style.transform = `scaleY(${ratio})`;
+    railProgress.style.height = `${ratio * 100}%`;
     railNodes.forEach((node, index) => {
         if (nodeTops[index] < innerHeight * 0.78) node.classList.add('active');
     });
